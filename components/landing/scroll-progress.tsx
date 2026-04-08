@@ -11,10 +11,13 @@ export function ScrollProgress() {
   });
 
   return (
-    <motion.div
+    <div
       aria-hidden
-      className="fixed left-0 right-0 top-0 z-60 h-1 origin-left bg-linear-to-r from-sky-500 via-indigo-500 to-fuchsia-500"
-      style={{ scaleX }}
-    />
+      className="pointer-events-none fixed left-0 right-0 top-0 z-60 h-1 bg-(--border-card)">
+      <motion.div
+        className="h-full origin-left bg-linear-to-r from-(--accent-cyan) via-(--accent-primary) to-(--accent-violet)"
+        style={{ scaleX }}
+      />
+    </div>
   );
 }

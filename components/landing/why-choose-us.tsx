@@ -50,13 +50,13 @@ const STATS: Stat[] = [
 
 function StatCard({ stat }: { stat: Stat }) {
   return (
-    <div className="group rounded-2xl border border-gray-200/60 bg-linear-to-br from-white/80 to-gray-50/50 p-6 shadow-md backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-indigo-300 hover:shadow-lg dark:border-gray-800/60 dark:from-gray-900/50 dark:to-gray-900/30 dark:hover:border-indigo-600">
+    <div className="group rounded-2xl border border-(--border-card) bg-(--bg-card) p-6 shadow-md backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-indigo-300 hover:bg-(--bg-card-hover) hover:shadow-lg dark:hover:border-indigo-600">
       <div className="flex items-center gap-4">
         <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-linear-to-br from-indigo-100 to-purple-100 text-indigo-600 dark:from-indigo-950/50 dark:to-purple-950/50 dark:text-indigo-300 transition-transform duration-300 group-hover:scale-110">
           {stat.icon}
         </div>
         <div className="flex-1">
-          <div className="text-xs font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-400">
+          <div className="text-xs font-semibold uppercase tracking-wider text-(--text-muted)">
             {stat.label}
           </div>
           <AnimatedNumber
@@ -68,7 +68,7 @@ function StatCard({ stat }: { stat: Stat }) {
           />
         </div>
       </div>
-      <p className="mt-5 text-sm leading-6 text-gray-600 dark:text-gray-400">
+      <p className="mt-5 text-sm leading-6 text-(--text-muted)">
         {stat.description}
       </p>
     </div>
@@ -89,7 +89,7 @@ export function WhyChooseUs() {
                 Built for performance
               </span>
             </h2>
-            <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-400">
+            <p className="mt-6 text-lg leading-8 text-(--text-muted)">
               From installation to daily usage, we prioritize reliability,
               consistency, and exceptional support for every customer.
             </p>

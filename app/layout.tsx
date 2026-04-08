@@ -3,6 +3,7 @@ import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
+import { HyperspeedBackground } from "@/components/ui/HyperspeedBackground";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,10 +29,15 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`dark ${geistSans.variable} ${geistMono.variable} antialiased`}>
-      <body className="min-h-dvh bg-background text-foreground font-sans">
+      suppressHydrationWarning
+      data-scroll-behavior="smooth"
+      className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body suppressHydrationWarning className="min-h-dvh font-sans">
         <AntdRegistry>
-          <Providers>{children}</Providers>
+          <Providers>
+            <HyperspeedBackground />
+            <div className="relative z-10">{children}</div>
+          </Providers>
         </AntdRegistry>
       </body>
     </html>

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { CheckCircle2, Rocket, Wrench, ArrowRight } from "lucide-react";
 import { Container } from "./container";
@@ -50,7 +51,7 @@ function ConnectorLine({ accent }: { accent: string }) {
   return (
     <div className="hidden items-center md:flex md:flex-1">
       <div className="relative mx-2 h-px flex-1">
-        <div className="absolute inset-0 bg-linear-to-r from-white/10 to-white/10" />
+        <div className="absolute inset-0 bg-(--border-card)" />
         <motion.div
           className={`absolute inset-0 bg-linear-to-r ${accent}`}
           initial={{ scaleX: 0 }}
@@ -73,7 +74,7 @@ function ConnectorLine({ accent }: { accent: string }) {
           style={{ boxShadow: `0 0 8px rgba(0,229,255,0.8)` }}
         />
       </div>
-      <ArrowRight className="h-4 w-4 shrink-0 text-white/20" />
+      <ArrowRight className="h-4 w-4 shrink-0 text-(--text-muted)" />
     </div>
   );
 }
@@ -82,8 +83,8 @@ function StepCard({ step, index }: { step: Step; index: number }) {
   return (
     <Reveal delay={index * 0.1}>
       <motion.div
-        className="group relative flex-1 overflow-hidden rounded-3xl border border-white/8 bg-[#040714] p-7"
-        whileHover={{ y: -6, borderColor: "rgba(255,255,255,0.14)" }}
+        className="group relative flex-1 overflow-hidden rounded-3xl border border-(--border-card) bg-(--bg-card) p-7 shadow-sm backdrop-blur-2xl transition-colors hover:border-indigo-300 hover:bg-(--bg-card-hover) dark:hover:border-indigo-600"
+        whileHover={{ y: -6 }}
         transition={{ duration: 0.3 }}
         style={{
           boxShadow: "inset 0 1px 0 rgba(255,255,255,0.04)",
@@ -97,7 +98,7 @@ function StepCard({ step, index }: { step: Step; index: number }) {
         />
 
         {/* Step number — ghost text */}
-        <div className="absolute right-5 top-4 select-none font-black text-[80px] leading-none text-white/3">
+        <div className="absolute right-5 top-4 select-none font-black text-[80px] leading-none text-gray-200 dark:text-white/3">
           {step.number}
         </div>
 
@@ -117,10 +118,12 @@ function StepCard({ step, index }: { step: Step; index: number }) {
         </div>
 
         {/* Title */}
-        <h3 className="mt-2 text-lg font-bold text-white">{step.title}</h3>
+        <h3 className="mt-2 text-lg font-bold text-gray-900 dark:text-white">
+          {step.title}
+        </h3>
 
         {/* Description */}
-        <p className="mt-3 text-sm leading-6 text-white/45">
+        <p className="mt-3 text-sm leading-6 text-(--text-muted)">
           {step.description}
         </p>
       </motion.div>
@@ -132,10 +135,10 @@ export function HowItWorks() {
   return (
     <section
       id="how-it-works"
-      className="relative overflow-hidden bg-[#040714] py-24 sm:py-32">
+      className="relative overflow-hidden bg-transparent py-24 sm:py-32">
       {/* Background decoration */}
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute bottom-0 left-1/2 h-px w-3/4 -translate-x-1/2 bg-linear-to-r from-transparent via-white/10 to-transparent" />
+        <div className="absolute bottom-0 left-1/2 h-px w-3/4 -translate-x-1/2 bg-linear-to-r from-transparent via-gray-200/70 to-transparent dark:via-white/10" />
         <div className="absolute left-0 top-1/2 h-96 w-96 -translate-y-1/2 rounded-full bg-cyan-500/5 blur-3xl" />
         <div className="absolute right-0 top-1/2 h-96 w-96 -translate-y-1/2 rounded-full bg-violet-500/5 blur-3xl" />
       </div>
@@ -144,17 +147,17 @@ export function HowItWorks() {
         {/* Header */}
         <Reveal>
           <div className="mx-auto max-w-2xl text-center">
-            <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/25 bg-cyan-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-cyan-400">
+            <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/25 bg-cyan-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-cyan-700 dark:text-cyan-400">
               <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />
               How It Works
             </div>
-            <h2 className="mt-5 text-4xl font-black tracking-tight text-white sm:text-5xl">
+            <h2 className="mt-5 text-4xl font-black tracking-tight text-gray-900 dark:text-white sm:text-5xl">
               Online in{" "}
               <span className="bg-linear-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent">
                 three steps
               </span>
             </h2>
-            <p className="mt-5 text-lg text-white/45">
+            <p className="mt-5 text-lg text-(--text-muted)">
               From plan selection to full-speed internet — a seamless,
               hassle-free onboarding experience.
             </p>
@@ -176,21 +179,23 @@ export function HowItWorks() {
         {/* CTA */}
         <Reveal delay={0.3}>
           <div className="mt-14 flex justify-center">
-            <motion.a
-              href="#get-started"
-              className="group inline-flex h-12 items-center gap-2.5 rounded-2xl bg-linear-to-r from-cyan-500 to-violet-600 px-8 font-semibold text-white shadow-[0_0_40px_rgba(0,229,255,0.25)]"
+            <motion.div
               whileHover={{
                 scale: 1.04,
                 boxShadow: "0 0 60px rgba(0,229,255,0.4)",
               }}
               whileTap={{ scale: 0.97 }}>
-              Get Connected Today
-              <motion.span
-                animate={{ x: [0, 4, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity }}>
-                <ArrowRight className="h-4 w-4" />
-              </motion.span>
-            </motion.a>
+              <Link
+                href="/contact"
+                className="group inline-flex h-12 items-center gap-2.5 rounded-2xl bg-linear-to-r from-cyan-500 to-violet-600 px-8 font-semibold text-white shadow-[0_0_40px_rgba(0,229,255,0.25)]">
+                Get Connected Today
+                <motion.span
+                  animate={{ x: [0, 4, 0] }}
+                  transition={{ duration: 1.5, repeat: Infinity }}>
+                  <ArrowRight className="h-4 w-4" />
+                </motion.span>
+              </Link>
+            </motion.div>
           </div>
         </Reveal>
       </Container>

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, Zap } from "lucide-react";
 import { Container } from "./container";
@@ -108,8 +109,9 @@ function PricingCard({
 
         <div
           className={[
-            "relative flex h-full flex-col overflow-hidden rounded-3xl border bg-[#040714] p-8",
-            plan.featured ? "border-transparent" : "border-white/8",
+            "relative flex h-full flex-col overflow-hidden rounded-3xl border p-8 backdrop-blur-2xl",
+            "bg-(--bg-card) shadow-sm transition-colors hover:bg-(--bg-card-hover)",
+            plan.featured ? "border-transparent" : "border-(--border-card)",
           ].join(" ")}
           style={{
             boxShadow: plan.featured
@@ -138,8 +140,12 @@ function PricingCard({
 
           {/* Plan name & tagline */}
           <div>
-            <div className="text-xl font-bold text-white">{plan.name}</div>
-            <div className="mt-1.5 text-sm text-white/40">{plan.tagline}</div>
+            <div className="text-xl font-bold text-gray-900 dark:text-white">
+              {plan.name}
+            </div>
+            <div className="mt-1.5 text-sm text-(--text-muted)">
+              {plan.tagline}
+            </div>
           </div>
 
           {/* Price */}
@@ -151,10 +157,10 @@ function PricingCard({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.25 }}>
-              <span className="text-5xl font-black tracking-tight text-white">
+              <span className="text-5xl font-black tracking-tight text-gray-900 dark:text-white">
                 {formatINR(price)}
               </span>
-              <span className="text-sm font-medium text-white/40">
+              <span className="text-sm font-medium text-(--text-muted)">
                 {period}
               </span>
             </motion.div>
@@ -168,7 +174,7 @@ function PricingCard({
           </div>
 
           {/* Divider */}
-          <div className="my-7 h-px bg-white/[0.07]" />
+          <div className="my-7 h-px bg-(--border-card)" />
 
           {/* Features */}
           <ul className="flex-1 space-y-3.5">
@@ -178,29 +184,29 @@ function PricingCard({
                   className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-linear-to-br ${plan.accentColor}`}>
                   <Check className="h-3 w-3 text-white" />
                 </span>
-                <span className="text-sm text-white/60">{f}</span>
+                <span className="text-sm text-(--text-secondary)">{f}</span>
               </li>
             ))}
           </ul>
 
           {/* CTA */}
-          <motion.a
-            href="#get-started"
-            className={[
-              "mt-8 flex h-12 w-full items-center justify-center rounded-2xl text-sm font-bold transition-all",
-              plan.featured
-                ? `bg-linear-to-r ${plan.accentColor} text-white shadow-lg`
-                : "border border-white/10 bg-white/6 text-white/70 hover:bg-white/10 hover:text-white",
-            ].join(" ")}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            style={
-              plan.featured
-                ? { boxShadow: `0 8px 30px ${plan.glowColor}` }
-                : undefined
-            }>
-            Choose {plan.name}
-          </motion.a>
+          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+            <Link
+              href="/contact"
+              className={[
+                "mt-8 flex h-12 w-full items-center justify-center rounded-2xl text-sm font-bold transition-all",
+                plan.featured
+                  ? `bg-linear-to-r ${plan.accentColor} text-white shadow-lg`
+                  : "border border-(--border-card) bg-(--bg-card) text-(--text-primary) hover:bg-(--bg-card-hover)",
+              ].join(" ")}
+              style={
+                plan.featured
+                  ? { boxShadow: `0 8px 30px ${plan.glowColor}` }
+                  : undefined
+              }>
+              Choose {plan.name}
+            </Link>
+          </motion.div>
         </div>
       </motion.div>
     </Reveal>
@@ -216,7 +222,7 @@ function BillingToggle({
   onChange: (v: BillingCycle) => void;
 }) {
   return (
-    <div className="flex items-center gap-1 rounded-2xl border border-white/8 bg-white/4 p-1 backdrop-blur">
+    <div className="flex items-center gap-1 rounded-2xl border border-(--border-card) bg-(--bg-card) p-1 backdrop-blur">
       {(["monthly", "yearly"] as const).map((opt) => (
         <button
           key={opt}
@@ -230,7 +236,9 @@ function BillingToggle({
             />
           )}
           <span
-            className={`relative ${billing === opt ? "text-white" : "text-white/45"}`}>
+            className={`relative ${
+              billing === opt ? "text-white" : "text-(--text-muted)"
+            }`}>
             {opt === "monthly" ? "Monthly" : "Yearly (−15%)"}
           </span>
         </button>
@@ -240,13 +248,13 @@ function BillingToggle({
 }
 
 /* ─── Section ─────────────────────────── */
-export function Pricing() {
+export function Pricing({ withHeader = true }: { withHeader?: boolean } = {}) {
   const [billing, setBilling] = React.useState<BillingCycle>("monthly");
 
   return (
     <section
       id="pricing"
-      className="relative overflow-hidden bg-[#040714] py-24 sm:py-32">
+      className="relative overflow-hidden bg-transparent py-24 sm:py-32">
       {/* Background decoration */}
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute left-1/2 top-0 h-px w-1/2 -translate-x-1/2 bg-linear-to-r from-transparent via-cyan-500/30 to-transparent" />
@@ -256,28 +264,33 @@ export function Pricing() {
 
       <Container className="relative">
         {/* Header */}
-        <Reveal>
-          <div className="mx-auto max-w-2xl text-center">
-            <div className="inline-flex items-center gap-2 rounded-full border border-violet-500/25 bg-violet-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-violet-400">
-              <span className="h-1.5 w-1.5 rounded-full bg-violet-400" />
-              Pricing Plans
+        {withHeader && (
+          <Reveal>
+            <div className="mx-auto max-w-2xl text-center">
+              <div className="inline-flex items-center gap-2 rounded-full border border-violet-500/25 bg-violet-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-violet-400">
+                <span className="h-1.5 w-1.5 rounded-full bg-violet-400" />
+                Pricing Plans
+              </div>
+              <h2 className="mt-5 text-4xl font-black tracking-tight text-gray-900 dark:text-white sm:text-5xl">
+                Simple,{" "}
+                <span className="bg-linear-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent">
+                  transparent
+                </span>{" "}
+                pricing
+              </h2>
+              <p className="mt-5 text-lg text-(--text-muted)">
+                No hidden fees. No throttling. Upgrade or downgrade anytime.
+              </p>
             </div>
-            <h2 className="mt-5 text-4xl font-black tracking-tight text-white sm:text-5xl">
-              Simple,{" "}
-              <span className="bg-linear-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent">
-                transparent
-              </span>{" "}
-              pricing
-            </h2>
-            <p className="mt-5 text-lg text-white/45">
-              No hidden fees. No throttling. Upgrade or downgrade anytime.
-            </p>
-          </div>
-        </Reveal>
+          </Reveal>
+        )}
 
         {/* Toggle */}
         <Reveal delay={0.1}>
-          <div className="mt-10 flex justify-center">
+          <div
+            className={
+              withHeader ? "mt-10 flex justify-center" : "flex justify-center"
+            }>
             <BillingToggle billing={billing} onChange={setBilling} />
           </div>
         </Reveal>
@@ -296,13 +309,13 @@ export function Pricing() {
 
         {/* Footer note */}
         <Reveal delay={0.25}>
-          <p className="mt-12 text-center text-sm text-white/35">
+          <p className="mt-12 text-center text-sm text-(--text-muted)">
             Need a custom plan for your business or multiple locations?{" "}
-            <a
-              href="#contact"
-              className="text-cyan-400 underline-offset-4 hover:underline">
+            <Link
+              href="/contact"
+              className="text-indigo-600 underline-offset-4 hover:underline dark:text-cyan-400">
               Contact us for a tailored quote.
-            </a>
+            </Link>
           </p>
         </Reveal>
       </Container>

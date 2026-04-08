@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { Avatar, Rate } from "antd";
+import { MessageCircle } from "lucide-react";
 import { Container } from "./container";
 import { Reveal } from "./reveal";
 
@@ -67,7 +68,7 @@ function initials(name: string) {
 
 function TestimonialCard({ t }: { t: Testimonial }) {
   return (
-    <div className="group rounded-2xl border border-gray-200/60 bg-linear-to-br from-white/80 to-gray-50/50 p-6 shadow-md backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-indigo-300 hover:shadow-lg dark:border-gray-800/60 dark:from-gray-900/50 dark:to-gray-900/30 dark:hover:border-indigo-600">
+    <div className="group rounded-2xl border border-(--border-card) bg-(--bg-card) p-6 shadow-md backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-indigo-300 hover:bg-(--bg-card-hover) hover:shadow-lg dark:hover:border-indigo-600">
       <div className="flex items-center gap-3">
         <Avatar
           size={44}
@@ -88,10 +89,10 @@ function TestimonialCard({ t }: { t: Testimonial }) {
         <Rate disabled defaultValue={t.rating} />
       </div>
 
-      <p className="mt-5 text-sm leading-7 text-gray-700 dark:text-gray-300">
-        <span className="text-lg text-indigo-500">"</span>
+      <p className="mt-5 text-sm leading-7 text-(--text-secondary)">
+        <span className="text-lg text-indigo-500">&ldquo;</span>
         {t.quote}
-        <span className="text-lg text-indigo-500">"</span>
+        <span className="text-lg text-indigo-500">&rdquo;</span>
       </p>
     </div>
   );
@@ -103,7 +104,8 @@ export function Testimonials() {
       <Container>
         <Reveal>
           <div className="mx-auto max-w-2xl text-center">
-            <div className="inline-block rounded-full bg-indigo-50 px-4 py-1 text-sm font-semibold text-indigo-600 dark:bg-indigo-950 dark:text-indigo-300">
+            <div className="inline-flex items-center gap-2 rounded-full bg-indigo-50 px-4 py-1 text-sm font-semibold text-indigo-600 dark:bg-indigo-950 dark:text-indigo-300">
+              <MessageCircle className="h-4 w-4" />
               Testimonials
             </div>
             <h2 className="mt-4 text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
@@ -111,7 +113,7 @@ export function Testimonials() {
                 Loved by thousands
               </span>
             </h2>
-            <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-400">
+            <p className="mt-6 text-lg leading-8 text-(--text-muted)">
               Real users, real results. See what customers are saying about
               their RCN experience.
             </p>

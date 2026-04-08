@@ -13,7 +13,7 @@ type Feature = {
 
 function FeatureCard({ feature }: { feature: Feature }) {
   return (
-    <div className="group relative rounded-2xl border border-gray-200/60 bg-linear-to-br from-white/80 to-gray-50/50 p-6 shadow-md backdrop-blur transition-all duration-300 hover:-translate-y-2 hover:border-indigo-300 hover:shadow-lg dark:border-gray-800/60 dark:from-gray-900/50 dark:to-gray-900/30 dark:hover:border-indigo-600">
+    <div className="group relative rounded-2xl border border-(--border-card) bg-(--bg-card) p-6 shadow-md backdrop-blur-xl transition-all duration-300 hover:-translate-y-2 hover:border-indigo-300 hover:bg-(--bg-card-hover) hover:shadow-lg dark:hover:border-indigo-600">
       <div className="absolute inset-0 rounded-2xl bg-linear-to-br from-indigo-500/0 to-purple-500/0 opacity-0 transition-opacity duration-300 group-hover:from-indigo-500/5 group-hover:to-purple-500/5 group-hover:opacity-100" />
       <div className="relative">
         <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br from-indigo-100 to-purple-100 text-indigo-700 transition-all duration-300 group-hover:scale-110 dark:from-indigo-950 dark:to-purple-950 dark:text-indigo-300">
@@ -22,7 +22,7 @@ function FeatureCard({ feature }: { feature: Feature }) {
         <div className="mt-4 text-lg font-bold text-gray-900 dark:text-white">
           {feature.title}
         </div>
-        <p className="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400">
+        <p className="mt-2 text-sm leading-6 text-(--text-muted)">
           {feature.description}
         </p>
       </div>
@@ -69,7 +69,7 @@ export function Features() {
             <h2 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">
               Built for modern internet needs
             </h2>
-            <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-400">
+            <p className="mt-6 text-lg leading-8 text-(--text-muted)">
               We combine cutting-edge fiber technology with human-friendly
               support to deliver experiences that matter.
             </p>
@@ -85,7 +85,7 @@ export function Features() {
         </div>
 
         <Reveal delay={0.25}>
-          <div className="mt-16 rounded-3xl border border-gray-200/60 bg-linear-to-r from-indigo-50/50 to-purple-50/50 p-8 backdrop-blur dark:border-gray-800/60 dark:from-indigo-950/20 dark:to-purple-950/20">
+          <div className="mt-16 rounded-3xl border border-(--border-card) bg-(--bg-card) bg-linear-to-r from-indigo-500/5 to-purple-500/5 p-8 backdrop-blur-xl">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-start gap-4">
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br from-green-100 to-emerald-100 text-green-700 dark:from-green-950 dark:to-emerald-950 dark:text-green-300">
@@ -95,13 +95,13 @@ export function Features() {
                   <div className="text-lg font-bold text-gray-900 dark:text-white">
                     Enterprise-grade reliability
                   </div>
-                  <div className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                  <div className="mt-1 text-sm text-(--text-muted)">
                     Proactive monitoring, swift resolution, and dedicated
                     support.
                   </div>
                 </div>
               </div>
-              <div className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              <div className="text-sm font-medium text-(--text-secondary)">
                 Ask us about business plans →
               </div>
             </div>
