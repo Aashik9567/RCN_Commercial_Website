@@ -136,13 +136,6 @@ export function HowItWorks() {
     <section
       id="how-it-works"
       className="relative overflow-hidden bg-transparent py-24 sm:py-32">
-      {/* Background decoration */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute bottom-0 left-1/2 h-px w-3/4 -translate-x-1/2 bg-linear-to-r from-transparent via-gray-200/70 to-transparent dark:via-white/10" />
-        <div className="absolute left-0 top-1/2 h-96 w-96 -translate-y-1/2 rounded-full bg-cyan-500/5 blur-3xl" />
-        <div className="absolute right-0 top-1/2 h-96 w-96 -translate-y-1/2 rounded-full bg-violet-500/5 blur-3xl" />
-      </div>
-
       <Container className="relative">
         {/* Header */}
         <Reveal>

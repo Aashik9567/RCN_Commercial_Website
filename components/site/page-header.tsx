@@ -16,7 +16,6 @@ export function PageHeader({
 }) {
   return (
     <section className="relative overflow-hidden pb-12 pt-28 sm:pb-16 sm:pt-32">
-      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-96 bg-linear-to-b from-indigo-50/60 to-transparent dark:from-indigo-950/20" />
       <Container>
         <Reveal>
           <div className="mx-auto max-w-3xl text-center">

@@ -20,13 +20,6 @@ const NotFoundScene = dynamic(
 export default function NotFound() {
   return (
     <div className="relative min-h-dvh overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-linear-to-b from-indigo-50/30 via-white/10 to-transparent dark:from-[#040714]/35 dark:via-[#040714]/15 dark:to-transparent" />
-        <div className="absolute -left-48 -top-48 h-140 w-140 rounded-full bg-cyan-500/10 blur-3xl" />
-        <div className="absolute -right-48 -top-40 h-165 w-165 rounded-full bg-violet-500/10 blur-3xl" />
-        <div className="absolute bottom-[-30%] left-[25%] h-165 w-165 rounded-full bg-indigo-500/10 blur-3xl" />
-      </div>
-
       <div className="mx-auto flex min-h-dvh w-full max-w-6xl items-center px-6 py-24">
         <div className="grid w-full items-center gap-10 lg:grid-cols-[1fr_1fr]">
           <div>

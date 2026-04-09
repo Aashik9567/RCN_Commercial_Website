@@ -12,11 +12,6 @@ export function FinalCTA() {
       <Container>
         <Reveal>
           <div className="relative overflow-hidden rounded-3xl border border-(--border-card) bg-(--bg-card) bg-linear-to-br from-indigo-500/5 via-transparent to-purple-500/5 p-8 shadow-lg shadow-indigo-500/10 backdrop-blur-xl sm:p-12">
-            <div className="pointer-events-none absolute inset-0 -z-10">
-              <div className="absolute -left-32 -top-32 h-96 w-96 rounded-full bg-linear-to-tr from-indigo-500/20 to-purple-500/20 blur-3xl" />
-              <div className="absolute -bottom-32 -right-32 h-96 w-96 rounded-full bg-linear-to-tr from-purple-500/20 to-pink-500/20 blur-3xl" />
-            </div>
-
             <div className="relative z-10 grid gap-8 lg:grid-cols-[1.5fr_1fr] lg:items-center">
               <div>
                 <div className="inline-block rounded-full bg-indigo-100 px-3 py-1 text-sm font-semibold text-indigo-600 dark:bg-indigo-950/50 dark:text-indigo-300">

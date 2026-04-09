@@ -255,13 +255,6 @@ export function Pricing({ withHeader = true }: { withHeader?: boolean } = {}) {
     <section
       id="pricing"
       className="relative overflow-hidden bg-transparent py-24 sm:py-32">
-      {/* Background decoration */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute left-1/2 top-0 h-px w-1/2 -translate-x-1/2 bg-linear-to-r from-transparent via-cyan-500/30 to-transparent" />
-        <div className="absolute left-1/4 top-20 h-80 w-80 rounded-full bg-violet-500/8 blur-3xl" />
-        <div className="absolute right-1/4 top-40 h-80 w-80 rounded-full bg-cyan-500/8 blur-3xl" />
-      </div>
-
       <Container className="relative">
         {/* Header */}
         {withHeader && (

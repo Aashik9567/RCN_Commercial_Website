@@ -1,4 +1,11 @@
 "use client";
 
-export { Hyperspeed } from "./Hyperspeed";
-export type { HyperspeedOptions, HyperspeedProps } from "./Hyperspeed";
+export {
+  default as Hyperspeed,
+  default as HyperspeedReactBits,
+  hyperspeedPresets,
+} from "./HyperspeedReactBits";
+export type {
+  HyperspeedEffectOptions as HyperspeedOptions,
+  HyperspeedProps,
+} from "./HyperspeedReactBits";

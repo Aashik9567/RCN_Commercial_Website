@@ -59,7 +59,6 @@ const FEATURES: Feature[] = [
 export function Features() {
   return (
     <section id="features" className="relative py-20 sm:py-28">
-      <div className="absolute inset-x-0 top-0 -z-10 h-96 bg-linear-to-b from-indigo-50/50 to-transparent dark:from-indigo-950/20" />
       <Container>
         <Reveal>
           <div className="mx-auto max-w-2xl text-center">

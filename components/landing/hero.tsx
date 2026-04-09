@@ -6,77 +6,6 @@ import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { ArrowRight, Zap, Shield, Users } from "lucide-react";
 import { Container } from "./container";
 
-
-/* ─────────────────────────────────────────
-   Animated floating fiber particles
-   ───────────────────────────────────────── */
-type FiberParticle = {
-  id: number;
-  x: number;
-  y: number;
-  size: number;
-  duration: number;
-  delay: number;
-  opacity: number;
-};
-
-function seededUnit(seed: number) {
-  const x = Math.sin(seed) * 10_000;
-  return x - Math.floor(x);
-}
-
-const FIBER_PARTICLES: FiberParticle[] = Array.from({ length: 20 }, (_, i) => {
-  const s = i + 1;
-  return {
-    id: i,
-    x: seededUnit(s * 12.9898) * 100,
-    y: seededUnit(s * 78.233) * 100,
-    size: seededUnit(s * 39.3467) * 3 + 1,
-    duration: seededUnit(s * 11.1351) * 8 + 6,
-    delay: seededUnit(s * 91.8732) * 4,
-    opacity: seededUnit(s * 54.345) * 0.5 + 0.1,
-  };
-});
-
-function FiberParticles() {
-  const [mounted, setMounted] = React.useState(false);
-
-  React.useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return null;
-
-  return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden">
-      {FIBER_PARTICLES.map((p) => (
-        <motion.div
-          key={p.id}
-          className="absolute rounded-full bg-cyan-400"
-          style={{
-            left: `${p.x}%`,
-            top: `${p.y}%`,
-            width: p.size,
-            height: p.size,
-            opacity: p.opacity,
-          }}
-          animate={{
-            y: [0, -40, 0],
-            opacity: [p.opacity, p.opacity * 2.5, p.opacity],
-            scale: [1, 1.5, 1],
-          }}
-          transition={{
-            duration: p.duration,
-            repeat: Infinity,
-            delay: p.delay,
-            ease: "easeInOut",
-          }}
-        />
-      ))}
-    </div>
-  );
-}
-
 /* ─────────────────────────────────────────
    Network visualization SVG (enhanced)
    ───────────────────────────────────────── */
@@ -402,8 +331,6 @@ export function Hero() {
 
   return (
     <section id="home" className="relative min-h-screen overflow-hidden">
-
-
       <Container className="relative flex min-h-screen items-center py-28 lg:py-32">
         <div className="grid w-full items-center gap-14 lg:grid-cols-[1fr_1fr] xl:gap-20">
           {/* LEFT: Copy */}

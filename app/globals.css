@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0a0a0a;
+
   --foreground: #f3f4f6;
   color-scheme: dark;
   --accent-primary: #6366f1;
@@ -52,28 +52,3 @@ h2 {
   color: white;
 }
 
-a,
-button,
-input,
-textarea,
-select {
-  transition: all 0.2s ease;
-}
-
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #4b5563;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #6b7280;
-}
