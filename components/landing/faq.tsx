@@ -48,22 +48,22 @@ const items: CollapseProps["items"] = [
 
 export function FAQ({ withHeader = true }: { withHeader?: boolean } = {}) {
   return (
-    <section id="faq" className="py-16 sm:py-20">
+    <section id="faq" className="container-section">
       <Container>
         {withHeader && (
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
-              <div className="inline-flex items-center gap-2 rounded-full bg-indigo-50 px-4 py-1 text-sm font-semibold text-indigo-600 dark:bg-indigo-950 dark:text-indigo-300">
+              <div className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-gray-50 px-4 py-1 text-sm font-semibold text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
                 <MessageCircle className="h-4 w-4" />
                 FAQ
               </div>
               <h2 className="mt-4 text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
                 Answers to your{" "}
-                <span className="bg-linear-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                <span className="text-gray-900 dark:text-gray-100">
                   common questions
                 </span>
               </h2>
-              <p className="mt-6 text-lg leading-8 text-(--text-muted)">
+              <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-400">
                 Everything you need to know before getting connected to RCN
                 fiber internet.
               </p>
@@ -74,7 +74,7 @@ export function FAQ({ withHeader = true }: { withHeader?: boolean } = {}) {
         <Reveal delay={0.1}>
           <div
             className={[
-              "mx-auto max-w-3xl rounded-2xl border border-(--border-card) bg-(--bg-card) p-2 shadow-md backdrop-blur-xl",
+              "mx-auto max-w-3xl rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-2 shadow-md backdrop-blur-xl",
               withHeader ? "mt-12" : "mt-0",
             ].join(" ")}>
             <Collapse items={items} accordion />

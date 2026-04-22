@@ -15,18 +15,16 @@ export function PageHeader({
   description: string;
 }) {
   return (
-    <section className="relative overflow-hidden pb-12 pt-28 sm:pb-16 sm:pt-32">
+    <section className="relative pb-12 pt-28 sm:pb-16 sm:pt-32">
       <Container>
         <Reveal>
           <div className="mx-auto max-w-3xl text-center">
-            <div className="inline-flex items-center gap-2 rounded-full border border-indigo-500/20 bg-indigo-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-indigo-700 dark:border-indigo-400/15 dark:text-indigo-300">
-              <span className="h-1.5 w-1.5 rounded-full bg-indigo-500" />
+            <div className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-gray-50 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
+              <span className="h-1.5 w-1.5 rounded-full bg-gray-500" />
               {badge}
             </div>
-            <h1 className="mt-6 text-4xl font-black tracking-tight text-gray-900 dark:text-white sm:text-5xl">
-              {title}
-            </h1>
-            <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-(--text-muted)">
+            <h1 className="heading-primary mt-6">{title}</h1>
+            <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-gray-600 dark:text-gray-400">
               {description}
             </p>
           </div>

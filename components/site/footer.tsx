@@ -15,14 +15,14 @@ const LINKS = [
 
 export function Footer() {
   return (
-    <footer className="border-t border-(--border-card) bg-transparent backdrop-blur-[2px]">
+    <footer className="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-black">
       <Container className="py-12 sm:py-16">
         <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
           <div>
-            <div className="bg-linear-to-r from-indigo-600 to-purple-600 bg-clip-text text-xl font-bold text-transparent">
+            <div className="text-xl font-bold text-gray-900 dark:text-gray-100">
               Raghunathpur Cable Network
             </div>
-            <p className="mt-4 text-sm leading-6 text-(--text-muted)">
+            <p className="mt-4 text-sm leading-6 text-gray-600 dark:text-gray-400">
               Modern fiber internet with local support—built for speed,
               reliability, and exceptional service.
             </p>
@@ -30,20 +30,20 @@ export function Footer() {
               <a
                 href="#"
                 aria-label="Website"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-(--border-card) bg-(--bg-card) text-(--text-secondary) transition-colors hover:bg-(--bg-card-hover) hover:text-(--text-primary)">
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-700 transition-colors hover:bg-gray-50 hover:text-gray-900 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-100">
                 <Globe className="h-5 w-5" />
               </a>
               <a
                 href="#"
                 aria-label="Message"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-(--border-card) bg-(--bg-card) text-(--text-secondary) transition-colors hover:bg-(--bg-card-hover) hover:text-(--text-primary)">
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-700 transition-colors hover:bg-gray-50 hover:text-gray-900 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-100">
                 <MessageCircle className="h-5 w-5" />
               </a>
             </div>
           </div>
 
           <div>
-            <div className="text-sm font-semibold uppercase tracking-wider text-(--text-primary)">
+            <div className="text-sm font-semibold uppercase tracking-wider text-gray-900 dark:text-gray-100">
               Quick links
             </div>
             <ul className="mt-5 space-y-3 text-sm">
@@ -51,7 +51,7 @@ export function Footer() {
                 <li key={l.href}>
                   <Link
                     href={l.href}
-                    className="text-(--text-muted) transition-colors hover:text-indigo-600 dark:hover:text-indigo-400">
+                    className="text-gray-600 dark:text-gray-400 transition-colors hover:text-indigo-600 dark:hover:text-indigo-400">
                     {l.label}
                   </Link>
                 </li>
@@ -60,10 +60,10 @@ export function Footer() {
           </div>
 
           <div>
-            <div className="text-sm font-semibold uppercase tracking-wider text-(--text-primary)">
+            <div className="text-sm font-semibold uppercase tracking-wider text-gray-900 dark:text-gray-100">
               Support
             </div>
-            <ul className="mt-5 space-y-3 text-sm text-(--text-muted)">
+            <ul className="mt-5 space-y-3 text-sm text-gray-600 dark:text-gray-400">
               <li>24/7 assistance</li>
               <li>Plan upgrades</li>
               <li>Installation scheduling</li>
@@ -72,10 +72,10 @@ export function Footer() {
           </div>
 
           <div>
-            <div className="text-sm font-semibold uppercase tracking-wider text-(--text-primary)">
+            <div className="text-sm font-semibold uppercase tracking-wider text-gray-900 dark:text-gray-100">
               Contact
             </div>
-            <div className="mt-5 space-y-3 text-sm text-(--text-muted)">
+            <div className="mt-5 space-y-3 text-sm text-gray-600 dark:text-gray-400">
               <div className="flex items-start gap-2">
                 <Phone className="mt-0.5 h-4 w-4 shrink-0 text-indigo-500" />
                 <a
@@ -88,8 +88,8 @@ export function Footer() {
                 <Mail className="mt-0.5 h-4 w-4 shrink-0 text-indigo-500" />
                 <a
                   className="hover:text-indigo-600 dark:hover:text-indigo-400"
-                  href="mailto:raghumathpurcable2010@gmail.com">
-                  raghumathpurcable2010@gmail.com
+                  href="mailto:raghunathpurcable2010@gmail.com">
+                  raghunathpurcable2010@gmail.com
                 </a>
               </div>
               <div className="flex items-start gap-2">
@@ -100,7 +100,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-2 border-t border-(--border-card) pt-8 text-sm text-(--text-muted) sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-12 flex flex-col gap-2 border-t border-gray-200 dark:border-gray-700 pt-8 text-sm text-gray-600 dark:text-gray-400 sm:flex-row sm:items-center sm:justify-between">
           <div className="font-medium">© 2026 Raghunathpur Cable Network</div>
           <div className="flex gap-2">
             <span>Built for speed</span>

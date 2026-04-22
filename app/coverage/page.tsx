@@ -48,7 +48,7 @@ export default function CoveragePage() {
         title={
           <>
             Service areas &{" "}
-            <span className="bg-linear-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+            <span className="text-gray-900 dark:text-gray-100">
               availability
             </span>
           </>
@@ -56,19 +56,19 @@ export default function CoveragePage() {
         description="Share your ward/landmark and we’ll confirm coverage and the fastest install slot."
       />
 
-      <section className="pb-16 sm:pb-20">
+      <section className="container-section">
         <Container>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {COVERAGE_BLOCKS.map((b, idx) => (
               <Reveal key={b.title} delay={idx * 0.06}>
-                <div className="group h-full rounded-2xl border border-(--border-card) bg-(--bg-card) p-6 shadow-md backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-indigo-300 hover:bg-(--bg-card-hover) hover:shadow-lg dark:hover:border-indigo-600">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br from-indigo-100 to-purple-100 text-indigo-700 transition-transform duration-300 group-hover:scale-110 dark:from-indigo-950 dark:to-purple-950 dark:text-indigo-300">
+                <div className="card-interactive group h-full hover:border-gray-300 dark:hover:border-gray-600">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gray-100 text-gray-700 transition-transform duration-300 group-hover:scale-110 dark:bg-gray-800 dark:text-gray-200">
                     <b.icon className="h-6 w-6" />
                   </div>
                   <div className="mt-4 text-lg font-bold text-gray-900 dark:text-white">
                     {b.title}
                   </div>
-                  <p className="mt-2 text-sm leading-6 text-(--text-muted)">
+                  <p className="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400">
                     {b.description}
                   </p>
                 </div>
@@ -77,18 +77,18 @@ export default function CoveragePage() {
           </div>
 
           <Reveal delay={0.25}>
-            <div className="mt-10 rounded-3xl border border-(--border-card) bg-(--bg-card) bg-linear-to-r from-indigo-500/5 to-purple-500/5 p-8 backdrop-blur-xl">
+            <div className="card mt-10 rounded-3xl">
               <div className="text-lg font-bold text-gray-900 dark:text-white">
                 Want us to check your address?
               </div>
-              <p className="mt-2 text-sm text-(--text-muted)">
+              <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
                 Send your ward/tole/landmark and preferred timing — we’ll
                 confirm availability and share the best plan.
               </p>
               <div className="mt-5">
                 <a
                   href="/contact"
-                  className="inline-flex h-11 items-center justify-center rounded-2xl bg-linear-to-r from-indigo-600 to-purple-600 px-6 text-sm font-semibold text-white shadow-lg shadow-indigo-500/20 transition-all hover:shadow-indigo-500/30 active:scale-95">
+                  className="btn-primary h-11 rounded-2xl px-6 active:scale-95">
                   Check availability
                 </a>
               </div>

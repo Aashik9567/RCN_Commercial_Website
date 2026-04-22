@@ -11,8 +11,6 @@ type Step = {
   title: string;
   description: string;
   icon: React.ComponentType<{ className?: string }>;
-  accent: string;
-  glow: string;
   number: string;
 };
 
@@ -22,8 +20,6 @@ const STEPS: Step[] = [
     description:
       "Pick a speed tier that fits your household or business. Compare plans side-by-side with no hidden catches.",
     icon: CheckCircle2,
-    accent: "from-sky-400 to-blue-500",
-    glow: "rgba(56,189,248,0.2)",
     number: "01",
   },
   {
@@ -31,8 +27,6 @@ const STEPS: Step[] = [
     description:
       "Our certified technicians arrive on schedule, run the fiber, and have you online — typically within 24 hours.",
     icon: Wrench,
-    accent: "from-cyan-400 to-violet-500",
-    glow: "rgba(0,229,255,0.2)",
     number: "02",
   },
   {
@@ -40,29 +34,19 @@ const STEPS: Step[] = [
     description:
       "Stream, game, and work with consistent speeds. Our network team monitors 24/7 so you never have to worry.",
     icon: Rocket,
-    accent: "from-violet-400 to-fuchsia-500",
-    glow: "rgba(167,139,250,0.2)",
     number: "03",
   },
 ];
 
 /* Connector line between steps (desktop) */
-function ConnectorLine({ accent }: { accent: string }) {
+function ConnectorLine() {
   return (
     <div className="hidden items-center md:flex md:flex-1">
       <div className="relative mx-2 h-px flex-1">
-        <div className="absolute inset-0 bg-(--border-card)" />
-        <motion.div
-          className={`absolute inset-0 bg-linear-to-r ${accent}`}
-          initial={{ scaleX: 0 }}
-          whileInView={{ scaleX: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          style={{ transformOrigin: "left" }}
-        />
+        <div className="absolute inset-0 bg-gray-200 dark:bg-gray-700" />
         {/* Animated dot travelling along line */}
         <motion.div
-          className={`absolute top-1/2 h-2 w-2 -translate-y-1/2 rounded-full bg-linear-to-r ${accent}`}
+          className="absolute top-1/2 h-2 w-2 -translate-y-1/2 rounded-full bg-gray-500 dark:bg-gray-400"
           initial={{ left: "0%" }}
           animate={{ left: ["0%", "100%", "0%"] }}
           transition={{
@@ -71,10 +55,9 @@ function ConnectorLine({ accent }: { accent: string }) {
             ease: "easeInOut",
             delay: 0.5,
           }}
-          style={{ boxShadow: `0 0 8px rgba(0,229,255,0.8)` }}
         />
       </div>
-      <ArrowRight className="h-4 w-4 shrink-0 text-(--text-muted)" />
+      <ArrowRight className="h-4 w-4 shrink-0 text-gray-600 dark:text-gray-400" />
     </div>
   );
 }
@@ -83,20 +66,10 @@ function StepCard({ step, index }: { step: Step; index: number }) {
   return (
     <Reveal delay={index * 0.1}>
       <motion.div
-        className="group relative flex-1 overflow-hidden rounded-3xl border border-(--border-card) bg-(--bg-card) p-7 shadow-sm backdrop-blur-2xl transition-colors hover:border-indigo-300 hover:bg-(--bg-card-hover) dark:hover:border-indigo-600"
+        className="group relative flex-1 overflow-hidden rounded-3xl border border-gray-200 bg-white p-7 shadow-sm transition-colors hover:border-gray-300 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:hover:border-gray-600 dark:hover:bg-gray-800"
         whileHover={{ y: -6 }}
         transition={{ duration: 0.3 }}
-        style={{
-          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.04)",
-        }}>
-        {/* Hover glow */}
-        <motion.div
-          className="pointer-events-none absolute inset-0 rounded-3xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-          style={{
-            background: `radial-gradient(400px circle at 50% 0%, ${step.glow}, transparent 70%)`,
-          }}
-        />
-
+        style={{ boxShadow: "inset 0 1px 0 rgba(255,255,255,0.04)" }}>
         {/* Step number — ghost text */}
         <div className="absolute right-5 top-4 select-none font-black text-[80px] leading-none text-gray-200 dark:text-white/3">
           {step.number}
@@ -104,16 +77,14 @@ function StepCard({ step, index }: { step: Step; index: number }) {
 
         {/* Icon */}
         <motion.div
-          className={`relative flex h-14 w-14 items-center justify-center rounded-2xl bg-linear-to-br ${step.accent}`}
+          className="relative flex h-14 w-14 items-center justify-center rounded-2xl bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-200"
           whileHover={{ scale: 1.1, rotate: 5 }}
-          transition={{ type: "spring", stiffness: 300 }}
-          style={{ boxShadow: `0 8px 30px ${step.glow}` }}>
-          <step.icon className="h-6 w-6 text-white" />
+          transition={{ type: "spring", stiffness: 300 }}>
+          <step.icon className="h-6 w-6" />
         </motion.div>
 
         {/* Step label */}
-        <div
-          className={`mt-5 text-xs font-bold uppercase tracking-widest bg-linear-to-r ${step.accent} bg-clip-text text-transparent`}>
+        <div className="mt-5 text-xs font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400">
           Step {step.number}
         </div>
 
@@ -123,7 +94,7 @@ function StepCard({ step, index }: { step: Step; index: number }) {
         </h3>
 
         {/* Description */}
-        <p className="mt-3 text-sm leading-6 text-(--text-muted)">
+        <p className="mt-3 text-sm leading-6 text-gray-600 dark:text-gray-400">
           {step.description}
         </p>
       </motion.div>
@@ -135,22 +106,22 @@ export function HowItWorks() {
   return (
     <section
       id="how-it-works"
-      className="relative overflow-hidden bg-transparent py-24 sm:py-32">
+      className="container-section relative overflow-hidden">
       <Container className="relative">
         {/* Header */}
         <Reveal>
           <div className="mx-auto max-w-2xl text-center">
-            <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/25 bg-cyan-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-cyan-700 dark:text-cyan-400">
-              <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />
+            <div className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-gray-50 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
+              <span className="h-1.5 w-1.5 rounded-full bg-gray-500" />
               How It Works
             </div>
             <h2 className="mt-5 text-4xl font-black tracking-tight text-gray-900 dark:text-white sm:text-5xl">
               Online in{" "}
-              <span className="bg-linear-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent">
+              <span className="text-gray-900 dark:text-gray-100">
                 three steps
               </span>
             </h2>
-            <p className="mt-5 text-lg text-(--text-muted)">
+            <p className="mt-5 text-lg text-gray-600 dark:text-gray-400">
               From plan selection to full-speed internet — a seamless,
               hassle-free onboarding experience.
             </p>
@@ -162,9 +133,7 @@ export function HowItWorks() {
           {STEPS.map((step, idx) => (
             <React.Fragment key={step.title}>
               <StepCard step={step} index={idx} />
-              {idx < STEPS.length - 1 && (
-                <ConnectorLine accent={STEPS[idx + 1].accent} />
-              )}
+              {idx < STEPS.length - 1 && <ConnectorLine />}
             </React.Fragment>
           ))}
         </div>
@@ -180,7 +149,7 @@ export function HowItWorks() {
               whileTap={{ scale: 0.97 }}>
               <Link
                 href="/contact"
-                className="group inline-flex h-12 items-center gap-2.5 rounded-2xl bg-linear-to-r from-cyan-500 to-violet-600 px-8 font-semibold text-white shadow-[0_0_40px_rgba(0,229,255,0.25)]">
+                className="group inline-flex h-12 items-center gap-2.5 rounded-2xl bg-gray-900 px-8 font-semibold text-white transition-colors hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-200">
                 Get Connected Today
                 <motion.span
                   animate={{ x: [0, 4, 0] }}

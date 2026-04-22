@@ -8,22 +8,22 @@ import { Reveal } from "./reveal";
 
 export function FinalCTA() {
   return (
-    <section id="get-started" className="py-16 sm:py-20">
+    <section id="get-started" className="container-section">
       <Container>
         <Reveal>
-          <div className="relative overflow-hidden rounded-3xl border border-(--border-card) bg-(--bg-card) bg-linear-to-br from-indigo-500/5 via-transparent to-purple-500/5 p-8 shadow-lg shadow-indigo-500/10 backdrop-blur-xl sm:p-12">
+          <div className="card relative overflow-hidden rounded-3xl p-8 sm:p-12">
             <div className="relative z-10 grid gap-8 lg:grid-cols-[1.5fr_1fr] lg:items-center">
               <div>
-                <div className="inline-block rounded-full bg-indigo-100 px-3 py-1 text-sm font-semibold text-indigo-600 dark:bg-indigo-950/50 dark:text-indigo-300">
+                <div className="inline-block rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-sm font-semibold text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
                   Ready to switch?
                 </div>
                 <h2 className="mt-5 text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
                   Get{" "}
-                  <span className="bg-linear-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                  <span className="text-gray-900 dark:text-gray-100">
                     connected today
                   </span>
                 </h2>
-                <p className="mt-6 text-lg leading-8 text-(--text-muted)">
+                <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-400">
                   Choose a plan, confirm coverage, and we&apos;ll schedule your
                   installation. Fast, reliable fiber internet is one step away.
                 </p>
@@ -32,16 +32,16 @@ export function FinalCTA() {
               <div className="flex flex-col gap-3 sm:gap-4">
                 <Link
                   href="/plans"
-                  className="group inline-flex h-12 items-center justify-center gap-2 rounded-full bg-linear-to-r from-indigo-600 to-purple-600 px-8 font-semibold text-white shadow-lg shadow-indigo-500/30 transition-all hover:shadow-xl hover:shadow-indigo-500/40 active:scale-95">
+                  className="btn-primary group h-12 rounded-full px-8 active:scale-95">
                   View Plans{" "}
                   <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </Link>
                 <Link
                   href="/contact"
-                  className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-(--border-card) bg-(--bg-card) px-8 font-semibold text-(--text-primary) transition-colors hover:border-indigo-300 hover:bg-(--bg-card-hover) dark:hover:border-indigo-600">
+                  className="btn-secondary h-12 rounded-full px-8">
                   Contact Us <PhoneCall className="h-5 w-5" />
                 </Link>
-                <div className="pt-2 text-xs text-(--text-muted)">
+                <div className="pt-2 text-xs text-gray-600 dark:text-gray-400">
                   Tip: Update contact details in the footer with your real info.
                 </div>
               </div>

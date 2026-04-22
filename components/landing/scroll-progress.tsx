@@ -13,9 +13,9 @@ export function ScrollProgress() {
   return (
     <div
       aria-hidden
-      className="pointer-events-none fixed left-0 right-0 top-0 z-60 h-1 bg-(--border-card)">
+      className="pointer-events-none fixed left-0 right-0 top-0 z-60 h-1 bg-gray-200 dark:bg-gray-800">
       <motion.div
-        className="h-full origin-left bg-linear-to-r from-(--accent-cyan) via-(--accent-primary) to-(--accent-violet)"
+        className="h-full origin-left bg-gray-900 dark:bg-gray-100"
         style={{ scaleX }}
       />
     </div>

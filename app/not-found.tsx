@@ -59,7 +59,7 @@ export default function NotFound() {
                 whileTap={{ scale: 0.97 }}>
                 <Link
                   href="/"
-                  className="inline-flex h-12 items-center justify-center rounded-2xl bg-linear-to-r from-indigo-600 to-purple-600 px-8 text-sm font-semibold text-white shadow-lg shadow-indigo-500/20 transition-shadow hover:shadow-indigo-500/30">
+                  className="inline-flex h-12 items-center justify-center rounded-2xl bg-gray-900 px-8 text-sm font-semibold text-white transition-colors hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-200">
                   Go back home
                 </Link>
               </motion.div>
@@ -70,8 +70,7 @@ export default function NotFound() {
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.08 }}
-            className="relative h-90 w-full overflow-hidden rounded-3xl border border-gray-200/60 bg-white/60 shadow-lg shadow-indigo-500/10 backdrop-blur dark:border-white/10 dark:bg-white/5 dark:shadow-none sm:h-105">
-            <div className="pointer-events-none absolute inset-0 bg-linear-to-br from-cyan-500/5 via-transparent to-violet-500/5" />
+            className="relative h-90 w-full overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900 sm:h-105">
             <NotFoundScene />
           </motion.div>
         </div>

@@ -10,20 +10,20 @@ const PLAN_OPTIONS = [
 
 function FieldLabel({ children }: { children: React.ReactNode }) {
   return (
-    <div className="text-sm font-medium text-(--text-secondary)">
+    <div className="text-sm font-medium text-gray-700 dark:text-gray-300">
       {children}
     </div>
   );
 }
 
 const inputClassName =
-  "mt-2 h-12 w-full rounded-2xl border border-(--border-card) bg-(--bg-card) px-4 " +
-  "text-(--text-primary) placeholder:text-(--text-muted) shadow-sm backdrop-blur " +
+  "mt-2 h-12 w-full rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 " +
+  "text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 shadow-sm backdrop-blur " +
   "outline-none transition-colors focus:border-indigo-300 focus:ring-2 focus:ring-indigo-500/20 dark:focus:border-indigo-600";
 
 const textareaClassName =
-  "mt-2 w-full rounded-2xl border border-(--border-card) bg-(--bg-card) px-4 py-3 " +
-  "text-(--text-primary) placeholder:text-(--text-muted) shadow-sm backdrop-blur " +
+  "mt-2 w-full rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-3 " +
+  "text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 shadow-sm backdrop-blur " +
   "outline-none transition-colors focus:border-indigo-300 focus:ring-2 focus:ring-indigo-500/20 dark:focus:border-indigo-600";
 
 export function ContactForm() {
@@ -127,7 +127,7 @@ export function ContactForm() {
 
       <button
         type="submit"
-        className="inline-flex h-12 w-full items-center justify-center rounded-2xl bg-linear-to-r from-indigo-600 to-purple-600 px-6 text-sm font-semibold text-white shadow-lg shadow-indigo-500/20 transition-shadow hover:shadow-indigo-500/30 active:scale-[0.98]">
+        className="inline-flex h-12 w-full items-center justify-center rounded-2xl bg-gray-900 px-6 text-sm font-semibold text-white transition-colors hover:bg-gray-800 active:scale-[0.98] dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-200">
         Request a Callback
       </button>
     </form>

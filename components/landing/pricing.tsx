@@ -17,8 +17,6 @@ type Plan = {
   monthly: number;
   yearly: number;
   features: string[];
-  accentColor: string;
-  glowColor: string;
 };
 
 const PLANS: Plan[] = [
@@ -28,8 +26,6 @@ const PLANS: Plan[] = [
     tagline: "Perfect for everyday browsing",
     monthly: 499,
     yearly: 4990,
-    accentColor: "from-sky-400 to-blue-500",
-    glowColor: "rgba(56,189,248,0.15)",
     features: [
       "Unlimited data usage",
       "HD streaming support",
@@ -44,8 +40,6 @@ const PLANS: Plan[] = [
     featured: true,
     monthly: 699,
     yearly: 6990,
-    accentColor: "from-cyan-400 to-violet-500",
-    glowColor: "rgba(0,229,255,0.2)",
     features: [
       "Unlimited data usage",
       "4K streaming support",
@@ -59,8 +53,6 @@ const PLANS: Plan[] = [
     tagline: "For power users & teams",
     monthly: 999,
     yearly: 9990,
-    accentColor: "from-violet-400 to-fuchsia-500",
-    glowColor: "rgba(167,139,250,0.15)",
     features: [
       "Unlimited data usage",
       "8K / multi-device streaming",
@@ -96,54 +88,28 @@ function PricingCard({
         className="relative h-full"
         whileHover={{ y: -6 }}
         transition={{ duration: 0.3, ease: "easeOut" }}>
-        {/* Outer glow for featured */}
-        {plan.featured && (
-          <div
-            className="absolute -inset-px rounded-3xl"
-            style={{
-              background: `linear-gradient(135deg, rgba(0,229,255,0.4), rgba(124,58,237,0.4))`,
-              filter: "blur(1px)",
-            }}
-          />
-        )}
-
         <div
           className={[
-            "relative flex h-full flex-col overflow-hidden rounded-3xl border p-8 backdrop-blur-2xl",
-            "bg-(--bg-card) shadow-sm transition-colors hover:bg-(--bg-card-hover)",
-            plan.featured ? "border-transparent" : "border-(--border-card)",
-          ].join(" ")}
-          style={{
-            boxShadow: plan.featured
-              ? `0 0 60px ${plan.glowColor}, inset 0 1px 0 rgba(255,255,255,0.06)`
-              : "inset 0 1px 0 rgba(255,255,255,0.04)",
-          }}>
-          {/* Inner gradient overlay */}
-          <div className="pointer-events-none absolute inset-0 bg-linear-to-br from-white/3 via-transparent to-transparent" />
-
+            "relative flex h-full flex-col overflow-hidden rounded-3xl border p-8 shadow-sm transition-colors",
+            "border-gray-200 bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:hover:bg-gray-800",
+            plan.featured
+              ? "ring-1 ring-gray-900/10 dark:ring-gray-100/10"
+              : "",
+          ].join(" ")}>
           {/* Popular badge */}
           {plan.featured && (
-            <motion.div
-              className={`mb-5 inline-flex w-fit items-center gap-1.5 rounded-full bg-linear-to-r ${plan.accentColor} px-3 py-1.5 text-xs font-bold text-white`}
-              animate={{
-                boxShadow: [
-                  `0 0 0px ${plan.glowColor}`,
-                  `0 0 20px ${plan.glowColor}`,
-                  `0 0 0px ${plan.glowColor}`,
-                ],
-              }}
-              transition={{ duration: 2, repeat: Infinity }}>
+            <div className="mb-5 inline-flex w-fit items-center gap-1.5 rounded-full border border-gray-200 bg-gray-50 px-3 py-1.5 text-xs font-semibold text-gray-700 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300">
               <Zap className="h-3 w-3" />
               Most Popular
-            </motion.div>
+            </div>
           )}
 
           {/* Plan name & tagline */}
           <div>
-            <div className="text-xl font-bold text-gray-900 dark:text-white">
+            <div className="text-xl font-bold text-gray-900 dark:text-gray-100">
               {plan.name}
             </div>
-            <div className="mt-1.5 text-sm text-(--text-muted)">
+            <div className="mt-1.5 text-sm text-gray-600 dark:text-gray-400">
               {plan.tagline}
             </div>
           </div>
@@ -157,34 +123,36 @@ function PricingCard({
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.25 }}>
-              <span className="text-5xl font-black tracking-tight text-gray-900 dark:text-white">
+              <span className="text-5xl font-black tracking-tight text-gray-900 dark:text-gray-100">
                 {formatINR(price)}
               </span>
-              <span className="text-sm font-medium text-(--text-muted)">
+              <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
                 {period}
               </span>
             </motion.div>
           </AnimatePresence>
 
           {/* Speed pill */}
-          <div
-            className={`mt-6 inline-flex items-center gap-2 rounded-xl bg-linear-to-r ${plan.accentColor} px-4 py-2.5`}>
-            <Zap className="h-3.5 w-3.5 text-white" />
-            <span className="text-sm font-bold text-white">{plan.speed}</span>
+          <div className="mt-6 inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-gray-50 px-4 py-2.5 dark:border-gray-700 dark:bg-gray-900">
+            <Zap className="h-3.5 w-3.5 text-gray-700 dark:text-gray-300" />
+            <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+              {plan.speed}
+            </span>
           </div>
 
           {/* Divider */}
-          <div className="my-7 h-px bg-(--border-card)" />
+          <div className="my-7 h-px bg-gray-200 dark:bg-gray-700" />
 
           {/* Features */}
           <ul className="flex-1 space-y-3.5">
             {plan.features.map((f) => (
               <li key={f} className="flex items-start gap-3">
-                <span
-                  className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-linear-to-br ${plan.accentColor}`}>
-                  <Check className="h-3 w-3 text-white" />
+                <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-900">
+                  <Check className="h-3 w-3 text-gray-700 dark:text-gray-300" />
                 </span>
-                <span className="text-sm text-(--text-secondary)">{f}</span>
+                <span className="text-sm text-gray-700 dark:text-gray-300">
+                  {f}
+                </span>
               </li>
             ))}
           </ul>
@@ -196,14 +164,9 @@ function PricingCard({
               className={[
                 "mt-8 flex h-12 w-full items-center justify-center rounded-2xl text-sm font-bold transition-all",
                 plan.featured
-                  ? `bg-linear-to-r ${plan.accentColor} text-white shadow-lg`
-                  : "border border-(--border-card) bg-(--bg-card) text-(--text-primary) hover:bg-(--bg-card-hover)",
-              ].join(" ")}
-              style={
-                plan.featured
-                  ? { boxShadow: `0 8px 30px ${plan.glowColor}` }
-                  : undefined
-              }>
+                  ? "bg-gray-900 text-white hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-200"
+                  : "border border-gray-200 bg-white text-gray-900 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:hover:bg-gray-800",
+              ].join(" ")}>
               Choose {plan.name}
             </Link>
           </motion.div>
@@ -222,7 +185,7 @@ function BillingToggle({
   onChange: (v: BillingCycle) => void;
 }) {
   return (
-    <div className="flex items-center gap-1 rounded-2xl border border-(--border-card) bg-(--bg-card) p-1 backdrop-blur">
+    <div className="flex items-center gap-1 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-1 backdrop-blur">
       {(["monthly", "yearly"] as const).map((opt) => (
         <button
           key={opt}
@@ -231,13 +194,15 @@ function BillingToggle({
           {billing === opt && (
             <motion.div
               layoutId="billing-pill"
-              className="absolute inset-0 rounded-xl bg-linear-to-r from-cyan-500 to-violet-600"
+              className="absolute inset-0 rounded-xl bg-gray-900 dark:bg-gray-100"
               transition={{ type: "spring", bounce: 0.25, duration: 0.4 }}
             />
           )}
           <span
             className={`relative ${
-              billing === opt ? "text-white" : "text-(--text-muted)"
+              billing === opt
+                ? "text-white dark:text-gray-900"
+                : "text-gray-600 dark:text-gray-400"
             }`}>
             {opt === "monthly" ? "Monthly" : "Yearly (−15%)"}
           </span>
@@ -252,26 +217,20 @@ export function Pricing({ withHeader = true }: { withHeader?: boolean } = {}) {
   const [billing, setBilling] = React.useState<BillingCycle>("monthly");
 
   return (
-    <section
-      id="pricing"
-      className="relative overflow-hidden bg-transparent py-24 sm:py-32">
-      <Container className="relative">
+    <section id="pricing" className="container-section">
+      <Container>
         {/* Header */}
         {withHeader && (
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
-              <div className="inline-flex items-center gap-2 rounded-full border border-violet-500/25 bg-violet-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-violet-400">
-                <span className="h-1.5 w-1.5 rounded-full bg-violet-400" />
+              <div className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-gray-50 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-gray-700 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300">
+                <span className="h-1.5 w-1.5 rounded-full bg-gray-400 dark:bg-gray-500" />
                 Pricing Plans
               </div>
-              <h2 className="mt-5 text-4xl font-black tracking-tight text-gray-900 dark:text-white sm:text-5xl">
-                Simple,{" "}
-                <span className="bg-linear-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent">
-                  transparent
-                </span>{" "}
-                pricing
+              <h2 className="heading-primary mt-5">
+                Simple, transparent pricing
               </h2>
-              <p className="mt-5 text-lg text-(--text-muted)">
+              <p className="mt-5 text-lg text-muted">
                 No hidden fees. No throttling. Upgrade or downgrade anytime.
               </p>
             </div>
@@ -302,11 +261,11 @@ export function Pricing({ withHeader = true }: { withHeader?: boolean } = {}) {
 
         {/* Footer note */}
         <Reveal delay={0.25}>
-          <p className="mt-12 text-center text-sm text-(--text-muted)">
+          <p className="mt-12 text-center text-sm text-muted">
             Need a custom plan for your business or multiple locations?{" "}
             <Link
               href="/contact"
-              className="text-indigo-600 underline-offset-4 hover:underline dark:text-cyan-400">
+              className="text-gray-900 underline-offset-4 hover:underline dark:text-gray-100">
               Contact us for a tailored quote.
             </Link>
           </p>

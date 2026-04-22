@@ -13,16 +13,15 @@ type Feature = {
 
 function FeatureCard({ feature }: { feature: Feature }) {
   return (
-    <div className="group relative rounded-2xl border border-(--border-card) bg-(--bg-card) p-6 shadow-md backdrop-blur-xl transition-all duration-300 hover:-translate-y-2 hover:border-indigo-300 hover:bg-(--bg-card-hover) hover:shadow-lg dark:hover:border-indigo-600">
-      <div className="absolute inset-0 rounded-2xl bg-linear-to-br from-indigo-500/0 to-purple-500/0 opacity-0 transition-opacity duration-300 group-hover:from-indigo-500/5 group-hover:to-purple-500/5 group-hover:opacity-100" />
+    <div className="card-interactive group relative hover:border-gray-300 dark:hover:border-gray-600 hover:-translate-y-2">
       <div className="relative">
-        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br from-indigo-100 to-purple-100 text-indigo-700 transition-all duration-300 group-hover:scale-110 dark:from-indigo-950 dark:to-purple-950 dark:text-indigo-300">
+        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gray-100 text-gray-700 transition-all duration-300 group-hover:scale-110 dark:bg-gray-800 dark:text-gray-200">
           {feature.icon}
         </div>
         <div className="mt-4 text-lg font-bold text-gray-900 dark:text-white">
           {feature.title}
         </div>
-        <p className="mt-2 text-sm leading-6 text-(--text-muted)">
+        <p className="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400">
           {feature.description}
         </p>
       </div>
@@ -62,13 +61,13 @@ export function Features() {
       <Container>
         <Reveal>
           <div className="mx-auto max-w-2xl text-center">
-            <span className="inline-block rounded-full bg-indigo-100/60 px-4 py-2 text-sm font-semibold text-indigo-700 dark:bg-indigo-950/40 dark:text-indigo-300">
+            <span className="inline-block rounded-full border border-gray-200 bg-gray-50 px-4 py-2 text-sm font-semibold text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
               Why Choose Us
             </span>
             <h2 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">
               Built for modern internet needs
             </h2>
-            <p className="mt-6 text-lg leading-8 text-(--text-muted)">
+            <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-400">
               We combine cutting-edge fiber technology with human-friendly
               support to deliver experiences that matter.
             </p>
@@ -84,23 +83,23 @@ export function Features() {
         </div>
 
         <Reveal delay={0.25}>
-          <div className="mt-16 rounded-3xl border border-(--border-card) bg-(--bg-card) bg-linear-to-r from-indigo-500/5 to-purple-500/5 p-8 backdrop-blur-xl">
+          <div className="card mt-16 rounded-3xl">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br from-green-100 to-emerald-100 text-green-700 dark:from-green-950 dark:to-emerald-950 dark:text-green-300">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-200">
                   <ShieldCheck className="h-6 w-6" />
                 </div>
                 <div>
                   <div className="text-lg font-bold text-gray-900 dark:text-white">
                     Enterprise-grade reliability
                   </div>
-                  <div className="mt-1 text-sm text-(--text-muted)">
+                  <div className="mt-1 text-sm text-gray-600 dark:text-gray-400">
                     Proactive monitoring, swift resolution, and dedicated
                     support.
                   </div>
                 </div>
               </div>
-              <div className="text-sm font-medium text-(--text-secondary)">
+              <div className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 Ask us about business plans →
               </div>
             </div>

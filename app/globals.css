@@ -1,12 +1,7 @@
 @import "tailwindcss";
 
 :root {
-
-  --foreground: #f3f4f6;
   color-scheme: dark;
-  --accent-primary: #6366f1;
-  --accent-secondary: #8b5cf6;
-  --accent-tertiary: #ec4899;
 }
 
 html {
@@ -17,14 +12,18 @@ html {
 
 body {
   min-height: 100%;
-  background: var(--background);
-  color: var(--foreground);
+  background: rgb(255 255 255);
+  color: rgb(17 24 39);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Refined typography */
+.dark body {
+  background: rgb(4 7 20);
+  color: rgb(243 244 246);
+}
+
 h1,
 h2,
 h3,
@@ -46,9 +45,12 @@ h2 {
   line-height: 1.2;
 }
 
-/* Selection & scrollbar styling */
 ::selection {
-  background: #6366f1;
+  background: rgb(209 213 219);
   color: white;
+}
+
+.dark ::selection {
+  background: rgb(55 65 81);
 }
 

@@ -39,10 +39,7 @@ function NetworkVisualization() {
   return (
     <div className="relative w-full">
       {/* Glassmorphism card */}
-      <div className="relative overflow-hidden rounded-3xl border border-(--border-card) bg-(--bg-card) p-6 shadow-sm backdrop-blur-2xl">
-        {/* Inner glow */}
-        <div className="pointer-events-none absolute inset-0 rounded-3xl bg-linear-to-br from-cyan-500/5 via-transparent to-violet-500/5" />
-
+      <div className="relative overflow-hidden rounded-3xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-6 shadow-sm backdrop-blur-2xl">
         <svg
           viewBox="0 0 640 420"
           className="w-full"
@@ -136,11 +133,11 @@ function NetworkVisualization() {
           ].map((stat) => (
             <div
               key={stat.label}
-              className="rounded-xl border border-(--border-card) bg-(--bg-card) p-3 text-center backdrop-blur">
+              className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-3 text-center backdrop-blur">
               <div className={`text-sm font-bold ${stat.color}`}>
                 {stat.value}
               </div>
-              <div className="mt-0.5 text-xs text-(--text-muted)">
+              <div className="mt-0.5 text-xs text-gray-600 dark:text-gray-400">
                 {stat.label}
               </div>
             </div>
@@ -163,9 +160,9 @@ function HeroText() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="inline-flex items-center gap-2.5 rounded-full border border-cyan-500/25 bg-cyan-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-cyan-400">
+        className="inline-flex items-center gap-2.5 rounded-full border border-gray-200 bg-gray-50 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-gray-700 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300">
         <motion.span
-          className="h-1.5 w-1.5 rounded-full bg-cyan-400"
+          className="h-1.5 w-1.5 rounded-full bg-gray-400 dark:bg-gray-500"
           animate={{ opacity: [1, 0.3, 1] }}
           transition={{ duration: 1.5, repeat: Infinity }}
         />
@@ -175,7 +172,7 @@ function HeroText() {
       {/* Headline */}
       <div className="mt-7">
         <motion.h1
-          className="text-5xl font-black leading-[1.05] tracking-tight text-gray-900 dark:text-white sm:text-6xl lg:text-7xl xl:text-8xl"
+          className="text-5xl font-black leading-[1.05] tracking-tight text-gray-900 dark:text-gray-100 sm:text-6xl lg:text-7xl xl:text-8xl"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4, delay: 0.1 }}>
@@ -184,11 +181,6 @@ function HeroText() {
               {word.split("").map((char, ci) => (
                 <motion.span
                   key={ci}
-                  className={
-                    wi === 1
-                      ? "bg-linear-to-r from-cyan-400 via-sky-300 to-violet-400 bg-clip-text text-transparent"
-                      : ""
-                  }
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{
@@ -206,7 +198,7 @@ function HeroText() {
 
       {/* Subheading */}
       <motion.p
-        className="mt-7 max-w-xl text-lg leading-8 text-gray-600 dark:text-white/55"
+        className="mt-7 max-w-xl text-lg leading-8 text-gray-600 dark:text-gray-400"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.45 }}>
@@ -229,18 +221,10 @@ function CTAButtons() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 0.6 }}>
       {/* Primary CTA */}
-      <motion.div
-        whileHover={{ scale: 1.04, boxShadow: "0 0 60px rgba(0,229,255,0.5)" }}
-        whileTap={{ scale: 0.97 }}>
+      <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
         <Link
           href="/contact"
-          className="group relative inline-flex h-13 items-center gap-2.5 overflow-hidden rounded-2xl bg-linear-to-r from-cyan-500 to-violet-600 px-7 font-semibold text-white shadow-[0_0_40px_rgba(0,229,255,0.3)]">
-          {/* Shimmer */}
-          <motion.div
-            className="absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent"
-            animate={{ x: ["-100%", "200%"] }}
-            transition={{ duration: 2.5, repeat: Infinity, repeatDelay: 1.5 }}
-          />
+          className="inline-flex h-13 items-center gap-2.5 rounded-2xl bg-gray-900 px-7 font-semibold text-white transition-colors hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-200">
           Get Connected
           <motion.span
             animate={{ x: [0, 4, 0] }}
@@ -255,8 +239,8 @@ function CTAButtons() {
         <Link
           href="/plans"
           className={[
-            "inline-flex h-13 items-center gap-2 rounded-2xl border px-7 font-semibold backdrop-blur-sm transition-colors",
-            "border-(--border-card) bg-(--bg-card) text-(--text-primary) hover:border-indigo-300 hover:bg-(--bg-card-hover)",
+            "inline-flex h-13 items-center gap-2 rounded-2xl border px-7 font-semibold transition-colors",
+            "border-gray-200 bg-white text-gray-900 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:hover:bg-gray-800",
           ].join(" ")}>
           Explore Plans
         </Link>
@@ -302,7 +286,7 @@ function TrustBadges() {
       {TRUST.map((t, i) => (
         <motion.div
           key={t.label}
-          className="flex items-center gap-3 rounded-2xl border border-(--border-card) bg-(--bg-card) px-4 py-3 shadow-sm backdrop-blur-md"
+          className="flex items-center gap-3 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-3 shadow-sm backdrop-blur-md"
           whileHover={{ scale: 1.04, borderColor: "rgba(255,255,255,0.15)" }}
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -312,7 +296,9 @@ function TrustBadges() {
           </div>
           <div>
             <div className={`text-sm font-bold ${t.color}`}>{t.value}</div>
-            <div className="text-xs text-(--text-muted)">{t.label}</div>
+            <div className="text-xs text-gray-600 dark:text-gray-400">
+              {t.label}
+            </div>
           </div>
         </motion.div>
       ))}
@@ -351,7 +337,7 @@ export function Hero() {
 
             {/* Floating badge — top right */}
             <motion.div
-              className="absolute -right-4 -top-4 flex items-center gap-2.5 rounded-2xl border border-(--border-card) bg-(--bg-card) px-4 py-3 backdrop-blur-xl"
+              className="absolute -right-4 -top-4 flex items-center gap-2.5 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-3 backdrop-blur-xl"
               animate={{ y: [0, -8, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}>
               <motion.div
@@ -366,7 +352,7 @@ export function Hero() {
 
             {/* Floating badge — bottom left */}
             <motion.div
-              className="absolute -bottom-4 -left-4 flex items-center gap-2.5 rounded-2xl border border-(--border-card) bg-(--bg-card) px-4 py-3 backdrop-blur-xl"
+              className="absolute -bottom-4 -left-4 flex items-center gap-2.5 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-3 backdrop-blur-xl"
               animate={{ y: [0, 8, 0] }}
               transition={{
                 duration: 5,

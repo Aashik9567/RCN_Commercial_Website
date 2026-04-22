@@ -18,9 +18,7 @@ export default function PlansPage() {
         title={
           <>
             Pricing that’s{" "}
-            <span className="bg-linear-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-              simple
-            </span>
+            <span className="text-gray-900 dark:text-gray-100">simple</span>
           </>
         }
         description="Choose a plan that fits your home or business. Upgrade anytime with clear, transparent pricing."

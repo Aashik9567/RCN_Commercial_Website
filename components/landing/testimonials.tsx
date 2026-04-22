@@ -68,15 +68,15 @@ function initials(name: string) {
 
 function TestimonialCard({ t }: { t: Testimonial }) {
   return (
-    <div className="group rounded-2xl border border-(--border-card) bg-(--bg-card) p-6 shadow-md backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-indigo-300 hover:bg-(--bg-card-hover) hover:shadow-lg dark:hover:border-indigo-600">
+    <div className="card-interactive group">
       <div className="flex items-center gap-3">
         <Avatar
           size={44}
-          className="shrink-0 bg-linear-to-br from-indigo-400 to-purple-400">
+          className="shrink-0 bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-gray-100">
           {initials(t.name)}
         </Avatar>
         <div>
-          <div className="font-semibold text-gray-900 dark:text-white">
+          <div className="font-semibold text-gray-900 dark:text-gray-100">
             {t.name}
           </div>
           <div className="text-xs font-medium text-gray-600 dark:text-gray-400">
@@ -89,10 +89,14 @@ function TestimonialCard({ t }: { t: Testimonial }) {
         <Rate disabled defaultValue={t.rating} />
       </div>
 
-      <p className="mt-5 text-sm leading-7 text-(--text-secondary)">
-        <span className="text-lg text-indigo-500">&ldquo;</span>
+      <p className="mt-5 text-sm leading-7 text-gray-700 dark:text-gray-300">
+        <span className="text-lg text-gray-400 dark:text-gray-500">
+          &ldquo;
+        </span>
         {t.quote}
-        <span className="text-lg text-indigo-500">&rdquo;</span>
+        <span className="text-lg text-gray-400 dark:text-gray-500">
+          &rdquo;
+        </span>
       </p>
     </div>
   );
@@ -100,20 +104,16 @@ function TestimonialCard({ t }: { t: Testimonial }) {
 
 export function Testimonials() {
   return (
-    <section id="testimonials" className="py-16 sm:py-20">
+    <section id="testimonials" className="container-section">
       <Container>
         <Reveal>
           <div className="mx-auto max-w-2xl text-center">
-            <div className="inline-flex items-center gap-2 rounded-full bg-indigo-50 px-4 py-1 text-sm font-semibold text-indigo-600 dark:bg-indigo-950 dark:text-indigo-300">
+            <div className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-gray-50 px-4 py-1 text-sm font-semibold text-gray-700 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300">
               <MessageCircle className="h-4 w-4" />
               Testimonials
             </div>
-            <h2 className="mt-4 text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
-              <span className="bg-linear-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                Loved by thousands
-              </span>
-            </h2>
-            <p className="mt-6 text-lg leading-8 text-(--text-muted)">
+            <h2 className="heading-primary mt-4">Loved by thousands</h2>
+            <p className="mt-6 text-lg leading-8 text-muted">
               Real users, real results. See what customers are saying about
               their RCN experience.
             </p>
