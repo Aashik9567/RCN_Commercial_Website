@@ -1,16 +1,11 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import { Award, Cable, Link, Quote } from "lucide-react";
+import { Award, Link, Quote } from "lucide-react";
 
 import { Container } from "@/components/landing/container";
 
-const NetworkGlobe3D = dynamic(
-  () => import("./NetworkGlobe3D").then((m) => m.NetworkGlobe3D),
-  { ssr: false, loading: () => null },
-);
 
 const MESSAGE = `"At Raghunathpur Cable Network, our mission has always been simple:
 bring the world closer to every household in our community.
@@ -26,7 +21,7 @@ pushing it further, faster, and stronger.
 We are not just an internet provider. We are your neighbor, your
 partner, and your connection to the world."`;
 
-const SIGNATURE_NAME = "Ramesh Kumar Sharma";
+const SIGNATURE_NAME = "Fulgen Kumar Mahato";
 const SIGNATURE_TITLE = "Founder & Chairperson, Raghunathpur Cable Network";
 
 export function ChairpersonMessage() {
@@ -50,9 +45,6 @@ export function ChairpersonMessage() {
         <div className="absolute right-0 top-1/3 h-125 w-125 rounded-full bg-violet-500/10 blur-3xl" />
       </motion.div>
 
-      <div className="pointer-events-none absolute inset-0 opacity-70">
-        <NetworkGlobe3D className="absolute -right-36 top-10 h-130 w-130 opacity-40" />
-      </div>
 
       <Container className="relative">
         <motion.div
@@ -98,7 +90,11 @@ export function ChairpersonMessage() {
                   />
                 */}
                 <div className="absolute inset-0 flex items-center justify-center bg-linear-to-br from-cyan-500/30 to-violet-600/30">
-                  <Cable className="h-24 w-24 text-white/40" />
+                  <img
+              src="/favicon.ico"
+              alt="Raghunathpur Cable Network Logo"
+              className="h-64 w-64 rounded-full"
+              />
                 </div>
               </div>
 

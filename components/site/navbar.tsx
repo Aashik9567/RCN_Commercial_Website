@@ -49,7 +49,7 @@ export function Navbar() {
       <motion.div
         className={clsx(
           "absolute inset-0 border-b backdrop-blur-xl",
-          "border-gray-200/60 bg-white/75 dark:border-white/[0.08] dark:bg-[#040714]/80",
+          "border-gray-200/60 bg-white/75 dark:border-white/8 dark:bg-[#040714]/80",
         )}
         initial={{ opacity: 0 }}
         animate={{ opacity: scrolled ? 1 : 0 }}
@@ -66,11 +66,15 @@ export function Navbar() {
             className={clsx(
               "flex h-9 w-9 items-center justify-center rounded-xl border",
               "border-gray-300/70 bg-white/70 text-gray-700 backdrop-blur-xl",
-              "dark:border-white/[0.08] dark:bg-white/[0.06] dark:text-gray-200",
+              "dark:border-white/8 dark:bg-white/6 dark:text-gray-200",
             )}
             whileHover={{ scale: 1.07, rotate: 4 }}
             whileTap={{ scale: 0.96 }}>
-            <Cable className="h-5 w-5" />
+            <img
+              src="/favicon.ico"
+              alt="Raghunathpur Cable Network Logo"
+              className="h-9 w-9 object-cover rounded-full"
+            />
           </motion.span>
           <span className="hidden text-sm text-gray-900 dark:text-white sm:block">
             Raghunathpur{" "}
@@ -191,7 +195,7 @@ export function Navbar() {
           <motion.div
             className={[
               "overflow-hidden border-t backdrop-blur-2xl lg:hidden",
-              "border-gray-200/60 bg-white/90 dark:border-white/[0.08] dark:bg-[#040714]/80",
+              "border-gray-200/60 bg-white/90 dark:border-white/8 dark:bg-[#040714]/80",
             ].join(" ")}
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}

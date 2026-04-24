@@ -31,7 +31,7 @@ export function ThemeToggle() {
       onClick={cycle}
       aria-label={label}
       title={label}
-      className="flex h-9 w-9 items-center justify-center rounded-xl border border-gray-300/70 bg-white/75 text-gray-600 backdrop-blur-sm transition-colors hover:bg-white hover:text-gray-900 dark:border-white/15 dark:bg-white/[0.06] dark:text-gray-300 dark:hover:text-white"
+      className="flex h-9 w-9 items-center justify-center rounded-xl border border-gray-300/70 bg-white/75 text-gray-600 backdrop-blur-sm transition-colors hover:bg-white hover:text-gray-900 dark:border-white/15 dark:bg-white/6 dark:text-gray-300 dark:hover:text-white"
       whileHover={{ scale: 1.08 }}
       whileTap={{ scale: 0.94 }}>
       <AnimatePresence mode="wait" initial={false}>
