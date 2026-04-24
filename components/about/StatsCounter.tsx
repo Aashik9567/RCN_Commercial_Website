@@ -101,7 +101,7 @@ export function StatsCounter() {
           {STATS.map((stat, i) => (
             <motion.div
               key={stat.label}
-              className="flex flex-col items-center gap-3 rounded-2xl border border-gray-200/80 bg-white/70 p-6 text-center backdrop-blur dark:border-white/8 dark:bg-white/4"
+              className="flex flex-col items-center gap-3 rounded-2xl border border-gray-200/80 bg-white/70 p-6 text-center backdrop-blur-xl dark:border-white/8 dark:bg-white/4"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}

@@ -3,6 +3,7 @@ import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
+import { ShapeGridBackground } from "@/components/ui/shape-grid/ShapeGridBackground";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,12 +31,17 @@ export default function RootLayout({
       lang="en"
       suppressHydrationWarning
       data-scroll-behavior="smooth"
-      className={`${geistSans.variable} ${geistMono.variable} antialiased dark`}>
-      <body
-        suppressHydrationWarning
-        className="min-h-dvh font-sans text-gray-100">
+      className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body suppressHydrationWarning className="min-h-dvh font-sans">
         <AntdRegistry>
           <Providers>
+            {/*
+              ShapeGridBackground is position:fixed and pointer-events:none.
+              It sits at z-0 behind all content.
+            */}
+            <ShapeGridBackground />
+
+            {/* All page content sits above the canvas */}
             <div className="relative z-10">{children}</div>
           </Providers>
         </AntdRegistry>

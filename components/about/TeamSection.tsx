@@ -86,7 +86,7 @@ export function TeamSection() {
           initial={{ opacity: 0, y: 22 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}>
-          <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/25 bg-cyan-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-cyan-700 backdrop-blur dark:text-cyan-300">
+          <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/25 bg-cyan-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-cyan-700 backdrop-blur-xl dark:text-cyan-300">
             <Zap className="h-3.5 w-3.5" />
             Our Team
           </div>
@@ -140,7 +140,7 @@ export function TeamSection() {
                       key={l.type}
                       href={l.href}
                       aria-label={`${m.name} ${l.type}`}
-                      className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200/70 bg-white/70 text-gray-700 backdrop-blur transition-colors hover:border-cyan-500/30 hover:text-cyan-700 dark:border-white/10 dark:bg-white/5 dark:text-white/70 dark:hover:text-cyan-300"
+                      className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200/70 bg-white/70 text-gray-700 backdrop-blur-xl transition-colors hover:border-cyan-500/30 hover:text-cyan-700 dark:border-white/10 dark:bg-white/5 dark:text-white/70 dark:hover:text-cyan-300"
                       whileHover={{ scale: 1.06 }}
                       whileTap={{ scale: 0.96 }}>
                       <LinkIcon type={l.type} />

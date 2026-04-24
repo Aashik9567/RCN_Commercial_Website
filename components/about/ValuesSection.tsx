@@ -75,7 +75,7 @@ export function ValuesSection() {
           className="mx-auto mb-16 max-w-2xl text-center"
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}>
-          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-emerald-700 backdrop-blur dark:text-emerald-300">
+          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-emerald-700 backdrop-blur-xl dark:text-emerald-300">
             <Award className="h-3.5 w-3.5" />
             Our Core Values
           </div>
@@ -99,7 +99,7 @@ export function ValuesSection() {
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: i * 0.08, duration: 0.5 }}
               whileHover={{ y: -6, scale: 1.02 }}
-              className="group relative rounded-2xl border border-gray-200/80 bg-white/70 p-6 backdrop-blur transition-all dark:border-white/8 dark:bg-white/4">
+              className="group relative rounded-2xl border border-gray-200/80 bg-white/70 p-6 backdrop-blur-xl transition-all dark:border-white/8 dark:bg-white/4">
               <div
                 className={`mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br ${v.color} shadow-md`}>
                 <v.icon className="h-5 w-5 text-white" />

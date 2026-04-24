@@ -7,6 +7,8 @@ import { WhyChooseUs } from "./why-choose-us";
 import { Testimonials } from "./testimonials";
 import { HowItWorks } from "./how-it-works";
 
+import { Coverage } from "./coverage";
+
 import { FAQ } from "./faq";
 import { FinalCTA } from "./final-cta";
 
@@ -24,6 +26,7 @@ export function HomePage() {
       <WhyChooseUs />
       <Testimonials />
       <HowItWorks />
+      <Coverage />
       <FAQ />
       <FinalCTA />
     </div>

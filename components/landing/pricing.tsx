@@ -147,7 +147,7 @@ function PricingCard({
           <ul className="flex-1 space-y-3.5">
             {plan.features.map((f) => (
               <li key={f} className="flex items-start gap-3">
-                <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-900">
+                <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-gray-200/70 bg-white/70 dark:border-white/[0.08] dark:bg-white/[0.06]">
                   <Check className="h-3 w-3 text-gray-700 dark:text-gray-300" />
                 </span>
                 <span className="text-sm text-gray-700 dark:text-gray-300">
@@ -165,7 +165,7 @@ function PricingCard({
                 "mt-8 flex h-12 w-full items-center justify-center rounded-2xl text-sm font-bold transition-all",
                 plan.featured
                   ? "bg-gray-900 text-white hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-200"
-                  : "border border-gray-200 bg-white text-gray-900 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:hover:bg-gray-800",
+                  : "border border-gray-200/70 bg-white/80 text-gray-900 hover:bg-white/90 dark:border-white/[0.08] dark:bg-white/[0.06] dark:text-gray-100 dark:hover:bg-white/[0.08]",
               ].join(" ")}>
               Choose {plan.name}
             </Link>
@@ -185,7 +185,7 @@ function BillingToggle({
   onChange: (v: BillingCycle) => void;
 }) {
   return (
-    <div className="flex items-center gap-1 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-1 backdrop-blur">
+    <div className="flex items-center gap-1 rounded-2xl border border-gray-200/70 bg-white/75 p-1 backdrop-blur-xl dark:border-white/[0.08] dark:bg-white/[0.05]">
       {(["monthly", "yearly"] as const).map((opt) => (
         <button
           key={opt}
@@ -223,8 +223,8 @@ export function Pricing({ withHeader = true }: { withHeader?: boolean } = {}) {
         {withHeader && (
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
-              <div className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-gray-50 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-gray-700 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300">
-                <span className="h-1.5 w-1.5 rounded-full bg-gray-400 dark:bg-gray-500" />
+              <div className="inline-flex items-center gap-2 rounded-full border border-gray-200/80 bg-white/70 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-gray-700 backdrop-blur-xl dark:border-white/[0.08] dark:bg-white/[0.05] dark:text-white/70">
+                <span className="h-1.5 w-1.5 rounded-full bg-gray-400 dark:bg-white/40" />
                 Pricing Plans
               </div>
               <h2 className="heading-primary mt-5">

@@ -1,8 +1,57 @@
 @import "tailwindcss";
 
+/* ── Light mode design tokens ────────────────────────── */
 :root {
+  --bg-page: #f8faff;
+  --bg-card: rgba(255, 255, 255, 0.82);
+  --bg-card-hover: rgba(255, 255, 255, 0.96);
+  --border-card: rgba(99, 102, 241, 0.13);
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --accent-cyan: #0284c7;
+  --accent-violet: #7c3aed;
+  --glow-cyan: rgba(2, 132, 199, 0.15);
+  color-scheme: light;
+}
+
+/* ── Dark mode design tokens ─────────────────────────── */
+.dark {
+  --bg-page: #040714;
+  --bg-card: rgba(255, 255, 255, 0.04);
+  --bg-card-hover: rgba(255, 255, 255, 0.08);
+  --border-card: rgba(255, 255, 255, 0.08);
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #64748b;
+  --accent-cyan: #00e5ff;
+  --accent-violet: #a78bfa;
+  --glow-cyan: rgba(0, 229, 255, 0.15);
   color-scheme: dark;
 }
+
+html,
+body {
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  transition:
+    background-color 0.3s ease,
+    color 0.25s ease;
+}
+
+/*
+  IMPORTANT: The ShapeGrid canvas is position:fixed at z-0.
+  All page sections, cards, navbars must NOT have a fully opaque
+  background — they must use semi-transparent backgrounds so the
+  animated grid shows through beneath them.
+
+  Correct:  bg-white/80    bg-white/75    bg-white/70
+  Wrong:    bg-white       bg-gray-50     solid backgrounds
+
+  In dark mode:
+  Correct:  bg-[#040714]/80   bg-white/[0.05]   bg-white/[0.04]
+  Wrong:    bg-[#040714]      (fully opaque blocks grid)
+*/
 
 html {
   height: 100%;
@@ -12,16 +61,9 @@ html {
 
 body {
   min-height: 100%;
-  background: rgb(255 255 255);
-  color: rgb(17 24 39);
-  font-family: var(--font-sans);
+  font-family: var(--font-geist-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-.dark body {
-  background: rgb(4 7 20);
-  color: rgb(243 244 246);
 }
 
 h1,
@@ -54,3 +96,37 @@ h2 {
   background: rgb(55 65 81);
 }
 
+@layer utilities {
+  .container-section {
+    @apply relative py-24 sm:py-28;
+  }
+
+  .heading-primary {
+    @apply text-3xl font-black tracking-tight text-[color:var(--text-primary)] sm:text-4xl;
+  }
+
+  .text-muted {
+    @apply text-[color:var(--text-muted)];
+  }
+
+  .card {
+    @apply rounded-3xl border border-[color:var(--border-card)] bg-[color:var(--bg-card)] backdrop-blur-xl shadow-sm;
+  }
+
+  .card-interactive {
+    @apply rounded-3xl border border-[color:var(--border-card)] bg-[color:var(--bg-card)] backdrop-blur-xl shadow-sm;
+    @apply transition-all duration-300;
+    @apply hover:bg-[color:var(--bg-card-hover)] hover:border-gray-300/70;
+    @apply dark:hover:border-white/[0.15];
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-2xl bg-linear-to-r from-cyan-500 to-violet-600 px-5 text-sm font-semibold text-white shadow-sm transition-transform;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-2xl border border-gray-300/80 bg-white/75 px-5 text-sm font-semibold text-gray-800 backdrop-blur-xl transition-colors;
+    @apply hover:bg-white;
+    @apply dark:border-white/15 dark:bg-white/[0.06] dark:text-white/80 dark:hover:bg-white/[0.08];
+  }
+}

@@ -93,7 +93,7 @@ function TimelineItem({ event, index }: { event: EventDef; index: number }) {
       <div className={`flex-1 ${isLeft ? "text-right" : "text-left"}`}>
         <motion.div
           whileHover={{ scale: 1.02, y: -4 }}
-          className="inline-block rounded-2xl border border-gray-200/80 bg-white/70 p-6 text-left backdrop-blur dark:border-white/8 dark:bg-white/4">
+          className="inline-block rounded-2xl border border-gray-200/80 bg-white/70 p-6 text-left backdrop-blur-xl dark:border-white/8 dark:bg-white/4">
           <div
             className={`mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-linear-to-br ${event.color}`}>
             <event.icon className="h-5 w-5 text-white" />
@@ -142,7 +142,7 @@ export function Timeline() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}>
-          <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/25 bg-amber-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-amber-700 backdrop-blur dark:text-amber-300">
+          <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/25 bg-amber-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-amber-700 backdrop-blur-xl dark:text-amber-300">
             <TrendingUp className="h-3.5 w-3.5" />
             Our Journey
           </div>

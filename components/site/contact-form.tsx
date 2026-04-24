@@ -17,14 +17,14 @@ function FieldLabel({ children }: { children: React.ReactNode }) {
 }
 
 const inputClassName =
-  "mt-2 h-12 w-full rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 " +
-  "text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 shadow-sm backdrop-blur " +
-  "outline-none transition-colors focus:border-indigo-300 focus:ring-2 focus:ring-indigo-500/20 dark:focus:border-indigo-600";
+  "mt-2 h-12 w-full rounded-2xl border border-gray-200/70 bg-white/80 px-4 " +
+  "text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 shadow-sm backdrop-blur-xl " +
+  "outline-none transition-colors focus:border-indigo-300 focus:ring-2 focus:ring-indigo-500/20 dark:border-white/[0.08] dark:bg-white/[0.06] dark:focus:border-indigo-600";
 
 const textareaClassName =
-  "mt-2 w-full rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-4 py-3 " +
-  "text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 shadow-sm backdrop-blur " +
-  "outline-none transition-colors focus:border-indigo-300 focus:ring-2 focus:ring-indigo-500/20 dark:focus:border-indigo-600";
+  "mt-2 w-full rounded-2xl border border-gray-200/70 bg-white/80 px-4 py-3 " +
+  "text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 shadow-sm backdrop-blur-xl " +
+  "outline-none transition-colors focus:border-indigo-300 focus:ring-2 focus:ring-indigo-500/20 dark:border-white/[0.08] dark:bg-white/[0.06] dark:focus:border-indigo-600";
 
 export function ContactForm() {
   const [status, setStatus] = React.useState<"idle" | "success">("idle");

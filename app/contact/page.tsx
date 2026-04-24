@@ -32,7 +32,7 @@ export default function ContactPage() {
         <Container>
           <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
             <Reveal>
-              <div className="rounded-3xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-6 shadow-md backdrop-blur-xl sm:p-8">
+              <div className="card p-6 shadow-md sm:p-8">
                 <div className="text-lg font-bold text-gray-900 dark:text-gray-100">
                   Find us on the map
                 </div>
@@ -69,7 +69,7 @@ export default function ContactPage() {
 
             <div className="grid gap-6">
               <Reveal delay={0.06}>
-                <div className="rounded-3xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-6 shadow-md backdrop-blur-xl sm:p-8">
+                <div className="card p-6 shadow-md sm:p-8">
                   <div className="text-lg font-bold text-gray-900 dark:text-gray-100">
                     Request a callback
                   </div>
@@ -84,7 +84,7 @@ export default function ContactPage() {
               </Reveal>
 
               <Reveal delay={0.12}>
-                <div className="rounded-3xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-6 shadow-md backdrop-blur-xl sm:p-8">
+                <div className="card p-6 shadow-md sm:p-8">
                   <div className="text-lg font-bold text-gray-900 dark:text-gray-100">
                     Contact details
                   </div>

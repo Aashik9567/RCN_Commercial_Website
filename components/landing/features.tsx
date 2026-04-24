@@ -57,7 +57,7 @@ const FEATURES: Feature[] = [
 
 export function Features() {
   return (
-    <section id="features" className="relative py-20 sm:py-28">
+    <section id="features" className="container-section">
       <Container>
         <Reveal>
           <div className="mx-auto max-w-2xl text-center">

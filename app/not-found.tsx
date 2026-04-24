@@ -70,7 +70,7 @@ export default function NotFound() {
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.08 }}
-            className="relative h-90 w-full overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-900 sm:h-105">
+            className="card relative h-90 w-full overflow-hidden shadow-sm sm:h-105">
             <NotFoundScene />
           </motion.div>
         </div>

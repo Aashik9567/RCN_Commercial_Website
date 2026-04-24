@@ -60,7 +60,7 @@ export function ChairpersonMessage() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
           className="mb-14 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-violet-500/25 bg-violet-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-violet-700 backdrop-blur dark:text-violet-300">
+          <div className="inline-flex items-center gap-2 rounded-full border border-violet-500/25 bg-violet-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-violet-700 backdrop-blur-xl dark:text-violet-300">
             <Award className="h-3.5 w-3.5" />
             Message from the Chairperson
           </div>
@@ -109,7 +109,7 @@ export function ChairpersonMessage() {
                   repeat: Infinity,
                   ease: "easeInOut",
                 }}
-                className="absolute -right-4 bottom-4 flex items-center gap-2 rounded-2xl border border-white/20 bg-white/90 px-3 py-2.5 shadow-xl backdrop-blur dark:bg-black/70">
+                className="absolute -right-4 bottom-4 flex items-center gap-2 rounded-2xl border border-white/20 bg-white/90 px-3 py-2.5 shadow-xl backdrop-blur-xl dark:bg-black/70">
                 <Award className="h-4 w-4 text-amber-500" />
                 <div>
                   <div className="text-xs font-bold text-gray-900 dark:text-white">
@@ -135,7 +135,7 @@ export function ChairpersonMessage() {
             <motion.a
               href="#"
               aria-label="Chairperson LinkedIn"
-              className="flex items-center gap-2 rounded-xl border border-gray-200/80 bg-white/70 px-4 py-2.5 text-sm font-semibold text-gray-700 backdrop-blur transition-colors hover:border-cyan-500/30 hover:text-cyan-700 dark:border-white/10 dark:bg-white/5 dark:text-white/70 dark:hover:text-cyan-300"
+              className="flex items-center gap-2 rounded-xl border border-gray-200/80 bg-white/70 px-4 py-2.5 text-sm font-semibold text-gray-700 backdrop-blur-xl transition-colors hover:border-cyan-500/30 hover:text-cyan-700 dark:border-white/10 dark:bg-white/5 dark:text-white/70 dark:hover:text-cyan-300"
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.97 }}>
               <Link className="h-4 w-4" />

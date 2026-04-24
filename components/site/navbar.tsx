@@ -13,6 +13,7 @@ import {
 import { Cable, Menu, Rocket, X } from "lucide-react";
 
 import { Container } from "@/components/landing/container";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 
 const NAV_ITEMS = [
   { label: "Home", href: "/" },
@@ -47,8 +48,8 @@ export function Navbar() {
       transition={{ duration: 0.7, ease: [0.215, 0.61, 0.355, 1] }}>
       <motion.div
         className={clsx(
-          "absolute inset-0 border-b backdrop-blur-2xl",
-          "border-gray-200/80 bg-white/90 dark:border-gray-800 dark:bg-black/80",
+          "absolute inset-0 border-b backdrop-blur-xl",
+          "border-gray-200/60 bg-white/75 dark:border-white/[0.08] dark:bg-[#040714]/80",
         )}
         initial={{ opacity: 0 }}
         animate={{ opacity: scrolled ? 1 : 0 }}
@@ -64,8 +65,8 @@ export function Navbar() {
           <motion.span
             className={clsx(
               "flex h-9 w-9 items-center justify-center rounded-xl border",
-              "border-gray-300 bg-gray-100 text-gray-700",
-              "dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200",
+              "border-gray-300/70 bg-white/70 text-gray-700 backdrop-blur-xl",
+              "dark:border-white/[0.08] dark:bg-white/[0.06] dark:text-gray-200",
             )}
             whileHover={{ scale: 1.07, rotate: 4 }}
             whileTap={{ scale: 0.96 }}>
@@ -95,7 +96,7 @@ export function Navbar() {
                   "relative rounded-xl px-3.5 py-2 text-sm font-medium transition-colors",
                   active
                     ? "text-gray-900 dark:text-white"
-                    : "text-gray-600 hover:text-gray-900 dark:text-white/55 dark:hover:text-white",
+                    : "text-gray-600 hover:text-gray-900 dark:text-zinc-300 dark:hover:text-white",
                 )}>
                 {active && (
                   <motion.span
@@ -119,17 +120,28 @@ export function Navbar() {
 
         {/* Right actions */}
         <div className="flex items-center gap-3">
-          <div className="hidden sm:block">
+          <ThemeToggle />
+          <div className="hidden items-center gap-2 sm:flex">
+            <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+              <Link
+                href="/plans"
+                className={clsx(
+                  "inline-flex h-10 items-center justify-center rounded-xl border px-4 text-sm font-semibold backdrop-blur-xl transition-colors",
+                  "border-gray-300 bg-white/80 text-gray-800 hover:bg-white",
+                  "dark:border-white/15 dark:bg-white/6 dark:text-white/80",
+                )}>
+                View Plans
+              </Link>
+            </motion.div>
             <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
               <Link
                 href="/contact"
                 className={clsx(
-                  "inline-flex h-10 items-center justify-center rounded-xl px-4 text-sm font-semibold",
-                  "bg-gray-900 text-white transition-colors hover:bg-gray-800",
-                  "dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-200",
+                  "inline-flex h-10 items-center justify-center rounded-xl px-4 text-sm font-semibold text-white",
+                  "bg-linear-to-r from-cyan-500 to-violet-600",
                 )}>
                 <Rocket className="h-4 w-4" />
-                Get Connection
+                Get Started
               </Link>
             </motion.div>
           </div>
@@ -180,7 +192,7 @@ export function Navbar() {
           <motion.div
             className={[
               "overflow-hidden border-t backdrop-blur-2xl lg:hidden",
-              "border-gray-200 bg-white/95 dark:border-gray-800 dark:bg-black/95",
+              "border-gray-200/60 bg-white/90 dark:border-white/[0.08] dark:bg-[#040714]/80",
             ].join(" ")}
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
@@ -203,7 +215,7 @@ export function Navbar() {
                           "block rounded-xl px-4 py-3 text-sm font-medium transition-colors",
                           active
                             ? "bg-gray-200 text-gray-900 dark:bg-gray-800 dark:text-white"
-                            : "text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-white/70 dark:hover:bg-gray-800 dark:hover:text-white",
+                            : "text-gray-800 hover:bg-gray-100 hover:text-gray-900 dark:text-zinc-200 dark:hover:bg-black/40 dark:hover:text-white",
                         ].join(" ")}>
                         {item.label}
                       </Link>
@@ -218,9 +230,9 @@ export function Navbar() {
                     transition={{ delay: 0.2 }}>
                     <Link
                       href="/contact"
-                      className="inline-flex h-12 w-full items-center justify-center rounded-2xl bg-gray-900 px-4 text-sm font-semibold text-white transition-colors hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-200">
+                      className="inline-flex h-12 w-full items-center justify-center rounded-2xl bg-linear-to-r from-cyan-500 to-violet-600 px-4 text-sm font-semibold text-white">
                       <Rocket className="h-4 w-4" />
-                      Get Connection
+                      Get Started
                     </Link>
                   </motion.div>
                 </div>

@@ -15,7 +15,7 @@ const LINKS = [
 
 export function Footer() {
   return (
-    <footer className="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-black">
+    <footer className="border-t border-gray-200/60 ">
       <Container className="py-12 sm:py-16">
         <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
           <div>
@@ -30,13 +30,13 @@ export function Footer() {
               <a
                 href="#"
                 aria-label="Website"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-700 transition-colors hover:bg-gray-50 hover:text-gray-900 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-100">
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-gray-200/70 bg-white/75 text-gray-700 backdrop-blur-xl transition-colors hover:bg-white hover:text-gray-900 dark:border-white/15 dark:bg-white/[0.06] dark:text-gray-300 dark:hover:bg-white/[0.1] dark:hover:text-white">
                 <Globe className="h-5 w-5" />
               </a>
               <a
                 href="#"
                 aria-label="Message"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-700 transition-colors hover:bg-gray-50 hover:text-gray-900 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-gray-100">
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-gray-200/70 bg-white/75 text-gray-700 backdrop-blur-xl transition-colors hover:bg-white hover:text-gray-900 dark:border-white/15 dark:bg-white/[0.06] dark:text-gray-300 dark:hover:bg-white/[0.1] dark:hover:text-white">
                 <MessageCircle className="h-5 w-5" />
               </a>
             </div>
@@ -100,7 +100,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-2 border-t border-gray-200 dark:border-gray-700 pt-8 text-sm text-gray-600 dark:text-gray-400 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-12 flex flex-col gap-2 border-t border-gray-200/60 pt-8 text-sm text-gray-600 dark:border-white/[0.08] dark:text-gray-400 sm:flex-row sm:items-center sm:justify-between">
           <div className="font-medium">© 2026 Raghunathpur Cable Network</div>
           <div className="flex gap-2">
             <span>Built for speed</span>

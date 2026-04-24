@@ -62,7 +62,7 @@ export function MissionVision() {
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}>
-          <div className="inline-flex items-center gap-2 rounded-full border border-rose-500/25 bg-rose-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-rose-700 backdrop-blur dark:text-rose-300">
+          <div className="inline-flex items-center gap-2 rounded-full border border-rose-500/25 bg-rose-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-rose-700 backdrop-blur-xl dark:text-rose-300">
             <Heart className="h-3.5 w-3.5" />
             What Drives Us
           </div>
