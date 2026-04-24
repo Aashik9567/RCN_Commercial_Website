@@ -120,7 +120,6 @@ export function Navbar() {
 
         {/* Right actions */}
         <div className="flex items-center gap-3">
-          <ThemeToggle />
           <div className="hidden items-center gap-2 sm:flex">
             <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
               <Link
