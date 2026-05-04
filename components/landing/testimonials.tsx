@@ -1,62 +1,13 @@
 "use client";
 
 import * as React from "react";
-import { Avatar, Rate } from "antd";
 import { MessageCircle } from "lucide-react";
 import { Container } from "./container";
 import { Reveal } from "./reveal";
-
-type Testimonial = {
-  name: string;
-  title: string;
-  quote: string;
-  rating: number;
-};
-
-const TESTIMONIALS: Testimonial[] = [
-  {
-    name: "Ananya S.",
-    title: "Work-from-home",
-    quote:
-      "Super stable connection—video calls are smooth and uploads are fast. Support responds quickly too.",
-    rating: 5,
-  },
-  {
-    name: "Rahul M.",
-    title: "Gamer",
-    quote:
-      "Ping is consistently low. Streaming + gaming at the same time is finally possible at home.",
-    rating: 5,
-  },
-  {
-    name: "Soma D.",
-    title: "Family",
-    quote:
-      "We upgraded to the Standard plan—4K streams don’t buffer and the Wi‑Fi coverage improved.",
-    rating: 5,
-  },
-  {
-    name: "Amit K.",
-    title: "Small business",
-    quote:
-      "Reliable internet is essential for our shop. RCN has been consistent and transparent on billing.",
-    rating: 5,
-  },
-  {
-    name: "Priya R.",
-    title: "Student",
-    quote:
-      "Online classes and downloads are fast. Installation was done quickly without any hassle.",
-    rating: 5,
-  },
-  {
-    name: "Subhankar B.",
-    title: "Streamer",
-    quote:
-      "Great upload stability—my streams are smoother and I don’t get random drops anymore.",
-    rating: 5,
-  },
-];
+import { Card } from "@/components/ui/card";
+import { business } from "@/data/business";
+import { useLanguage } from "@/components/i18n/LanguageProvider";
+import { t } from "@/lib/i18n";
 
 function initials(name: string) {
   const parts = name.replace(/\./g, "").split(" ").filter(Boolean);
@@ -66,64 +17,79 @@ function initials(name: string) {
     .join("");
 }
 
-function TestimonialCard({ t }: { t: Testimonial }) {
+function TestimonialCard({
+  name,
+  quote,
+  source,
+}: {
+  name: string;
+  quote: string;
+  source?: string;
+}) {
   return (
-    <div className="card-interactive group">
+    <Card className="p-6 sm:p-8">
       <div className="flex items-center gap-3">
-        <Avatar
-          size={44}
-          className="shrink-0 bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-gray-100">
-          {initials(t.name)}
-        </Avatar>
+        <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-[color:rgb(var(--border))] bg-[color:rgb(var(--surface-2))] text-sm font-bold text-[color:rgb(var(--text))]">
+          {initials(name)}
+        </div>
         <div>
-          <div className="font-semibold text-gray-900 dark:text-gray-100">
-            {t.name}
+          <div className="text-sm font-semibold text-[color:rgb(var(--text))]">
+            {name}
           </div>
-          <div className="text-xs font-medium text-gray-600 dark:text-gray-400">
-            {t.title}
-          </div>
+          {source ? (
+            <div className="text-xs text-[color:rgb(var(--text-soft))]">
+              {source}
+            </div>
+          ) : null}
         </div>
       </div>
 
-      <div className="mt-4 flex gap-1">
-        <Rate disabled defaultValue={t.rating} />
-      </div>
-
-      <p className="mt-5 text-sm leading-7 text-gray-700 dark:text-gray-300">
-        <span className="text-lg text-gray-400 dark:text-gray-500">
+      <p className="mt-5 text-sm leading-6 text-[color:rgb(var(--text-muted))]">
+        <span className="text-lg text-[color:rgb(var(--text-soft))]">
           &ldquo;
         </span>
-        {t.quote}
-        <span className="text-lg text-gray-400 dark:text-gray-500">
+        {quote}
+        <span className="text-lg text-[color:rgb(var(--text-soft))]">
           &rdquo;
         </span>
       </p>
-    </div>
+    </Card>
   );
 }
 
 export function Testimonials() {
+  const { lang } = useLanguage();
+
+  if (business.testimonials.length === 0) {
+    // TODO: add real data to business.testimonials
+    return null;
+  }
+
   return (
     <section id="testimonials" className="container-section">
       <Container>
         <Reveal>
           <div className="mx-auto max-w-2xl text-center">
-            <div className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-gray-50 px-4 py-1 text-sm font-semibold text-gray-700 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300">
-              <MessageCircle className="h-4 w-4" />
-              Testimonials
+            <div className="rcn-badge mx-auto">
+              <MessageCircle className="h-4 w-4 text-[color:rgb(var(--primary))]" />
+              <span className="uppercase tracking-widest">
+                {t(lang, "sectionTestimonials")}
+              </span>
             </div>
-            <h2 className="heading-primary mt-4">Loved by thousands</h2>
-            <p className="mt-6 text-lg leading-8 text-muted">
-              Real users, real results. See what customers are saying about
-              their RCN experience.
-            </p>
+            <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-[color:rgb(var(--text))] sm:text-4xl">
+              {t(lang, "sectionTestimonials")}
+            </h2>
           </div>
         </Reveal>
 
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {TESTIMONIALS.map((t, idx) => (
-            <Reveal key={t.name} delay={idx * 0.04}>
-              <TestimonialCard t={t} />
+          {business.testimonials.map((item, idx) => (
+            <Reveal key={`${item.name}-${idx}`} delay={idx * 0.04}>
+              <TestimonialCard
+                name={item.name}
+                quote={item.quote}
+                source={item.source}
+              />
             </Reveal>
           ))}
         </div>

@@ -1,24 +1,36 @@
 import type { Metadata } from "next";
-import { AntdRegistry } from "@ant-design/nextjs-registry";
-import { Geist, Geist_Mono } from "next/font/google";
+import {
+  DM_Sans,
+  Noto_Sans_Devanagari,
+  Plus_Jakarta_Sans,
+} from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
-import { ShapeGridBackground } from "@/components/ui/shape-grid/ShapeGridBackground";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+import { business } from "@/data/business";
+
+const headingFont = Plus_Jakarta_Sans({
+  variable: "--font-heading",
   subsets: ["latin"],
+  weight: ["600", "700", "800"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const bodyFont = DM_Sans({
+  variable: "--font-body",
   subsets: ["latin"],
+  weight: ["400", "500"],
+});
+
+const nepaliFont = Noto_Sans_Devanagari({
+  variable: "--font-nepali",
+  subsets: ["devanagari", "latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
-  title: "Raghunathpur Cable Network",
+  title: business.company.name,
   description:
-    "Raghunathpur Cable Network delivers high-speed fiber internet with transparent plans, quick installation, and 24/7 support.",
+    "Raghunathpur Cable Network (RCN) is a Nepal-based fiber internet and cable TV provider established in 2010, serving Sabaila-12, Raghunathpur and 25+ surrounding areas.",
 };
 
 export default function RootLayout({
@@ -31,20 +43,9 @@ export default function RootLayout({
       lang="en"
       suppressHydrationWarning
       data-scroll-behavior="smooth"
-      className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-      <body suppressHydrationWarning className="min-h-dvh font-sans">
-        <AntdRegistry>
-          <Providers>
-            {/*
-              ShapeGridBackground is position:fixed and pointer-events:none.
-              It sits at z-0 behind all content.
-            */}
-            <ShapeGridBackground />
-
-            {/* All page content sits above the canvas */}
-            <div className="relative z-10">{children}</div>
-          </Providers>
-        </AntdRegistry>
+      className={`${headingFont.variable} ${bodyFont.variable} ${nepaliFont.variable} antialiased`}>
+      <body suppressHydrationWarning className="min-h-dvh">
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

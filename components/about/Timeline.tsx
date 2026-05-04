@@ -14,6 +14,8 @@ import {
 } from "lucide-react";
 
 import { Container } from "@/components/landing/container";
+import { Card, GhostCard } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 const EVENTS = [
   {
@@ -91,24 +93,28 @@ function TimelineItem({ event, index }: { event: EventDef; index: number }) {
       animate={inView ? { opacity: 1, x: 0 } : {}}
       transition={{ duration: 0.6, ease: [0.215, 0.61, 0.355, 1] }}>
       <div className={`flex-1 ${isLeft ? "text-right" : "text-left"}`}>
-        <motion.div
-          whileHover={{ scale: 1.02, y: -4 }}
-          className="inline-block rounded-2xl border border-gray-200/80 bg-white/70 p-6 text-left backdrop-blur-xl dark:border-white/8 dark:bg-white/4">
+        <Card
+          accentColor="rgba(99,102,241,0.15)"
+          className="inline-block p-6 text-left"
+          whileHover={{ y: -6 }}>
           <div
-            className={`mb-3 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-linear-to-br ${event.color}`}>
+            className={cn(
+              "mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br shadow-md",
+              event.color,
+            )}>
             <event.icon className="h-5 w-5 text-white" />
           </div>
           <div
-            className={`mb-1 text-xs font-bold uppercase tracking-widest bg-linear-to-r ${event.color} bg-clip-text text-transparent`}>
+            className={`mb-3 text-xs font-semibold uppercase tracking-widest bg-linear-to-r ${event.color} bg-clip-text text-transparent`}>
             {event.year}
           </div>
-          <h3 className="text-lg font-black text-gray-900 dark:text-white">
+          <h3 className="mb-3 text-lg font-bold text-gray-900 dark:text-white">
             {event.title}
           </h3>
-          <p className="mt-2 text-sm leading-6 text-gray-700 dark:text-white/50">
+          <p className="text-sm leading-6 text-gray-600 dark:text-white/55">
             {event.desc}
           </p>
-        </motion.div>
+        </Card>
       </div>
 
       <div className="relative flex flex-col items-center">
@@ -142,10 +148,15 @@ export function Timeline() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}>
-          <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/25 bg-amber-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-amber-700 backdrop-blur-xl dark:text-amber-300">
+          <GhostCard
+            pill
+            className="inline-flex items-center gap-2 px-4 py-2"
+            noHover>
             <TrendingUp className="h-3.5 w-3.5" />
-            Our Journey
-          </div>
+            <span className="text-xs font-semibold uppercase tracking-widest text-amber-700 dark:text-amber-300">
+              Our Journey
+            </span>
+          </GhostCard>
           <h2 className="mt-5 text-4xl font-black tracking-tight text-gray-900 dark:text-white sm:text-5xl">
             14 years of{" "}
             <span className="bg-linear-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">

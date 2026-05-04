@@ -5,6 +5,8 @@ import { Gauge, MapPin, ShieldCheck, Timer } from "lucide-react";
 import { Container } from "./container";
 import { Reveal } from "./reveal";
 import { AnimatedNumber } from "./animated-number";
+import { Card, GhostCard } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 type Stat = {
   label: string;
@@ -14,6 +16,9 @@ type Stat = {
   prefix?: string;
   suffix?: string;
   icon: React.ReactNode;
+  accent: string;
+  colorFrom: string;
+  colorTo: string;
 };
 
 const STATS: Stat[] = [
@@ -22,7 +27,10 @@ const STATS: Stat[] = [
     description: "Homes & businesses connected",
     value: 10000,
     suffix: "+",
-    icon: <MapPin className="h-6 w-6" />,
+    icon: <MapPin className="h-5 w-5" />,
+    accent: "rgba(99,102,241,0.15)",
+    colorFrom: "from-cyan-500",
+    colorTo: "to-sky-500",
   },
   {
     label: "Uptime target",
@@ -30,33 +38,47 @@ const STATS: Stat[] = [
     value: 99.9,
     decimals: 1,
     suffix: "%",
-    icon: <ShieldCheck className="h-6 w-6" />,
+    icon: <ShieldCheck className="h-5 w-5" />,
+    accent: "rgba(99,102,241,0.15)",
+    colorFrom: "from-emerald-500",
+    colorTo: "to-teal-500",
   },
   {
     label: "Avg. install",
     description: "Quick setup & activation",
     value: 24,
     suffix: "h",
-    icon: <Timer className="h-6 w-6" />,
+    icon: <Timer className="h-5 w-5" />,
+    accent: "rgba(99,102,241,0.15)",
+    colorFrom: "from-violet-500",
+    colorTo: "to-fuchsia-500",
   },
   {
     label: "Peak speed",
     description: "Plans up to",
     value: 200,
     suffix: " Mbps",
-    icon: <Gauge className="h-6 w-6" />,
+    icon: <Gauge className="h-5 w-5" />,
+    accent: "rgba(99,102,241,0.15)",
+    colorFrom: "from-amber-500",
+    colorTo: "to-orange-500",
   },
 ];
 
 function StatCard({ stat }: { stat: Stat }) {
   return (
-    <div className="card-interactive group hover:border-gray-300 dark:hover:border-gray-600">
+    <Card accentColor={stat.accent} className="group p-6">
       <div className="flex items-center gap-4">
-        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gray-100 text-gray-700 transition-transform duration-300 group-hover:scale-110 dark:bg-gray-800 dark:text-gray-200">
+        <div
+          className={cn(
+            "mb-5 inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl shadow-md",
+            `bg-linear-to-br ${stat.colorFrom} ${stat.colorTo}`,
+            "text-white transition-transform duration-300 group-hover:scale-110",
+          )}>
           {stat.icon}
         </div>
         <div className="flex-1">
-          <div className="text-xs font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-400">
+          <div className="mb-3 text-xs font-semibold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">
             {stat.label}
           </div>
           <AnimatedNumber
@@ -64,14 +86,14 @@ function StatCard({ stat }: { stat: Stat }) {
             decimals={stat.decimals}
             prefix={stat.prefix}
             suffix={stat.suffix}
-            className="mt-1 block text-3xl font-bold tracking-tight text-gray-900 dark:text-white"
+            className="block text-3xl font-bold tracking-tight text-gray-900 dark:text-white"
           />
         </div>
       </div>
-      <p className="mt-5 text-sm leading-6 text-gray-600 dark:text-gray-400">
+      <p className="text-sm leading-6 text-gray-600 dark:text-white/55">
         {stat.description}
       </p>
-    </div>
+    </Card>
   );
 }
 
@@ -81,9 +103,14 @@ export function WhyChooseUs() {
       <Container>
         <Reveal>
           <div className="mx-auto max-w-2xl text-center">
-            <div className="inline-block rounded-full border border-gray-200 bg-gray-50 px-4 py-1 text-sm font-semibold text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
-              Why choose us
-            </div>
+            <GhostCard
+              pill
+              className="mx-auto inline-flex items-center gap-2 px-4 py-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-cyan-500 dark:bg-cyan-400" />
+              <span className="text-xs font-semibold uppercase tracking-widest text-cyan-600 dark:text-cyan-400">
+                Why choose us
+              </span>
+            </GhostCard>
             <h2 className="mt-4 text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
               <span className="text-gray-900 dark:text-gray-100">
                 Built for performance

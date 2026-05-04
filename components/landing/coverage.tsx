@@ -1,95 +1,91 @@
 "use client";
 
+import * as React from "react";
 import Link from "next/link";
-import { MapPin, Router, ShieldCheck, Wifi } from "lucide-react";
+import { MapPin } from "lucide-react";
 
-import { Container } from "./container";
-import { Reveal } from "./reveal";
+import { Container } from "@/components/landing/container";
+import { Reveal } from "@/components/landing/reveal";
+import { Card } from "@/components/ui/card";
+import { business } from "@/data/business";
+import { useLanguage } from "@/components/i18n/LanguageProvider";
+import { t } from "@/lib/i18n";
 
-const COVERAGE_BLOCKS = [
-  {
-    title: "Primary Service Area",
-    description:
-      "We focus on reliable last-mile connectivity in and around Raghunathpur. Availability can vary by lane/ward.",
-    icon: MapPin,
-  },
-  {
-    title: "Fast Installation",
-    description:
-      "Once confirmed, our team schedules installation quickly and completes setup with clean cabling and router configuration.",
-    icon: Router,
-  },
-  {
-    title: "Stable Network",
-    description:
-      "Fiber-grade reliability for streaming, gaming, and work. Proactive monitoring helps keep your connection smooth.",
-    icon: ShieldCheck,
-  },
-  {
-    title: "Speed Options",
-    description:
-      "Multiple tiers for every household. Upgrade anytime if your usage grows.",
-    icon: Wifi,
-  },
-] as const;
+function buildCoverageUrl(area: string) {
+  const trimmed = area.trim();
+  const message = [business.company.name, trimmed].filter(Boolean).join(" - ");
+
+  if (business.contact.whatsappPhoneE164) {
+    return `https://wa.me/${business.contact.whatsappPhoneE164}?text=${encodeURIComponent(message)}`;
+  }
+
+  return `mailto:${encodeURIComponent(business.contact.email)}?subject=${encodeURIComponent(business.company.name)}&body=${encodeURIComponent(message)}`;
+}
 
 export function Coverage() {
+  const { lang } = useLanguage();
+  const [area, setArea] = React.useState("");
+
+  if (!business.coverage?.shortNote?.[lang]) {
+    // TODO: add real data to business.coverage
+    return null;
+  }
+
   return (
     <section id="coverage" className="container-section">
       <Container>
         <Reveal>
           <div className="mx-auto max-w-2xl text-center">
-            <div className="inline-flex items-center gap-2 rounded-full border border-gray-200/80 bg-white/70 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-gray-700 backdrop-blur-xl dark:border-white/10 dark:bg-white/4 dark:text-white/70">
-              <span className="h-1.5 w-1.5 rounded-full bg-gray-500 dark:bg-white/40" />
-              Coverage
+            <div className="rcn-badge mx-auto">
+              <MapPin className="h-4 w-4 text-[color:rgb(var(--primary))]" />
+              <span className="uppercase tracking-widest">
+                {t(lang, "sectionCoverage")}
+              </span>
             </div>
-            <h2 className="heading-primary mt-5">
-              Service areas & availability
+            <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-[color:rgb(var(--text))] sm:text-4xl">
+              {t(lang, "sectionCoverage")}
             </h2>
-            <p className="mt-5 text-lg text-muted">
-              Share your ward/landmark and we’ll confirm coverage and the
-              fastest install slot.
+            <p className="mt-4 text-[color:rgb(var(--text-muted))]">
+              {business.coverage.shortNote[lang]}
             </p>
           </div>
         </Reveal>
 
-        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {COVERAGE_BLOCKS.map((b, idx) => (
-            <Reveal key={b.title} delay={idx * 0.06}>
-              <div className="card-interactive group h-full hover:border-gray-300 dark:hover:border-white/20">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/70 text-gray-700 transition-transform duration-300 group-hover:scale-110 dark:bg-white/6 dark:text-white/80">
-                  <b.icon className="h-6 w-6" />
+        <Reveal delay={0.1}>
+          <Card noHover className="mx-auto mt-10 max-w-2xl p-6 sm:p-8">
+            <form
+              className="grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end"
+              onSubmit={(e) => {
+                e.preventDefault();
+                window.location.href = buildCoverageUrl(area);
+              }}>
+              <label className="block">
+                <div className="text-sm font-semibold text-[color:rgb(var(--text))]">
+                  {t(lang, "coverageInputLabel")}
                 </div>
-                <div className="mt-4 text-lg font-bold text-gray-900 dark:text-white">
-                  {b.title}
-                </div>
-                <p className="mt-2 text-sm leading-6 text-gray-600 dark:text-white/55">
-                  {b.description}
-                </p>
-              </div>
-            </Reveal>
-          ))}
-        </div>
+                <input
+                  value={area}
+                  onChange={(e) => setArea(e.target.value)}
+                  placeholder={t(lang, "coverageInputPlaceholder")}
+                  className="mt-2 h-12 w-full rounded-2xl border border-[color:rgb(var(--border))] bg-[color:rgb(var(--surface))] px-4 text-[color:rgb(var(--text))] placeholder:text-[color:rgb(var(--text-soft))] outline-none focus:border-[color:rgb(var(--green-300))] focus:ring-2 focus:ring-[color:rgb(var(--primary))]/20"
+                />
+              </label>
+              <button
+                type="submit"
+                className="rcn-btn-primary h-12 rounded-2xl">
+                {t(lang, "coverageSubmit")}
+              </button>
+            </form>
 
-        <Reveal delay={0.25}>
-          <div className="card mt-10 p-8 sm:p-10">
-            <div className="text-lg font-bold text-gray-900 dark:text-white">
-              Want us to check your address?
-            </div>
-            <p className="mt-2 text-sm text-gray-600 dark:text-white/55">
-              Visit the coverage page or send your ward/tole/landmark and
-              preferred timing — we’ll confirm availability and share the best
-              plan.
-            </p>
-            <div className="mt-5 flex flex-wrap items-center gap-3">
-              <Link href="/coverage" className="btn-secondary h-11 rounded-2xl">
-                View coverage
+            <div className="mt-5 flex flex-wrap items-center justify-center gap-3 text-sm">
+              <Link href="/coverage" className="rcn-btn-secondary">
+                {t(lang, "ctaCheckAvailability")}
               </Link>
-              <Link href="/contact" className="btn-primary h-11 rounded-2xl">
-                Check availability
+              <Link href="/contact" className="rcn-btn-secondary">
+                {t(lang, "ctaContact")}
               </Link>
             </div>
-          </div>
+          </Card>
         </Reveal>
       </Container>
     </section>

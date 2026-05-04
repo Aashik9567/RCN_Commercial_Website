@@ -2,57 +2,70 @@
 
 import * as React from "react";
 
-const PLAN_OPTIONS = [
-  { label: "Basic (50 Mbps)", value: "basic" },
-  { label: "Standard (100 Mbps)", value: "standard" },
-  { label: "Premium (200 Mbps)", value: "premium" },
-] as const;
+import { business } from "@/data/business";
+import { useLanguage } from "@/components/i18n/LanguageProvider";
 
 function FieldLabel({ children }: { children: React.ReactNode }) {
   return (
-    <div className="text-sm font-medium text-gray-700 dark:text-gray-300">
+    <div className="text-sm font-medium text-[color:rgb(var(--text))]">
       {children}
     </div>
   );
 }
 
 const inputClassName =
-  "mt-2 h-12 w-full rounded-2xl border border-gray-200/70 bg-white/80 px-4 " +
-  "text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 shadow-sm backdrop-blur-xl " +
-  "outline-none transition-colors focus:border-indigo-300 focus:ring-2 focus:ring-indigo-500/20 dark:border-white/8 dark:bg-white/6 dark:focus:border-indigo-600";
+  "mt-2 h-12 w-full rounded-2xl border px-4 shadow-sm outline-none transition " +
+  "border-[color:rgb(var(--border))] bg-[color:rgb(var(--surface))] text-[color:rgb(var(--text))] placeholder:text-[color:rgb(var(--text-soft))] " +
+  "focus:border-[color:rgb(var(--green-300))] focus:ring-2 focus:ring-[color:rgb(var(--primary))]/20";
 
 const textareaClassName =
-  "mt-2 w-full rounded-2xl border border-gray-200/70 bg-white/80 px-4 py-3 " +
-  "text-gray-900 dark:text-gray-100 placeholder:text-gray-500 dark:placeholder:text-gray-400 shadow-sm backdrop-blur-xl " +
-  "outline-none transition-colors focus:border-indigo-300 focus:ring-2 focus:ring-indigo-500/20 dark:border-white/8 dark:bg-white/6 dark:focus:border-indigo-600";
+  "mt-2 w-full rounded-2xl border px-4 py-3 shadow-sm outline-none transition " +
+  "border-[color:rgb(var(--border))] bg-[color:rgb(var(--surface))] text-[color:rgb(var(--text))] placeholder:text-[color:rgb(var(--text-soft))] " +
+  "focus:border-[color:rgb(var(--green-300))] focus:ring-2 focus:ring-[color:rgb(var(--primary))]/20";
 
 export function ContactForm() {
-  const [status, setStatus] = React.useState<"idle" | "success">("idle");
-  const resetTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  React.useEffect(() => {
-    return () => {
-      if (resetTimer.current) clearTimeout(resetTimer.current);
-    };
-  }, []);
+  const { lang } = useLanguage();
+  const [status, setStatus] = React.useState<"idle" | "draft-opened">("idle");
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const fd = new FormData(event.currentTarget);
 
-    setStatus("success");
-    event.currentTarget.reset();
+    const name = String(fd.get("name") ?? "").trim();
+    const phone = String(fd.get("phone") ?? "").trim();
+    const email = String(fd.get("email") ?? "").trim();
+    const area = String(fd.get("area") ?? "").trim();
+    const interest = String(fd.get("interest") ?? "").trim();
+    const message = String(fd.get("message") ?? "").trim();
 
-    if (resetTimer.current) clearTimeout(resetTimer.current);
-    resetTimer.current = setTimeout(() => setStatus("idle"), 5000);
+    const planLabel = business.plans.find((p) => p.id === interest)?.name[lang];
+
+    const subject = `${business.company.shortName} inquiry`;
+    const body = [
+      `Name: ${name}`,
+      phone ? `Phone: ${phone}` : null,
+      email ? `Email: ${email}` : null,
+      area ? `Area/Landmark: ${area}` : null,
+      planLabel ? `Interested plan: ${planLabel}` : null,
+      "",
+      message ? `Message:\n${message}` : "Message:",
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    const mailto = `mailto:${encodeURIComponent(business.contact.email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = mailto;
+    setStatus("draft-opened");
   };
 
   return (
     <form onSubmit={onSubmit} className="space-y-5">
-      {status === "success" && (
-        <div className="rounded-2xl border border-emerald-500/20 bg-emerald-500/10 p-3 text-sm text-emerald-700 dark:text-emerald-300">
-          Thanks — we’ll contact you shortly.
+      {status === "draft-opened" ? (
+        <div className="rounded-2xl border border-[color:rgb(var(--green-200))] bg-[color:rgb(var(--green-50))] p-3 text-sm text-[color:rgb(var(--green-900))]">
+          Email draft opened. If it didn’t open, email us at{" "}
+          {business.contact.email}.
         </div>
-      )}
+      ) : null}
 
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="block">
@@ -61,7 +74,7 @@ export function ContactForm() {
             name="name"
             required
             autoComplete="name"
-            placeholder="Your name"
+            placeholder=""
             className={inputClassName}
           />
         </label>
@@ -72,7 +85,7 @@ export function ContactForm() {
             name="phone"
             type="tel"
             autoComplete="tel"
-            placeholder="+977 …"
+            placeholder=""
             className={inputClassName}
           />
         </label>
@@ -85,7 +98,7 @@ export function ContactForm() {
             name="email"
             type="email"
             autoComplete="email"
-            placeholder="you@example.com"
+            placeholder=""
             className={inputClassName}
           />
         </label>
@@ -95,7 +108,7 @@ export function ContactForm() {
           <input
             name="area"
             autoComplete="street-address"
-            placeholder="Ward, tole, landmark…"
+            placeholder=""
             className={inputClassName}
           />
         </label>
@@ -107,9 +120,9 @@ export function ContactForm() {
           <option value="" disabled>
             Select a plan
           </option>
-          {PLAN_OPTIONS.map((opt) => (
-            <option key={opt.value} value={opt.value}>
-              {opt.label}
+          {business.plans.map((p) => (
+            <option key={p.id} value={p.id}>
+              {p.name[lang]} ({p.speedMbps} Mbps)
             </option>
           ))}
         </select>
@@ -120,15 +133,15 @@ export function ContactForm() {
         <textarea
           name="message"
           rows={4}
-          placeholder="Tell us your address details and preferred installation time…"
+          placeholder=""
           className={textareaClassName}
         />
       </label>
 
       <button
         type="submit"
-        className="inline-flex h-12 w-full items-center justify-center rounded-2xl bg-gray-900 px-6 text-sm font-semibold text-white transition-colors hover:bg-gray-800 active:scale-[0.98] dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-200">
-        Request a Callback
+        className="rcn-btn-primary h-12 w-full rounded-2xl active:scale-[0.98]">
+        Email us
       </button>
     </form>
   );

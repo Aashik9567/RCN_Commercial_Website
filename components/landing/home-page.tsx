@@ -3,7 +3,7 @@
 import { Hero } from "@/components/landing/hero";
 import { Features } from "./features";
 import { Pricing } from "./pricing";
-import { WhyChooseUs } from "./why-choose-us";
+import { Stats } from "./stats";
 import { Testimonials } from "./testimonials";
 import { HowItWorks } from "./how-it-works";
 
@@ -23,7 +23,7 @@ export function HomePage() {
       <Hero />
       <Features />
       <Pricing />
-      <WhyChooseUs />
+      <Stats />
       <Testimonials />
       <HowItWorks />
       <Coverage />

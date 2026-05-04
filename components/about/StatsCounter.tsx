@@ -3,7 +3,6 @@
 import * as React from "react";
 import {
   animate,
-  motion,
   useInView,
   useMotionValue,
   useMotionValueEvent,
@@ -11,6 +10,8 @@ import {
 import { Clock, Globe2, ShieldCheck, Users } from "lucide-react";
 
 import { Container } from "@/components/landing/container";
+import { Card } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 type Stat = {
   icon: React.ComponentType<{ className?: string }>;
@@ -18,7 +19,9 @@ type Stat = {
   suffix: string;
   label: string;
   color: string;
-  bg: string;
+  colorFrom: string;
+  colorTo: string;
+  glowColor: string;
 };
 
 const STATS: Stat[] = [
@@ -28,7 +31,9 @@ const STATS: Stat[] = [
     suffix: "+",
     label: "Happy Customers",
     color: "text-cyan-600 dark:text-cyan-300",
-    bg: "bg-cyan-500/10",
+    colorFrom: "from-cyan-500",
+    colorTo: "to-sky-500",
+    glowColor: "rgba(0,229,255,0.15)",
   },
   {
     icon: Globe2,
@@ -36,7 +41,9 @@ const STATS: Stat[] = [
     suffix: "+",
     label: "Areas Covered",
     color: "text-violet-600 dark:text-violet-300",
-    bg: "bg-violet-500/10",
+    colorFrom: "from-violet-500",
+    colorTo: "to-fuchsia-500",
+    glowColor: "rgba(139,92,246,0.15)",
   },
   {
     icon: Clock,
@@ -44,7 +51,9 @@ const STATS: Stat[] = [
     suffix: " yrs",
     label: "Years of Service",
     color: "text-emerald-600 dark:text-emerald-300",
-    bg: "bg-emerald-500/10",
+    colorFrom: "from-emerald-500",
+    colorTo: "to-teal-500",
+    glowColor: "rgba(16,185,129,0.15)",
   },
   {
     icon: ShieldCheck,
@@ -52,7 +61,9 @@ const STATS: Stat[] = [
     suffix: "%",
     label: "Network Uptime",
     color: "text-amber-600 dark:text-amber-300",
-    bg: "bg-amber-500/10",
+    colorFrom: "from-amber-500",
+    colorTo: "to-orange-500",
+    glowColor: "rgba(245,158,11,0.15)",
   },
 ];
 
@@ -99,24 +110,28 @@ export function StatsCounter() {
       <Container>
         <div className="grid grid-cols-2 gap-6 lg:grid-cols-4">
           {STATS.map((stat, i) => (
-            <motion.div
+            <Card
               key={stat.label}
-              className="flex flex-col items-center gap-3 rounded-2xl border border-gray-200/80 bg-white/70 p-6 text-center backdrop-blur-xl dark:border-white/8 dark:bg-white/4"
+              accentColor={stat.glowColor}
+              className="flex flex-col items-center gap-3 p-6 text-center"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.5 }}
-              whileHover={{ y: -4, scale: 1.02 }}>
-              <div className={`rounded-2xl ${stat.bg} p-3`}>
-                <stat.icon className={`h-6 w-6 ${stat.color}`} />
+              transition={{ delay: i * 0.1, duration: 0.5 }}>
+              <div
+                className={cn(
+                  "mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl shadow-md",
+                  `bg-linear-to-br ${stat.colorFrom} ${stat.colorTo}`,
+                )}>
+                <stat.icon className="h-5 w-5 text-white" />
               </div>
               <div className={`text-4xl font-black ${stat.color}`}>
                 <Counter target={stat.value} suffix={stat.suffix} />
               </div>
-              <div className="text-sm font-medium text-gray-700 dark:text-white/50">
+              <div className="text-xs text-gray-600 dark:text-white/55">
                 {stat.label}
               </div>
-            </motion.div>
+            </Card>
           ))}
         </div>
       </Container>

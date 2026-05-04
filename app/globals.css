@@ -1,57 +1,72 @@
 @import "tailwindcss";
 
-/* ── Light mode design tokens ────────────────────────── */
+/*
+  RCN Design System (Light Green)
+  - Primary: #16a34a
+  - Full green + slate scales
+  - Semantic surface/border/text tokens
+*/
+
 :root {
-  --bg-page: #f8faff;
-  --bg-card: rgba(255, 255, 255, 0.82);
-  --bg-card-hover: rgba(255, 255, 255, 0.96);
-  --border-card: rgba(99, 102, 241, 0.13);
-  --text-primary: #0f172a;
-  --text-secondary: #334155;
-  --text-muted: #64748b;
-  --accent-cyan: #0284c7;
-  --accent-violet: #7c3aed;
-  --glow-cyan: rgba(2, 132, 199, 0.15);
+  /* Slate scale (rgb triplets) */
+  --slate-50: 248 250 252;
+  --slate-100: 241 245 249;
+  --slate-200: 226 232 240;
+  --slate-300: 203 213 225;
+  --slate-400: 148 163 184;
+  --slate-500: 100 116 139;
+  --slate-600: 71 85 105;
+  --slate-700: 51 65 85;
+  --slate-800: 30 41 59;
+  --slate-900: 15 23 42;
+  --slate-950: 2 6 23;
+
+  /* Green scale (rgb triplets) */
+  --green-50: 240 253 244;
+  --green-100: 220 252 231;
+  --green-200: 187 247 208;
+  --green-300: 134 239 172;
+  --green-400: 74 222 128;
+  --green-500: 34 197 94;
+  --green-600: 22 163 74; /* #16a34a */
+  --green-700: 21 128 61;
+  --green-800: 22 101 52;
+  --green-900: 20 83 45;
+  --green-950: 5 46 22;
+
+  /* Semantic tokens */
+  --primary: var(--green-600);
+  --bg: var(--slate-50);
+  --surface: 255 255 255;
+  --surface-2: var(--slate-100);
+  --border: var(--slate-200);
+  --text: var(--slate-900);
+  --text-muted: var(--slate-600);
+  --text-soft: var(--slate-500);
+
+  --shadow-sm: 0 1px 2px rgb(2 6 23 / 0.06);
+  --shadow-md: 0 6px 18px rgb(2 6 23 / 0.1);
+
   color-scheme: light;
 }
 
-/* ── Dark mode design tokens ─────────────────────────── */
 .dark {
-  --bg-page: #040714;
-  --bg-card: rgba(255, 255, 255, 0.04);
-  --bg-card-hover: rgba(255, 255, 255, 0.08);
-  --border-card: rgba(255, 255, 255, 0.08);
-  --text-primary: #f8fafc;
-  --text-secondary: #cbd5e1;
-  --text-muted: #64748b;
-  --accent-cyan: #00e5ff;
-  --accent-violet: #a78bfa;
-  --glow-cyan: rgba(0, 229, 255, 0.15);
+  --bg: var(--slate-950);
+  --surface: var(--slate-900);
+  --surface-2: var(--slate-800);
+  --border: var(--slate-800);
+  --text: var(--slate-50);
+  --text-muted: var(--slate-300);
+  --text-soft: var(--slate-400);
+
   color-scheme: dark;
 }
 
 html,
 body {
-  background-color: var(--bg-page);
-  color: var(--text-primary);
-  transition:
-    background-color 0.3s ease,
-    color 0.25s ease;
+  background: rgb(var(--bg));
+  color: rgb(var(--text));
 }
-
-/*
-  IMPORTANT: The ShapeGrid canvas is position:fixed at z-0.
-  All page sections, cards, navbars must NOT have a fully opaque
-  background — they must use semi-transparent backgrounds so the
-  animated grid shows through beneath them.
-
-  Correct:  bg-white/80    bg-white/75    bg-white/70
-  Wrong:    bg-white       bg-gray-50     solid backgrounds
-
-  In dark mode:
-  Correct:  bg-[#040714]/80   bg-white/5   bg-white/[0.04]
-  Wrong:    bg-[#040714]      (fully opaque blocks grid)
-*/
 
 html {
   height: 100%;
@@ -61,7 +76,16 @@ html {
 
 body {
   min-height: 100%;
-  font-family: var(--font-geist-sans);
+  font-family:
+    var(--font-body),
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    Helvetica,
+    Arial,
+    "Apple Color Emoji",
+    "Segoe UI Emoji";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -72,8 +96,16 @@ h3,
 h4,
 h5,
 h6 {
+  font-family:
+    var(--font-heading),
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    Helvetica,
+    Arial;
   letter-spacing: -0.02em;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 h1 {
@@ -87,46 +119,102 @@ h2 {
   line-height: 1.2;
 }
 
+/* Nepali mode: ensure Devanagari font is used */
+html[data-lang="np"] body {
+  font-family:
+    var(--font-nepali),
+    var(--font-body),
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    Helvetica,
+    Arial;
+}
+
+html[data-lang="np"] h1,
+html[data-lang="np"] h2,
+html[data-lang="np"] h3,
+html[data-lang="np"] h4,
+html[data-lang="np"] h5,
+html[data-lang="np"] h6 {
+  font-family:
+    var(--font-nepali),
+    var(--font-heading),
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    Helvetica,
+    Arial;
+}
+
+@layer utilities {
+  /* Mandatory spacing system */
+  .container-section {
+    @apply py-20 md:py-28;
+  }
+
+  .rcn-container {
+    @apply mx-auto max-w-6xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .rcn-badge {
+    @apply inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold;
+    border-color: rgb(var(--border));
+    background: rgb(var(--surface));
+    color: rgb(var(--text-muted));
+  }
+
+  .rcn-btn-primary {
+    @apply inline-flex h-11 items-center justify-center gap-2 rounded-xl px-5 text-sm font-semibold transition duration-200;
+    background: rgb(var(--primary));
+    color: white;
+  }
+
+  .rcn-btn-primary:hover {
+    filter: brightness(0.95);
+  }
+
+  .rcn-btn-secondary {
+    @apply inline-flex h-11 items-center justify-center gap-2 rounded-xl border px-5 text-sm font-semibold transition duration-200;
+    border-color: rgb(var(--border));
+    background: rgb(var(--surface));
+    color: rgb(var(--text));
+  }
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+
+  .animate-accordion-down {
+    animation: accordion-down 200ms ease-out;
+  }
+
+  .animate-accordion-up {
+    animation: accordion-up 200ms ease-out;
+  }
+}
+
 ::selection {
-  background: rgb(209 213 219);
-  color: white;
+  background: rgb(var(--slate-200));
+  color: rgb(var(--slate-900));
 }
 
 .dark ::selection {
   background: rgb(55 65 81);
-}
-
-@layer utilities {
-  .container-section {
-    @apply relative py-24 sm:py-28;
-  }
-
-  .heading-primary {
-    @apply text-3xl font-black tracking-tight text-[color:var(--text-primary)] sm:text-4xl;
-  }
-
-  .text-muted {
-    @apply text-[color:var(--text-muted)];
-  }
-
-  .card {
-    @apply rounded-3xl border border-[color:var(--border-card)] bg-[color:var(--bg-card)] backdrop-blur-xl shadow-sm;
-  }
-
-  .card-interactive {
-    @apply rounded-3xl border border-[color:var(--border-card)] bg-[color:var(--bg-card)] backdrop-blur-xl shadow-sm;
-    @apply transition-all duration-300;
-    @apply hover:bg-[color:var(--bg-card-hover)] hover:border-gray-300/70;
-    @apply dark:hover:border-white/[0.15];
-  }
-
-  .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-2xl bg-linear-to-r from-cyan-500 to-violet-600 px-5 text-sm font-semibold text-white shadow-sm transition-transform;
-  }
-
-  .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-2xl border border-gray-300/80 bg-white/75 px-5 text-sm font-semibold text-gray-800 backdrop-blur-xl transition-colors;
-    @apply hover:bg-white;
-    @apply dark:border-white/15 dark:bg-white/6 dark:text-white/80 dark:hover:bg-white/[0.08];
-  }
 }

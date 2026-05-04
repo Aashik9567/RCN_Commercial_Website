@@ -13,6 +13,8 @@ import {
 } from "lucide-react";
 
 import { Container } from "@/components/landing/container";
+import { Card, GhostCard } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 type ValueDef = {
   icon: typeof Zap;
@@ -60,6 +62,15 @@ const VALUES: ValueDef[] = [
   },
 ];
 
+const valueAccentMap: Record<string, string> = {
+  "Speed First": "rgba(0,229,255,0.18)",
+  "Unwavering Reliability": "rgba(16,185,129,0.18)",
+  "Human Support": "rgba(139,92,246,0.18)",
+  "Community Roots": "rgba(244,63,94,0.18)",
+  Transparency: "rgba(245,158,11,0.18)",
+  "Constant Growth": "rgba(99,102,241,0.18)",
+};
+
 export function ValuesSection() {
   const ref = useRef<HTMLElement>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
@@ -75,10 +86,15 @@ export function ValuesSection() {
           className="mx-auto mb-16 max-w-2xl text-center"
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}>
-          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/25 bg-emerald-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-emerald-700 backdrop-blur-xl dark:text-emerald-300">
+          <GhostCard
+            pill
+            className="inline-flex items-center gap-2 px-4 py-2"
+            noHover>
             <Award className="h-3.5 w-3.5" />
-            Our Core Values
-          </div>
+            <span className="text-xs font-semibold uppercase tracking-widest text-emerald-700 dark:text-emerald-300">
+              Our Core Values
+            </span>
+          </GhostCard>
           <h2 className="mt-5 text-4xl font-black tracking-tight text-gray-900 dark:text-white sm:text-5xl">
             Built on{" "}
             <span className="bg-linear-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
@@ -93,24 +109,27 @@ export function ValuesSection() {
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {VALUES.map((v, i) => (
-            <motion.div
+            <Card
               key={v.title}
+              accentColor={valueAccentMap[v.title] ?? "rgba(99,102,241,0.18)"}
               initial={{ opacity: 0, y: 30 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: i * 0.08, duration: 0.5 }}
-              whileHover={{ y: -6, scale: 1.02 }}
-              className="group relative rounded-2xl border border-gray-200/80 bg-white/70 p-6 backdrop-blur-xl transition-all dark:border-white/8 dark:bg-white/4">
+              className="group p-6">
               <div
-                className={`mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br ${v.color} shadow-md`}>
+                className={cn(
+                  "mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-linear-to-br shadow-md transition-transform duration-300 group-hover:scale-110",
+                  v.color,
+                )}>
                 <v.icon className="h-5 w-5 text-white" />
               </div>
-              <h3 className="mb-2 text-base font-bold text-gray-900 dark:text-white">
+              <h3 className="mb-3 text-lg font-bold text-gray-900 dark:text-white">
                 {v.title}
               </h3>
-              <p className="text-sm leading-6 text-gray-700 dark:text-white/50">
+              <p className="text-sm leading-6 text-gray-600 dark:text-white/55">
                 {v.desc}
               </p>
-            </motion.div>
+            </Card>
           ))}
         </div>
       </Container>
