@@ -40,12 +40,12 @@ export function Features() {
         <Reveal>
           <div className="mx-auto max-w-2xl text-center">
             <div className="rcn-badge mx-auto">
-              <span className="h-1.5 w-1.5 rounded-full bg-[color:rgb(var(--primary))]" />
+              <span className="h-1.5 w-1.5 rounded-full bg-[rgb(var(--primary))]" />
               <span className="uppercase tracking-widest">
                 {t(lang, "sectionFeatures")}
               </span>
             </div>
-            <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-[color:rgb(var(--text))] sm:text-4xl">
+            <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-[rgb(var(--text))] sm:text-4xl">
               {t(lang, "sectionFeatures")}
             </h2>
           </div>
@@ -54,14 +54,21 @@ export function Features() {
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {business.features.slice(0, 6).map((feature, idx) => (
             <Reveal key={feature.id} delay={idx * 0.04}>
-              <Card className="p-6">
+              <Card
+                size="md"
+                accentColor="rgb(var(--primary) / 0.22)"
+                className={
+                  feature.id === "business-plans"
+                    ? "border-dashed border-[rgb(var(--primary))]/35"
+                    : ""
+                }>
                 <div className="flex items-center gap-3">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[color:rgb(var(--surface-2))] text-[color:rgb(var(--primary))]">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-[10px] border border-[rgb(var(--primary))]/18 bg-[rgb(var(--primary))]/12 text-[rgb(var(--primary))]">
                     {iconForFeature(feature.id)}
                   </div>
-                  <div className="text-sm font-semibold text-[color:rgb(var(--text))]">
+                  <h3 className="text-[1.2rem] font-semibold leading-snug text-[rgb(var(--text))]">
                     {feature.title[lang]}
-                  </div>
+                  </h3>
                 </div>
               </Card>
             </Reveal>

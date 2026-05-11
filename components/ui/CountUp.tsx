@@ -17,6 +17,14 @@ export function CountUp({
 }: CountUpProps) {
   const ref = React.useRef<HTMLSpanElement | null>(null);
 
+  const fmtDecimals =
+    typeof decimals === "number" ? decimals : value % 1 === 0 ? 0 : 1;
+
+  const format = React.useCallback(
+    (n: number) => `${n.toFixed(fmtDecimals)}${suffix}`,
+    [fmtDecimals, suffix],
+  );
+
   React.useEffect(() => {
     if (!ref.current) return;
 
@@ -24,11 +32,6 @@ export function CountUp({
     const prefersReduced = window.matchMedia?.(
       "(prefers-reduced-motion: reduce)",
     ).matches;
-
-    const fmtDecimals =
-      typeof decimals === "number" ? decimals : value % 1 === 0 ? 0 : 1;
-
-    const format = (n: number) => `${n.toFixed(fmtDecimals)}${suffix}`;
 
     if (prefersReduced) {
       el.textContent = format(value);
@@ -55,7 +58,7 @@ export function CountUp({
 
         raf = requestAnimationFrame(step);
       },
-      { threshold: 0.3 },
+      { threshold: 0.15 },
     );
 
     observer.observe(el);
@@ -64,7 +67,11 @@ export function CountUp({
       observer.disconnect();
       if (raf) cancelAnimationFrame(raf);
     };
-  }, [decimals, durationMs, suffix, value]);
+  }, [durationMs, format, value]);
 
-  return <span ref={ref} aria-label={`${value}${suffix}`} />;
+  return (
+    <span ref={ref} aria-label={`${value}${suffix}`} suppressHydrationWarning>
+      {format(0)}
+    </span>
+  );
 }

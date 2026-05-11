@@ -36,12 +36,12 @@ export function HowItWorks() {
         <Reveal>
           <div className="mx-auto max-w-2xl text-center">
             <div className="rcn-badge mx-auto">
-              <span className="h-1.5 w-1.5 rounded-full bg-[color:rgb(var(--primary))]" />
+              <span className="h-1.5 w-1.5 rounded-full bg-[rgb(var(--primary))]" />
               <span className="uppercase tracking-widest">
                 {t(lang, "sectionHowItWorks")}
               </span>
             </div>
-            <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-[color:rgb(var(--text))] sm:text-4xl">
+            <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-[rgb(var(--text))] sm:text-4xl">
               {t(lang, "sectionHowItWorks")}
             </h2>
           </div>
@@ -50,22 +50,29 @@ export function HowItWorks() {
         <div className="mt-12 grid gap-6 lg:grid-cols-3">
           {business.howItWorks.map((step, idx) => (
             <Reveal key={step.id} delay={idx * 0.05}>
-              <Card className="h-full p-7">
-                <div className="flex items-center justify-between">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[color:rgb(var(--surface-2))] text-[color:rgb(var(--primary))]">
-                    {iconForStep(step.id)}
-                  </div>
-                  <div className="text-sm font-bold text-[color:rgb(var(--text-soft))]">
-                    {(idx + 1).toString().padStart(2, "0")}
-                  </div>
+              <Card
+                size="md"
+                className="group relative h-full overflow-visible">
+                {idx < 2 ? (
+                  <div className="pointer-events-none absolute right-[-14px] top-1/2 hidden w-7 -translate-y-1/2 border-t-2 border-dashed border-[rgb(var(--primary))]/30 lg:block" />
+                ) : null}
+
+                <div className="rcn-mono absolute -top-5 left-6 text-[2.5rem] font-medium text-[rgb(var(--primary))]/20 transition-colors group-hover:text-[rgb(var(--primary))]">
+                  {(idx + 1).toString().padStart(2, "0")}
                 </div>
 
-                <div className="mt-5 text-lg font-bold text-[color:rgb(var(--text))]">
-                  {step.title[lang]}
+                <div className="flex items-center gap-4 pt-6">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full border border-[rgb(var(--primary))]/30 bg-[rgb(var(--primary))]/10 text-[rgb(var(--primary))]">
+                    {iconForStep(step.id)}
+                  </div>
+                  <h3 className="text-[1.2rem] font-semibold text-[rgb(var(--text))]">
+                    {step.title[lang]}
+                  </h3>
                 </div>
-                <div className="mt-2 text-sm leading-6 text-[color:rgb(var(--text-muted))]">
+
+                <p className="mt-4 text-sm leading-6 text-[rgb(var(--text-muted))]">
                   {step.description[lang]}
-                </div>
+                </p>
               </Card>
             </Reveal>
           ))}

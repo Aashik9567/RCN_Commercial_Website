@@ -32,12 +32,12 @@ export function FAQ({ withHeader = true }: { withHeader?: boolean } = {}) {
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
               <div className="rcn-badge mx-auto">
-                <MessageCircle className="h-4 w-4 text-[color:rgb(var(--primary))]" />
+                <MessageCircle className="h-4 w-4 text-[rgb(var(--primary))]" />
                 <span className="uppercase tracking-widest">
                   {t(lang, "sectionFaq")}
                 </span>
               </div>
-              <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-[color:rgb(var(--text))] sm:text-4xl">
+              <h2 className="mt-5 text-[clamp(1.7rem,3.5vw,2.6rem)] font-bold tracking-tight text-[rgb(var(--text))]">
                 {t(lang, "sectionFaq")}
               </h2>
             </div>
@@ -47,6 +47,7 @@ export function FAQ({ withHeader = true }: { withHeader?: boolean } = {}) {
         <Reveal delay={0.1}>
           <Card
             noHover
+            size="sm"
             className={[
               "mx-auto max-w-3xl overflow-visible p-2",
               withHeader ? "mt-12" : "mt-0",

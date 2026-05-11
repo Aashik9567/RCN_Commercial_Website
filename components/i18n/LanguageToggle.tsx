@@ -11,7 +11,7 @@ export function LanguageToggle() {
     <div
       role="group"
       aria-label="Language"
-      className="inline-flex items-center rounded-xl border border-[color:rgb(var(--border))] bg-[color:rgb(var(--surface))] p-1 shadow-sm">
+      className="inline-flex items-center rounded-xl border border-[rgb(var(--border))] bg-[rgb(var(--surface))] p-1 shadow-sm">
       <LangButton active={lang === "en"} onClick={() => setLang("en")}>
         EN
       </LangButton>
@@ -38,8 +38,8 @@ function LangButton({
       className={
         "h-9 rounded-lg px-3 text-xs font-semibold transition " +
         (active
-          ? "bg-[color:rgb(var(--primary))] text-white"
-          : "text-[color:rgb(var(--text-muted))] hover:text-[color:rgb(var(--text))]")
+          ? "bg-[rgb(var(--primary))] text-white"
+          : "text-[rgb(var(--text-muted))] hover:text-[rgb(var(--text))]")
       }>
       {children}
     </button>

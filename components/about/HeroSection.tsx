@@ -30,15 +30,15 @@ export function HeroSection() {
 
       {/* Radial spotlight + grid */}
       <div className="pointer-events-none absolute inset-0 z-0">
-        <div className="absolute left-1/2 top-0 h-px w-3/4 -translate-x-1/2 bg-linear-to-r from-transparent via-cyan-500/30 to-transparent" />
-        <div className="absolute left-1/4 top-1/4 h-96 w-96 rounded-full bg-cyan-500/10 blur-3xl" />
-        <div className="absolute right-1/4 top-1/3 h-96 w-96 rounded-full bg-violet-500/10 blur-3xl" />
+        <div className="absolute left-1/2 top-0 h-px w-3/4 -translate-x-1/2 bg-linear-to-r from-transparent via-[rgb(var(--primary))]/30 to-transparent" />
+        <div className="absolute left-1/4 top-1/4 h-96 w-96 rounded-full bg-[rgb(var(--primary))]/10 blur-3xl" />
+        <div className="absolute right-1/4 top-1/3 h-96 w-96 rounded-full bg-[rgb(var(--cyan))]/10 blur-3xl" />
 
         <div
           className="absolute inset-0 opacity-[0.03]"
           style={{
             backgroundImage:
-              "linear-gradient(rgba(99,102,241,1) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,1) 1px, transparent 1px)",
+              "linear-gradient(rgb(var(--primary) / 0.25) 1px, transparent 1px), linear-gradient(90deg, rgb(var(--primary) / 0.25) 1px, transparent 1px)",
             backgroundSize: "48px 48px",
           }}
         />
@@ -55,8 +55,8 @@ export function HeroSection() {
               pill
               className="inline-flex items-center gap-2.5 px-4 py-2"
               noHover>
-              <Cable className="h-3.5 w-3.5 text-cyan-600 dark:text-cyan-400" />
-              <span className="text-xs font-semibold uppercase tracking-widest text-cyan-600 dark:text-cyan-400">
+              <Cable className="h-3.5 w-3.5 text-[rgb(var(--primary))]" />
+              <span className="text-xs font-semibold uppercase tracking-widest text-[rgb(var(--primary))]">
                 About Raghunathpur Cable Network
               </span>
             </GhostCard>
@@ -67,8 +67,8 @@ export function HeroSection() {
               pill
               className="inline-flex items-center gap-2 px-4 py-2"
               noHover>
-              <span className="h-2 w-2 rounded-full bg-emerald-400" />
-              <span className="text-xs font-semibold text-gray-700 dark:text-white/70">
+              <span className="h-2 w-2 rounded-full bg-[rgb(var(--primary))]" />
+              <span className="text-xs font-semibold text-[rgb(var(--text-muted))]">
                 Serving West Bengal Since 2010
               </span>
             </GhostCard>
@@ -89,8 +89,8 @@ export function HeroSection() {
                   <span
                     className={
                       wi === 0 || wi === 2
-                        ? "text-5xl font-black tracking-tight text-gray-900 dark:text-white sm:text-6xl lg:text-7xl"
-                        : "bg-linear-to-r from-cyan-400 to-violet-400 bg-clip-text text-5xl font-black tracking-tight text-transparent sm:text-6xl lg:text-7xl"
+                        ? "text-5xl font-black tracking-tight text-[rgb(var(--text))] sm:text-6xl lg:text-7xl"
+                        : "bg-linear-to-r from-[rgb(var(--primary))] to-[rgb(var(--cyan))] bg-clip-text text-5xl font-black tracking-tight text-transparent sm:text-6xl lg:text-7xl"
                     }>
                     {word}{" "}
                   </span>
@@ -100,7 +100,7 @@ export function HeroSection() {
           </div>
 
           <motion.p
-            className="mt-7 max-w-xl text-lg leading-8 text-gray-700 dark:text-white/55"
+            className="mt-7 max-w-xl text-lg leading-8 text-[rgb(var(--text-muted))]"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7, duration: 0.6 }}>
@@ -123,14 +123,14 @@ export function HeroSection() {
                 key={s.label}
                 className="flex items-center gap-3 px-4 py-3"
                 noHover>
-                <div className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-linear-to-br from-cyan-500 to-violet-600 shadow-md">
-                  <s.icon className="h-4 w-4 text-white" />
+                <div className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-[rgb(var(--primary))]/25 bg-[rgb(var(--primary))]/12">
+                  <s.icon className="h-4 w-4 text-[rgb(var(--primary))]" />
                 </div>
                 <div>
-                  <div className="text-sm font-semibold text-gray-900 dark:text-white">
+                  <div className="rcn-mono text-sm font-semibold text-[rgb(var(--text))]">
                     {s.value}
                   </div>
-                  <div className="text-xs text-gray-600 dark:text-white/55">
+                  <div className="text-xs text-[rgb(var(--text-soft))]">
                     {s.label}
                   </div>
                 </div>
@@ -143,14 +143,10 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.95, duration: 0.6 }}>
-            <Link
-              href="/plans"
-              className="inline-flex h-12 items-center justify-center rounded-2xl border border-gray-200 bg-white/80 px-5 text-sm font-semibold text-gray-900 backdrop-blur-xl transition-colors hover:bg-white dark:border-white/10 dark:bg-white/6 dark:text-white dark:hover:bg-white/10">
+            <Link href="/plans" className="rcn-btn-secondary">
               Explore Plans
             </Link>
-            <Link
-              href="/contact"
-              className="inline-flex h-12 items-center justify-center rounded-2xl bg-gray-900 px-5 text-sm font-semibold text-white transition-colors hover:bg-gray-800 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-100">
+            <Link href="/contact" className="rcn-btn-primary">
               Get Connected
             </Link>
           </motion.div>
@@ -163,10 +159,7 @@ export function HeroSection() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.3, duration: 0.8 }}>
-          <Card
-            accentColor="rgba(99,102,241,0.15)"
-            className="absolute inset-0 rounded-3xl"
-            noHover>
+          <Card className="absolute inset-0 rounded-3xl" noHover>
             <div />
           </Card>
           <div className="relative h-full w-full overflow-hidden rounded-3xl">
@@ -179,11 +172,11 @@ export function HeroSection() {
             className="absolute -right-4 top-12">
             <GhostCard className="flex items-center gap-2 px-4 py-3" noHover>
               <motion.span
-                className="h-2 w-2 rounded-full bg-emerald-400"
+                className="h-2 w-2 rounded-full bg-[rgb(var(--primary))]"
                 animate={{ opacity: [1, 0.3, 1] }}
                 transition={{ duration: 1.5, repeat: Infinity }}
               />
-              <span className="text-xs font-semibold text-gray-700 dark:text-white/70">
+              <span className="text-xs font-semibold text-[rgb(var(--text-muted))]">
                 Network: All Systems Operational
               </span>
             </GhostCard>
@@ -199,10 +192,10 @@ export function HeroSection() {
             }}
             className="absolute -left-4 bottom-20">
             <GhostCard className="flex items-center gap-2 px-4 py-3" noHover>
-              <div className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-linear-to-br from-cyan-500 to-violet-600 shadow-md">
-                <Zap className="h-4 w-4 text-white" />
+              <div className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-[rgb(var(--primary))]/25 bg-[rgb(var(--primary))]/12">
+                <Zap className="h-4 w-4 text-[rgb(var(--primary))]" />
               </div>
-              <span className="text-xs font-semibold text-gray-700 dark:text-white/70">
+              <span className="text-xs font-semibold text-[rgb(var(--text-muted))]">
                 Fiber-grade backbone
               </span>
             </GhostCard>
@@ -217,14 +210,14 @@ export function HeroSection() {
         transition={{ duration: 2, repeat: Infinity }}
         aria-hidden="true">
         <div className="flex flex-col items-center gap-2">
-          <div className="relative h-10 w-6 rounded-full border border-gray-300/70 bg-white/30 backdrop-blur-xl dark:border-white/20 dark:bg-black/20">
+          <div className="relative h-10 w-6 rounded-full border border-[rgb(var(--primary))]/25 bg-[rgb(var(--surface))]/35 backdrop-blur-xl">
             <motion.div
-              className="absolute left-1/2 top-2 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-gray-500 dark:bg-white/60"
+              className="absolute left-1/2 top-2 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-[rgb(var(--text-soft))]"
               animate={{ y: [0, 12, 0], opacity: [1, 0.3, 1] }}
               transition={{ duration: 1.6, repeat: Infinity }}
             />
           </div>
-          <ArrowDown className="h-5 w-5 text-gray-400 dark:text-white/40" />
+          <ArrowDown className="h-5 w-5 text-[rgb(var(--text-soft))]" />
         </div>
       </motion.div>
     </section>

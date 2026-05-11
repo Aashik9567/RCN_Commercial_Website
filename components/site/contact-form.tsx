@@ -7,7 +7,7 @@ import { useLanguage } from "@/components/i18n/LanguageProvider";
 
 function FieldLabel({ children }: { children: React.ReactNode }) {
   return (
-    <div className="text-sm font-medium text-[color:rgb(var(--text))]">
+    <div className="text-sm font-medium text-[rgb(var(--text))]">
       {children}
     </div>
   );
@@ -15,13 +15,13 @@ function FieldLabel({ children }: { children: React.ReactNode }) {
 
 const inputClassName =
   "mt-2 h-12 w-full rounded-2xl border px-4 shadow-sm outline-none transition " +
-  "border-[color:rgb(var(--border))] bg-[color:rgb(var(--surface))] text-[color:rgb(var(--text))] placeholder:text-[color:rgb(var(--text-soft))] " +
-  "focus:border-[color:rgb(var(--green-300))] focus:ring-2 focus:ring-[color:rgb(var(--primary))]/20";
+  "border-[rgb(var(--border))] bg-[rgb(var(--surface))] text-[rgb(var(--text))] placeholder:text-[rgb(var(--text-soft))] " +
+  "focus:border-[rgb(var(--green-300))] focus:ring-2 focus:ring-[rgb(var(--primary))]/20";
 
 const textareaClassName =
   "mt-2 w-full rounded-2xl border px-4 py-3 shadow-sm outline-none transition " +
-  "border-[color:rgb(var(--border))] bg-[color:rgb(var(--surface))] text-[color:rgb(var(--text))] placeholder:text-[color:rgb(var(--text-soft))] " +
-  "focus:border-[color:rgb(var(--green-300))] focus:ring-2 focus:ring-[color:rgb(var(--primary))]/20";
+  "border-[rgb(var(--border))] bg-[rgb(var(--surface))] text-[rgb(var(--text))] placeholder:text-[rgb(var(--text-soft))] " +
+  "focus:border-[rgb(var(--green-300))] focus:ring-2 focus:ring-[rgb(var(--primary))]/20";
 
 export function ContactForm() {
   const { lang } = useLanguage();
@@ -61,7 +61,7 @@ export function ContactForm() {
   return (
     <form onSubmit={onSubmit} className="space-y-5">
       {status === "draft-opened" ? (
-        <div className="rounded-2xl border border-[color:rgb(var(--green-200))] bg-[color:rgb(var(--green-50))] p-3 text-sm text-[color:rgb(var(--green-900))]">
+        <div className="rounded-2xl border border-[rgb(var(--green-200))] bg-[rgb(var(--green-50))] p-3 text-sm text-[rgb(var(--green-900))]">
           Email draft opened. If it didn’t open, email us at{" "}
           {business.contact.email}.
         </div>

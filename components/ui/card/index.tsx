@@ -11,15 +11,18 @@ const LIFT = {
     transition: { duration: 0.3, ease: [0.4, 0, 0.2, 1] as const },
   },
   hover: {
-    y: -6,
+    y: -4,
     transition: { duration: 0.3, ease: [0.4, 0, 0.2, 1] as const },
   },
 };
+
+type CardSize = "sm" | "md" | "lg";
 
 interface CardProps extends Omit<HTMLMotionProps<"div">, "children"> {
   children: ReactNode;
   accentColor?: string;
   noHover?: boolean;
+  size?: CardSize;
   className?: string;
 }
 
@@ -27,6 +30,7 @@ export function Card({
   children,
   accentColor = "rgb(var(--primary) / 0.18)",
   noHover = false,
+  size = "md",
   className,
   ...props
 }: CardProps) {
@@ -36,19 +40,20 @@ export function Card({
       initial={noHover ? undefined : "rest"}
       whileHover={noHover ? undefined : "hover"}
       className={cn(
-        "relative overflow-hidden rounded-2xl",
-        "border border-gray-300 bg-white",
-        "shadow-md",
-        noHover
-          ? ""
-          : "transition-shadow duration-300 ease-out hover:shadow-lg",
-        "dark:border-gray-700 dark:bg-gray-900/40",
+        "rcn-card",
+        size === "sm"
+          ? "rcn-card-sm"
+          : size === "lg"
+            ? "rcn-card-lg"
+            : "rcn-card-md",
+        noHover ? "" : "rcn-card--hoverable",
+        "relative overflow-hidden",
         className,
       )}
       {...props}>
       {!noHover && (
         <motion.div
-          className="pointer-events-none absolute inset-0 rounded-2xl"
+          className="pointer-events-none absolute inset-0"
           variants={{
             rest: { opacity: 0 },
             hover: { opacity: 1 },
@@ -69,6 +74,7 @@ interface FeaturedCardProps extends Omit<HTMLMotionProps<"div">, "children"> {
   from?: string;
   to?: string;
   noHover?: boolean;
+  size?: CardSize;
   className?: string;
 }
 
@@ -77,6 +83,7 @@ export function FeaturedCard({
   from = "rgb(var(--primary) / 0.14)",
   to = "rgb(var(--green-400) / 0.10)",
   noHover = false,
+  size = "lg",
   className,
   ...props
 }: FeaturedCardProps) {
@@ -86,24 +93,26 @@ export function FeaturedCard({
       initial={noHover ? undefined : "rest"}
       whileHover={noHover ? undefined : "hover"}
       className={cn(
-        "relative overflow-hidden rounded-3xl",
-        "border border-gray-300 bg-white shadow-md",
-        noHover
-          ? ""
-          : "transition-shadow duration-300 ease-out hover:shadow-lg",
-        "dark:border-gray-700 dark:bg-gray-900/40",
+        "rcn-card",
+        size === "sm"
+          ? "rcn-card-sm"
+          : size === "lg"
+            ? "rcn-card-lg"
+            : "rcn-card-md",
+        noHover ? "" : "rcn-card--hoverable",
+        "relative overflow-hidden",
         className,
       )}
       {...props}>
       <div
-        className="pointer-events-none absolute inset-0 rounded-3xl"
+        className="pointer-events-none absolute inset-0"
         style={{
           background: `linear-gradient(135deg, ${from}, transparent 50%, ${to})`,
         }}
       />
 
       <motion.div
-        className="pointer-events-none absolute inset-0 rounded-3xl"
+        className="pointer-events-none absolute inset-0"
         variants={{
           rest: { opacity: 0.4 },
           hover: { opacity: noHover ? 0.4 : 1 },
@@ -122,6 +131,7 @@ interface GhostCardProps extends Omit<HTMLMotionProps<"div">, "children"> {
   children: ReactNode;
   pill?: boolean;
   noHover?: boolean;
+  size?: CardSize;
   className?: string;
 }
 
@@ -129,6 +139,7 @@ export function GhostCard({
   children,
   pill = false,
   noHover = false,
+  size = "sm",
   className,
   ...props
 }: GhostCardProps) {
@@ -137,12 +148,15 @@ export function GhostCard({
       whileHover={noHover ? undefined : { scale: 1.03 }}
       transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
       className={cn(
-        pill ? "rounded-full" : "rounded-xl",
-        "overflow-hidden border",
-        "border-gray-300 bg-white shadow-md",
-        "transition-shadow duration-200",
-        noHover ? "" : "hover:shadow-lg hover:border-green-300",
-        "dark:border-gray-700 dark:bg-gray-900/40 dark:hover:border-green-400/60",
+        "rcn-card",
+        size === "sm"
+          ? "rcn-card-sm"
+          : size === "lg"
+            ? "rcn-card-lg"
+            : "rcn-card-md",
+        noHover ? "" : "rcn-card--hoverable",
+        pill ? "rounded-full" : "",
+        "overflow-hidden",
         className,
       )}
       {...props}>

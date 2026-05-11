@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
-import { ChevronDown } from "lucide-react";
+import { Plus } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -16,7 +16,10 @@ export const AccordionItem = React.forwardRef<
     ref={ref}
     className={cn(
       "overflow-hidden rounded-2xl border",
-      "border-[color:rgb(var(--border))] bg-[color:rgb(var(--surface))]",
+      "border-[rgb(var(--primary))]/22 bg-[rgb(var(--surface))]/72",
+      "backdrop-blur-xl",
+      "transition-colors",
+      "data-[state=open]:border-[rgb(var(--primary))]/40",
       className,
     )}
     {...props}
@@ -33,18 +36,18 @@ export const AccordionTrigger = React.forwardRef<
       ref={ref}
       className={cn(
         "group flex flex-1 items-center justify-between gap-4",
-        "px-5 py-4 text-left text-sm font-semibold",
-        "text-[color:rgb(var(--text))]",
-        "transition hover:bg-[color:rgb(var(--surface-2))]",
+        "px-5 py-4 text-left text-[1rem] font-semibold",
+        "text-[rgb(var(--text))]",
+        "transition-colors hover:bg-[rgb(var(--surface-2))]/45",
         className,
       )}
       {...props}>
       <span>{children}</span>
-      <ChevronDown
+      <Plus
         className={cn(
           "h-4 w-4 shrink-0",
-          "text-[color:rgb(var(--text-soft))] transition duration-200",
-          "group-data-[state=open]:rotate-180",
+          "text-[rgb(var(--text-soft))] transition duration-200",
+          "group-data-[state=open]:rotate-45",
         )}
       />
     </AccordionPrimitive.Trigger>
@@ -65,8 +68,8 @@ export const AccordionContent = React.forwardRef<
     {...props}>
     <div
       className={cn(
-        "px-5 pb-5 text-sm leading-6",
-        "text-[color:rgb(var(--text-muted))]",
+        "px-5 pb-5 text-[0.95rem] leading-7",
+        "text-[rgb(var(--text-muted))]",
         className,
       )}>
       {children}

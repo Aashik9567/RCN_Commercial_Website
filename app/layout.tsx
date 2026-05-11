@@ -1,24 +1,32 @@
 import type { Metadata } from "next";
 import {
   DM_Sans,
+  DM_Mono,
   Noto_Sans_Devanagari,
-  Plus_Jakarta_Sans,
+  Playfair_Display,
 } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
 
 import { business } from "@/data/business";
 
-const headingFont = Plus_Jakarta_Sans({
-  variable: "--font-heading",
+const monoFont = DM_Mono({
+  variable: "--font-mono",
   subsets: ["latin"],
-  weight: ["600", "700", "800"],
+  weight: ["400", "500"],
 });
 
 const bodyFont = DM_Sans({
   variable: "--font-body",
   subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: ["400", "500", "600"],
+});
+
+const headingSerif = Playfair_Display({
+  variable: "--font-heading",
+  subsets: ["latin"],
+  weight: ["600", "700", "800"],
+  style: ["normal", "italic"],
 });
 
 const nepaliFont = Noto_Sans_Devanagari({
@@ -43,8 +51,9 @@ export default function RootLayout({
       lang="en"
       suppressHydrationWarning
       data-scroll-behavior="smooth"
-      className={`${headingFont.variable} ${bodyFont.variable} ${nepaliFont.variable} antialiased`}>
+      className={`${headingSerif.variable} ${bodyFont.variable} ${monoFont.variable} ${nepaliFont.variable} antialiased`}>
       <body suppressHydrationWarning className="min-h-dvh">
+        <div className="rcn-bg" aria-hidden="true" />
         <Providers>{children}</Providers>
       </body>
     </html>

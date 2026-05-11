@@ -38,7 +38,7 @@ function BillingToggle({
   onChange: (v: BillingCycle) => void;
 }) {
   return (
-    <div className="inline-flex rounded-2xl border border-[color:rgb(var(--border))] bg-[color:rgb(var(--surface))] p-1">
+    <div className="inline-flex rounded-full border border-[rgb(var(--primary))]/25 bg-[rgb(var(--surface))]/80 p-1 backdrop-blur">
       {(["monthly", "yearly"] as const).map((opt) => {
         const active = billing === opt;
         return (
@@ -47,10 +47,10 @@ function BillingToggle({
             type="button"
             onClick={() => onChange(opt)}
             className={
-              "h-10 rounded-xl px-4 text-sm font-semibold transition " +
+              "h-10 rounded-full px-4 text-sm font-semibold transition " +
               (active
-                ? "bg-[color:rgb(var(--primary))] text-white"
-                : "text-[color:rgb(var(--text-muted))] hover:text-[color:rgb(var(--text))]")
+                ? "bg-[rgb(var(--primary))] text-[rgb(var(--bg))]"
+                : "text-[rgb(var(--text-muted))] hover:text-[rgb(var(--text))]")
             }>
             {opt === "monthly"
               ? t(lang, "pricingMonthly")
@@ -78,12 +78,12 @@ export function Pricing({ withHeader = true }: { withHeader?: boolean } = {}) {
           <Reveal>
             <div className="mx-auto max-w-2xl text-center">
               <div className="rcn-badge mx-auto">
-                <span className="h-1.5 w-1.5 rounded-full bg-[color:rgb(var(--primary))]" />
+                <span className="h-1.5 w-1.5 rounded-full bg-[rgb(var(--primary))]" />
                 <span className="uppercase tracking-widest">
                   {t(lang, "sectionPricing")}
                 </span>
               </div>
-              <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-[color:rgb(var(--text))] sm:text-4xl">
+              <h2 className="mt-5 text-[clamp(1.7rem,3.5vw,2.6rem)] font-bold tracking-tight text-[rgb(var(--text))]">
                 {t(lang, "sectionPricing")}
               </h2>
             </div>
@@ -108,33 +108,45 @@ export function Pricing({ withHeader = true }: { withHeader?: boolean } = {}) {
             const featured = Boolean(plan.highlight);
             const price = priceFor(plan.monthlyPrice, billing);
 
+            const accent =
+              plan.id === "premium"
+                ? "rgb(var(--cyan) / 0.22)"
+                : featured
+                  ? "rgb(var(--gold) / 0.28)"
+                  : "rgb(var(--primary) / 0.22)";
+
             return (
               <Reveal key={plan.id} delay={idx * 0.04}>
                 <Card
+                  size="lg"
+                  accentColor={accent}
                   className={
-                    "flex h-full flex-col p-7 " +
-                    (featured
-                      ? "ring-1 ring-[color:rgb(var(--primary))]/20"
-                      : "")
+                    "flex h-full flex-col " +
+                    (featured ? "rcn-plan-featured" : "")
                   }>
                   {featured ? (
-                    <div className="mb-4 inline-flex w-fit items-center rounded-full bg-[color:rgb(var(--green-50))] px-3 py-1 text-xs font-semibold text-[color:rgb(var(--green-900))]">
+                    <div className="mb-5 inline-flex w-fit items-center rounded-full border border-[rgb(var(--gold))] bg-[rgb(var(--gold))]/15 px-3 py-1 text-xs font-semibold text-[rgb(var(--gold))]">
                       {t(lang, "pricingMostPopular")}
                     </div>
                   ) : null}
 
-                  <div className="text-sm font-semibold text-[color:rgb(var(--text))]">
+                  <div className="text-xl font-semibold text-[rgb(var(--text))]">
                     {plan.name[lang]}
                   </div>
-                  <div className="mt-1 text-sm text-[color:rgb(var(--text-muted))]">
-                    {plan.speedMbps} Mbps
+
+                  <div className="mt-4">
+                    <span className="rcn-card rcn-card-sm inline-flex border-[rgb(var(--primary))]/12 bg-[rgb(var(--surface))]/50">
+                      <span className="rcn-mono font-medium text-[rgb(var(--primary))]">
+                        {plan.speedMbps} Mbps
+                      </span>
+                    </span>
                   </div>
 
                   <div className="mt-6 flex items-baseline gap-2">
-                    <div className="text-4xl font-extrabold tracking-tight text-[color:rgb(var(--text))]">
+                    <div className="rcn-mono text-4xl font-semibold tracking-tight text-[rgb(var(--text))]">
                       {formatNpr(price)}
                     </div>
-                    <div className="text-sm text-[color:rgb(var(--text-soft))]">
+                    <div className="text-sm text-[rgb(var(--text-soft))]">
                       {billing === "monthly" ? "/mo" : "/yr"}
                     </div>
                   </div>
@@ -144,8 +156,8 @@ export function Pricing({ withHeader = true }: { withHeader?: boolean } = {}) {
                       {plan.features[lang].map((f) => (
                         <li
                           key={f}
-                          className="flex items-start gap-3 text-sm text-[color:rgb(var(--text-muted))]">
-                          <span className="mt-0.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-[color:rgb(var(--green-50))] text-[color:rgb(var(--green-800))]">
+                          className="flex items-start gap-3 text-sm text-[rgb(var(--text-muted))]">
+                          <span className="mt-0.5 inline-flex h-5 w-5 items-center justify-center rounded-full border border-[rgb(var(--primary))]/25 bg-[rgb(var(--primary))]/12 text-[rgb(var(--primary))]">
                             <Check className="h-3 w-3" />
                           </span>
                           <span className="leading-6">{f}</span>
@@ -153,7 +165,7 @@ export function Pricing({ withHeader = true }: { withHeader?: boolean } = {}) {
                       ))}
                     </ul>
                   ) : (
-                    <div className="mt-6 text-sm text-[color:rgb(var(--text-soft))]">
+                    <div className="mt-6 text-sm text-[rgb(var(--text-soft))]">
                       {/* TODO: add real data to plan.features */}
                     </div>
                   )}
@@ -162,7 +174,11 @@ export function Pricing({ withHeader = true }: { withHeader?: boolean } = {}) {
                   <Link
                     href="/contact"
                     className={
-                      featured ? "rcn-btn-primary" : "rcn-btn-secondary"
+                      plan.id === "premium"
+                        ? "rcn-btn-cyan"
+                        : featured
+                          ? "rcn-btn-primary"
+                          : "rcn-btn-secondary"
                     }>
                     {t(lang, "ctaGetConnected")}
                   </Link>

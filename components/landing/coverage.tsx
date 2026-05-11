@@ -37,22 +37,22 @@ export function Coverage() {
         <Reveal>
           <div className="mx-auto max-w-2xl text-center">
             <div className="rcn-badge mx-auto">
-              <MapPin className="h-4 w-4 text-[color:rgb(var(--primary))]" />
+              <MapPin className="h-4 w-4 text-[rgb(var(--primary))]" />
               <span className="uppercase tracking-widest">
                 {t(lang, "sectionCoverage")}
               </span>
             </div>
-            <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-[color:rgb(var(--text))] sm:text-4xl">
+            <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-[rgb(var(--text))] sm:text-4xl">
               {t(lang, "sectionCoverage")}
             </h2>
-            <p className="mt-4 text-[color:rgb(var(--text-muted))]">
+            <p className="mt-4 text-[rgb(var(--text-muted))]">
               {business.coverage.shortNote[lang]}
             </p>
           </div>
         </Reveal>
 
         <Reveal delay={0.1}>
-          <Card noHover className="mx-auto mt-10 max-w-2xl p-6 sm:p-8">
+          <Card noHover size="md" className="mx-auto mt-10 max-w-2xl">
             <form
               className="grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end"
               onSubmit={(e) => {
@@ -60,14 +60,14 @@ export function Coverage() {
                 window.location.href = buildCoverageUrl(area);
               }}>
               <label className="block">
-                <div className="text-sm font-semibold text-[color:rgb(var(--text))]">
+                <div className="text-sm font-semibold text-[rgb(var(--text))]">
                   {t(lang, "coverageInputLabel")}
                 </div>
                 <input
                   value={area}
                   onChange={(e) => setArea(e.target.value)}
                   placeholder={t(lang, "coverageInputPlaceholder")}
-                  className="mt-2 h-12 w-full rounded-2xl border border-[color:rgb(var(--border))] bg-[color:rgb(var(--surface))] px-4 text-[color:rgb(var(--text))] placeholder:text-[color:rgb(var(--text-soft))] outline-none focus:border-[color:rgb(var(--green-300))] focus:ring-2 focus:ring-[color:rgb(var(--primary))]/20"
+                  className="mt-2 h-12 w-full rounded-2xl border border-[rgb(var(--primary))]/20 bg-[rgb(var(--surface))]/55 px-4 text-[rgb(var(--text))] placeholder:text-[rgb(var(--text-soft))] outline-none backdrop-blur focus:border-[rgb(var(--primary))]/45 focus:ring-2 focus:ring-[rgb(var(--primary))]/20"
                 />
               </label>
               <button
