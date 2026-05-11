@@ -1,13 +1,6 @@
 @import "tailwindcss";
 
-/*
-  RCN Design System (Emerald Dark)
-  - Token-driven (rgb triplets) so components can use `rgb(var(--token) / <alpha>)`
-  - Default theme is dark to avoid FOUC
-*/
-
 :root {
-  /* Legacy scales kept for compatibility with existing components */
   --slate-50: 248 250 252;
   --slate-100: 241 245 249;
   --slate-200: 226 232 240;
@@ -32,52 +25,62 @@
   --green-900: 20 83 45;
   --green-950: 5 46 22;
 
-  /* Brand / accents (rgb triplets) */
-  --primary: 16 185 129; /* emerald #10b981 */
-  --primary-deep: 5 150 105; /* #059669 */
-  --forest-mid: 22 101 52; /* #166534 */
-  --forest-dark: 20 83 45; /* #14532d */
-  --sage: 74 222 128; /* #4ade80 */
-  --mint: 134 239 172; /* #86efac */
-  --gold: 212 168 83; /* #d4a853 */
-  --gold-bright: 240 192 96; /* #f0c060 */
-  --cyan: 6 182 212; /* #06b6d4 */
-  --forest-featured: 16 100 60; /* used for featured plan glass */
+  --primary: 16 185 129;
+  --primary-deep: 5 150 105;
+  --forest-mid: 22 101 52;
+  --forest-dark: 20 83 45;
+  --sage: 74 222 128;
+  --mint: 134 239 172;
+  --gold: 212 168 83;
+  --gold-bright: 240 192 96;
+  --cyan: 6 182 212;
+  --forest-featured: 16 100 60;
 
-  /* Semantic surfaces (rgb triplets) */
-  --bg: 8 15 10; /* #080f0a */
-  --surface: 13 26 16; /* #0d1a10 */
-  --surface-2: 18 32 24; /* #122018 */
-  --footer-bg: 6 13 8; /* #060d08 */
+  --bg: 8 15 10;
+  --surface: 13 26 16;
+  --surface-2: 18 32 24;
+  --footer-bg: 6 13 8;
 
-  /* Semantic text (rgb triplets) */
-  --text: 240 253 244; /* #f0fdf4 */
-  --text-muted: 187 247 208; /* #bbf7d0 */
-  --text-soft: 107 114 128; /* #6b7280 */
-  --text-dim: 55 65 81; /* #374151 */
+  --text: 240 253 244;
+  --text-muted: 187 247 208;
+  --text-soft: 107 114 128;
+  --text-dim: 55 65 81;
 
-  /* Default border token (used where no alpha is specified) */
-  --border: 20 83 45; /* forest-dark */
+  --border: 20 83 45;
 
-  /* Shadows (not colors) */
   --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.35);
   --shadow-md: 0 10px 28px rgb(0 0 0 / 0.55);
 
   color-scheme: dark;
 }
 
-/* Optional light theme (kept for the theme toggle) */
 .light {
   --bg: 248 250 252;
   --surface: 255 255 255;
   --surface-2: 241 245 249;
-  --border: 226 232 240;
+  --footer-bg: 226 232 240;
+  --border: 209 250 229;
   --text: 15 23 42;
-  --text-muted: 71 85 105;
-  --text-soft: 100 116 139;
+  --text-muted: 55 65 81;
+  --text-soft: 107 114 128;
   --text-dim: 148 163 184;
+  --primary: 22 163 74;
+  --primary-deep: 21 128 61;
+  --forest-mid: 22 101 52;
+  --forest-dark: 20 83 45;
+  --mint: 134 239 172;
+  --surface: 255 255 255;
 
   color-scheme: light;
+}
+
+.light header > div {
+  border-color: rgb(226 232 240) !important;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.08);
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 html,
@@ -90,6 +93,7 @@ body {
   color: rgb(var(--text));
   font-family:
     var(--font-body),
+    var(--font-nepali),
     ui-sans-serif,
     system-ui,
     -apple-system,
@@ -116,13 +120,14 @@ h3 {
     "Liberation Mono", "Courier New", monospace;
 }
 
-/* Background mesh: fixed layer behind all content */
 .rcn-bg {
   position: fixed;
   inset: 0;
-  z-index: -50;
+  z-index: -1;
   background: rgb(var(--bg));
   overflow: hidden;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
 .rcn-bg::before {
@@ -145,7 +150,6 @@ h3 {
       rgb(var(--forest-mid) / 0.04),
       transparent 70%
     );
-  filter: blur(0px);
   transform: translate3d(0, 0, 0);
   animation: rcn-orbs 20s ease-in-out infinite;
 }
@@ -170,8 +174,8 @@ h3 {
       transparent 60px
     ),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.25'/%3E%3C/svg%3E");
-  opacity: 0.35;
-  mix-blend-mode: overlay;
+  opacity: 0.18;
+  mix-blend-mode: screen;
 }
 
 @layer components {
@@ -197,6 +201,7 @@ h3 {
       inset 0 1px 0 rgb(var(--mint) / 0.18),
       0 8px 24px rgb(0 0 0 / 0.55),
       0 0 32px rgb(var(--primary) / 0.22);
+    transform: translateY(-4px);
   }
 
   .rcn-card-sm {
@@ -232,6 +237,7 @@ h3 {
       inset 0 1px 0 rgb(var(--gold) / 0.3),
       0 0 64px rgb(var(--gold) / 0.3),
       0 12px 40px rgb(0 0 0 / 0.65);
+    transform: translateY(-6px) scale(1.01);
   }
 }
 
@@ -246,7 +252,6 @@ h3 {
 }
 
 @layer utilities {
-  /* Mandatory spacing system */
   .container-section {
     @apply py-20 md:py-28;
   }

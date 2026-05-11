@@ -59,6 +59,7 @@ export function Navbar() {
         className={
           "border-b backdrop-blur-md " +
           "shadow-[0_4px_24px_rgba(0,0,0,0.4)] " +
+          "light:shadow-[0_2px_8px_rgba(0,0,0,0.08)] " +
           (scrolled ? "bg-[rgb(var(--bg))]/90" : "bg-[rgb(var(--bg))]/85")
         }
         style={{ borderColor: "rgb(var(--primary) / 0.12)" }}>
@@ -114,7 +115,7 @@ export function Navbar() {
               <LanguageToggle />
             </div>
 
-            <div className="hidden items-center gap-2 md:flex">
+            <div className="hidden flex-nowrap items-center gap-2 md:flex">
               <Link href="/plans" className="rcn-btn-secondary">
                 {t(lang, "ctaViewPlans")}
               </Link>
