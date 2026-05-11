@@ -5,6 +5,8 @@ import { Gauge, MapPin, ShieldCheck, Timer } from "lucide-react";
 import { Container } from "./container";
 import { Reveal } from "./reveal";
 import { AnimatedNumber } from "./animated-number";
+import { Card, GhostCard } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 type Stat = {
   label: string;
@@ -22,7 +24,7 @@ const STATS: Stat[] = [
     description: "Homes & businesses connected",
     value: 10000,
     suffix: "+",
-    icon: <MapPin className="h-6 w-6" />,
+    icon: <MapPin className="h-5 w-5" />,
   },
   {
     label: "Uptime target",
@@ -30,33 +32,38 @@ const STATS: Stat[] = [
     value: 99.9,
     decimals: 1,
     suffix: "%",
-    icon: <ShieldCheck className="h-6 w-6" />,
+    icon: <ShieldCheck className="h-5 w-5" />,
   },
   {
     label: "Avg. install",
     description: "Quick setup & activation",
     value: 24,
     suffix: "h",
-    icon: <Timer className="h-6 w-6" />,
+    icon: <Timer className="h-5 w-5" />,
   },
   {
     label: "Peak speed",
     description: "Plans up to",
     value: 200,
     suffix: " Mbps",
-    icon: <Gauge className="h-6 w-6" />,
+    icon: <Gauge className="h-5 w-5" />,
   },
 ];
 
 function StatCard({ stat }: { stat: Stat }) {
   return (
-    <div className="card-interactive group hover:border-gray-300 dark:hover:border-gray-600">
+    <Card size="md" className="group">
       <div className="flex items-center gap-4">
-        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gray-100 text-gray-700 transition-transform duration-300 group-hover:scale-110 dark:bg-gray-800 dark:text-gray-200">
+        <div
+          className={cn(
+            "mb-5 inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl",
+            "border border-[rgb(var(--primary))]/25 bg-[rgb(var(--primary))]/12",
+            "text-[rgb(var(--primary))] transition-transform duration-300 group-hover:scale-110",
+          )}>
           {stat.icon}
         </div>
         <div className="flex-1">
-          <div className="text-xs font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-400">
+          <div className="mb-3 text-xs font-semibold uppercase tracking-widest text-[rgb(var(--text-soft))]">
             {stat.label}
           </div>
           <AnimatedNumber
@@ -64,14 +71,14 @@ function StatCard({ stat }: { stat: Stat }) {
             decimals={stat.decimals}
             prefix={stat.prefix}
             suffix={stat.suffix}
-            className="mt-1 block text-3xl font-bold tracking-tight text-gray-900 dark:text-white"
+            className="rcn-mono block text-3xl font-semibold tracking-tight text-[rgb(var(--text))]"
           />
         </div>
       </div>
-      <p className="mt-5 text-sm leading-6 text-gray-600 dark:text-gray-400">
+      <p className="text-sm leading-6 text-[rgb(var(--text-muted))]">
         {stat.description}
       </p>
-    </div>
+    </Card>
   );
 }
 
@@ -81,15 +88,18 @@ export function WhyChooseUs() {
       <Container>
         <Reveal>
           <div className="mx-auto max-w-2xl text-center">
-            <div className="inline-block rounded-full border border-gray-200 bg-gray-50 px-4 py-1 text-sm font-semibold text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
-              Why choose us
-            </div>
-            <h2 className="mt-4 text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
-              <span className="text-gray-900 dark:text-gray-100">
-                Built for performance
+            <GhostCard
+              pill
+              className="mx-auto inline-flex items-center gap-2 px-4 py-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-[rgb(var(--primary))]" />
+              <span className="text-xs font-semibold uppercase tracking-widest text-[rgb(var(--primary))]">
+                Why choose us
               </span>
+            </GhostCard>
+            <h2 className="mt-5 text-[clamp(1.9rem,4.2vw,3rem)] font-bold tracking-tight text-[rgb(var(--text))]">
+              Built for performance
             </h2>
-            <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-400">
+            <p className="mt-5 text-[1.05rem] leading-8 text-[rgb(var(--text-muted))]">
               From installation to daily usage, we prioritize reliability,
               consistency, and exceptional support for every customer.
             </p>

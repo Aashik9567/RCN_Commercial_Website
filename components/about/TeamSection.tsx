@@ -12,6 +12,8 @@ import {
 } from "lucide-react";
 
 import { Container } from "@/components/landing/container";
+import { Card, GhostCard } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 type TeamMember = {
   name: string;
@@ -75,9 +77,9 @@ export function TeamSection() {
   return (
     <section ref={ref} id="team" className="relative py-24 sm:py-32">
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute left-1/2 top-0 h-px w-3/4 -translate-x-1/2 bg-linear-to-r from-transparent via-cyan-500/30 to-transparent" />
-        <div className="absolute left-10 top-24 h-72 w-72 rounded-full bg-cyan-500/10 blur-3xl" />
-        <div className="absolute right-10 bottom-20 h-72 w-72 rounded-full bg-violet-500/10 blur-3xl" />
+        <div className="absolute left-1/2 top-0 h-px w-3/4 -translate-x-1/2 bg-linear-to-r from-transparent via-[rgb(var(--primary))]/30 to-transparent" />
+        <div className="absolute left-10 top-24 h-72 w-72 rounded-full bg-[rgb(var(--primary))]/10 blur-3xl" />
+        <div className="absolute right-10 bottom-20 h-72 w-72 rounded-full bg-[rgb(var(--cyan))]/10 blur-3xl" />
       </div>
 
       <Container className="relative">
@@ -86,18 +88,23 @@ export function TeamSection() {
           initial={{ opacity: 0, y: 22 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}>
-          <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/25 bg-cyan-500/10 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-cyan-700 backdrop-blur-xl dark:text-cyan-300">
+          <GhostCard
+            pill
+            className="inline-flex items-center gap-2 px-4 py-2"
+            noHover>
             <Zap className="h-3.5 w-3.5" />
-            Our Team
-          </div>
-          <h2 className="mt-5 text-4xl font-black tracking-tight text-gray-900 dark:text-white sm:text-5xl">
+            <span className="text-xs font-semibold uppercase tracking-widest text-[rgb(var(--primary))]">
+              Our Team
+            </span>
+          </GhostCard>
+          <h2 className="mt-5 text-4xl font-black tracking-tight text-[rgb(var(--text))] sm:text-5xl">
             People behind the
-            <span className="bg-linear-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-[rgb(var(--primary))] to-[rgb(var(--cyan))] bg-clip-text text-transparent">
               {" "}
               network
             </span>
           </h2>
-          <p className="mt-5 text-lg leading-8 text-gray-700 dark:text-white/55">
+          <p className="mt-5 text-lg leading-8 text-[rgb(var(--text-muted))]">
             A small, dedicated team that treats every connection like it matters
             — because it does.
           </p>
@@ -105,50 +112,53 @@ export function TeamSection() {
 
         <div className="grid gap-6 md:grid-cols-3">
           {TEAM.map((m, i) => (
-            <motion.article
+            <Card
               key={m.name}
-              className="group relative overflow-hidden rounded-3xl border border-gray-200/80 bg-white/70 p-8 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 dark:border-white/8 dark:bg-white/4"
+              size="md"
+              className="group flex flex-col items-center text-center"
               initial={{ opacity: 0, y: 35 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: i * 0.12, duration: 0.6 }}>
-              <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-                <div className="absolute -inset-24 bg-linear-to-br from-cyan-500/8 via-transparent to-violet-500/8" />
-              </div>
-
               <div className="relative">
                 <div className="mb-6 flex items-center gap-3">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-linear-to-br from-cyan-500/20 to-violet-500/20 text-cyan-700 dark:text-cyan-300">
+                  <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl border border-[rgb(var(--primary))]/25 bg-[rgb(var(--primary))]/12 text-[rgb(var(--primary))] transition-transform duration-300 group-hover:scale-110">
                     <MemberIcon kind={m.icon} />
                   </div>
                   <div>
-                    <div className="text-lg font-black text-gray-900 dark:text-white">
+                    <div className="mb-3 text-lg font-bold text-[rgb(var(--text))]">
                       {m.name}
                     </div>
-                    <div className="text-sm text-gray-600 dark:text-white/45">
+                    <div className="text-xs text-[rgb(var(--text-soft))]">
                       {m.title}
                     </div>
                   </div>
                 </div>
 
-                <p className="text-sm leading-7 text-gray-700 dark:text-white/55">
+                <p className="text-sm leading-6 text-[rgb(var(--text-muted))]">
                   {m.bio}
                 </p>
 
                 <div className="mt-7 flex items-center gap-2">
-                  {m.links.map((l) => (
-                    <motion.a
-                      key={l.type}
-                      href={l.href}
-                      aria-label={`${m.name} ${l.type}`}
-                      className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-gray-200/70 bg-white/70 text-gray-700 backdrop-blur-xl transition-colors hover:border-cyan-500/30 hover:text-cyan-700 dark:border-white/10 dark:bg-white/5 dark:text-white/70 dark:hover:text-cyan-300"
-                      whileHover={{ scale: 1.06 }}
-                      whileTap={{ scale: 0.96 }}>
-                      <LinkIcon type={l.type} />
-                    </motion.a>
-                  ))}
+                  {m.links
+                    .filter((l) => l.href && l.href !== "#")
+                    .map((l) => (
+                      <motion.a
+                        key={l.type}
+                        href={l.href}
+                        aria-label={`${m.name} ${l.type}`}
+                        className={cn(
+                          "inline-flex h-10 w-10 items-center justify-center rounded-xl",
+                          "border border-[rgb(var(--primary))]/18 bg-[rgb(var(--surface))]/55 text-[rgb(var(--text-muted))]",
+                          "backdrop-blur-md transition-colors hover:border-[rgb(var(--primary))]/40 hover:text-[rgb(var(--primary))]",
+                        )}
+                        whileHover={{ scale: 1.06 }}
+                        whileTap={{ scale: 0.96 }}>
+                        <LinkIcon type={l.type} />
+                      </motion.a>
+                    ))}
                 </div>
               </div>
-            </motion.article>
+            </Card>
           ))}
         </div>
       </Container>

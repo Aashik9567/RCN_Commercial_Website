@@ -1,110 +1,79 @@
 "use client";
 
 import * as React from "react";
-import { Cable, Headset, ShieldCheck, Wallet, Wifi } from "lucide-react";
+import { Cable, Headset, ShieldCheck, Wallet, Wifi, Zap } from "lucide-react";
 import { Container } from "./container";
 import { Reveal } from "./reveal";
+import { Card } from "@/components/ui/card";
+import { business } from "@/data/business";
+import { useLanguage } from "@/components/i18n/LanguageProvider";
+import { t } from "@/lib/i18n";
 
-type Feature = {
-  title: string;
-  description: string;
-  icon: React.ReactNode;
-};
-
-function FeatureCard({ feature }: { feature: Feature }) {
-  return (
-    <div className="card-interactive group relative hover:border-gray-300 dark:hover:border-gray-600 hover:-translate-y-2">
-      <div className="relative">
-        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gray-100 text-gray-700 transition-all duration-300 group-hover:scale-110 dark:bg-gray-800 dark:text-gray-200">
-          {feature.icon}
-        </div>
-        <div className="mt-4 text-lg font-bold text-gray-900 dark:text-white">
-          {feature.title}
-        </div>
-        <p className="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400">
-          {feature.description}
-        </p>
-      </div>
-    </div>
-  );
+function iconForFeature(id: (typeof business.features)[number]["id"]) {
+  switch (id) {
+    case "high-speed-internet":
+      return <Wifi className="h-5 w-5" />;
+    case "24-7-support":
+      return <Headset className="h-5 w-5" />;
+    case "transparent-pricing":
+      return <Wallet className="h-5 w-5" />;
+    case "fiber-reliability":
+      return <Cable className="h-5 w-5" />;
+    case "business-plans":
+      return <ShieldCheck className="h-5 w-5" />;
+    case "fast-installation":
+      return <Zap className="h-5 w-5" />;
+  }
 }
 
-const FEATURES: Feature[] = [
-  {
-    title: "High-speed Internet",
-    description:
-      "Smooth streaming, lag-free gaming, and fast downloads backed by a modern network.",
-    icon: <Wifi className="h-6 w-6" />,
-  },
-  {
-    title: "24/7 Customer Support",
-    description: "Friendly local assistance when you need it—day or night.",
-    icon: <Headset className="h-6 w-6" />,
-  },
-  {
-    title: "Affordable, Transparent Plans",
-    description:
-      "Choose a plan that fits your budget with clear pricing and no surprises.",
-    icon: <Wallet className="h-6 w-6" />,
-  },
-  {
-    title: "Fiber-grade Reliability",
-    description:
-      "Stable connectivity engineered for uptime and consistent performance.",
-    icon: <Cable className="h-6 w-6" />,
-  },
-];
-
 export function Features() {
+  const { lang } = useLanguage();
+
+  if (business.features.length < 6) {
+    // TODO: add real data to business.features (must contain 6 items)
+    return null;
+  }
+
   return (
     <section id="features" className="container-section">
       <Container>
         <Reveal>
           <div className="mx-auto max-w-2xl text-center">
-            <span className="inline-block rounded-full border border-gray-200 bg-gray-50 px-4 py-2 text-sm font-semibold text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300">
-              Why Choose Us
-            </span>
-            <h2 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">
-              Built for modern internet needs
+            <div className="rcn-badge mx-auto">
+              <span className="h-1.5 w-1.5 rounded-full bg-[rgb(var(--primary))]" />
+              <span className="uppercase tracking-widest">
+                {t(lang, "sectionFeatures")}
+              </span>
+            </div>
+            <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-[rgb(var(--text))] sm:text-4xl">
+              {t(lang, "sectionFeatures")}
             </h2>
-            <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-400">
-              We combine cutting-edge fiber technology with human-friendly
-              support to deliver experiences that matter.
-            </p>
           </div>
         </Reveal>
 
-        <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {FEATURES.map((feature, idx) => (
-            <Reveal key={feature.title} delay={idx * 0.05}>
-              <FeatureCard feature={feature} />
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {business.features.slice(0, 6).map((feature, idx) => (
+            <Reveal key={feature.id} delay={idx * 0.04}>
+              <Card
+                size="md"
+                accentColor="rgb(var(--primary) / 0.22)"
+                className={
+                  feature.id === "business-plans"
+                    ? "border-dashed border-[rgb(var(--primary))]/35"
+                    : ""
+                }>
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-[10px] border border-[rgb(var(--primary))]/18 bg-[rgb(var(--primary))]/12 text-[rgb(var(--primary))]">
+                    {iconForFeature(feature.id)}
+                  </div>
+                  <h3 className="text-[1.2rem] font-semibold leading-snug text-[rgb(var(--text))]">
+                    {feature.title[lang]}
+                  </h3>
+                </div>
+              </Card>
             </Reveal>
           ))}
         </div>
-
-        <Reveal delay={0.25}>
-          <div className="card mt-16 rounded-3xl">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-200">
-                  <ShieldCheck className="h-6 w-6" />
-                </div>
-                <div>
-                  <div className="text-lg font-bold text-gray-900 dark:text-white">
-                    Enterprise-grade reliability
-                  </div>
-                  <div className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    Proactive monitoring, swift resolution, and dedicated
-                    support.
-                  </div>
-                </div>
-              </div>
-              <div className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                Ask us about business plans →
-              </div>
-            </div>
-          </div>
-        </Reveal>
       </Container>
     </section>
   );
