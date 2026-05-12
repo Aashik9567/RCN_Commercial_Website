@@ -1,158 +1,417 @@
-import type { Metadata } from "next";
+"use client";
 
-import { Mail, MapPin, Phone, Timer } from "lucide-react";
-
+import { motion } from "framer-motion";
+import {
+  Mail,
+  MapPin,
+  Phone,
+  Clock,
+  ArrowRight,
+  CheckCircle2,
+  MessageCircle,
+  Navigation,
+  Headphones,
+  Send,
+} from "lucide-react";
+import { useState } from "react";
 import { Container } from "@/components/landing/container";
 import { Reveal } from "@/components/landing/reveal";
 import { ContactForm } from "@/components/site/contact-form";
 import { SiteShell } from "@/components/site/site-shell";
-import { PageHeader } from "@/components/site/page-header";
-import { Card, FeaturedCard } from "@/components/ui/card";
+const CONTACT_ITEMS = [
+  {
+    icon: Phone,
+    label: "Phone & WhatsApp",
+    value: "+977 9801663644",
+    href: "tel:+9779801663644",
+    color: "rgb(var(--primary))",
+    bg: "rgb(var(--primary) / 0.1)",
+    sublabel: "Call or WhatsApp anytime",
+  },
+  {
+    icon: Mail,
+    label: "Email",
+    value: "raghunathpurcable2010@gmail.com",
+    href: "mailto:raghunathpurcable2010@gmail.com",
+    color: "#06b6d4",
+    bg: "rgba(6,182,212,0.1)",
+    sublabel: "We reply within a few hours",
+  },
+  {
+    icon: MapPin,
+    label: "Office Address",
+    value: "Sabaila-12, Raghunathpur, Nepal",
+    href: "https://www.google.com/maps?q=Sabaila-12%2C%20Raghunathpur%2C%20Nepal",
+    color: "#d4a853",
+    bg: "rgba(212,168,83,0.1)",
+    sublabel: "Walk in Mon–Sat, 9am–6pm",
+  },
+  {
+    icon: Clock,
+    label: "Support Hours",
+    value: "24 / 7 — Always on",
+    href: null,
+    color: "#86efac",
+    bg: "rgba(134,239,172,0.1)",
+    sublabel: "Including public holidays",
+  },
+];
 
-export const metadata: Metadata = {
-  title: "Contact | Raghunathpur Cable Network",
-  description:
-    "Contact Raghunathpur Cable Network for new connections, coverage checks, plan upgrades, and support.",
-};
+const QUICK_ACTIONS = [
+  {
+    icon: CheckCircle2,
+    title: "Check availability",
+    desc: "Confirm fiber coverage at your location",
+    href: "/coverage",
+    color: "rgb(var(--primary))",
+  },
+  {
+    icon: MessageCircle,
+    title: "Browse FAQ",
+    desc: "Quick answers before you call",
+    href: "/faq",
+    color: "#06b6d4",
+  },
+  {
+    icon: Navigation,
+    title: "View plans",
+    desc: "Compare speeds and pricing",
+    href: "/plans",
+    color: "#d4a853",
+  },
+];
 
 export default function ContactPage() {
   return (
     <SiteShell>
-      <PageHeader
-        badge="Contact"
-        title={
-          <>
-            Let’s get you{" "}
-            <span className="text-gray-900 dark:text-gray-100">connected</span>
-          </>
-        }
-        description="Share your location details and we’ll confirm coverage, plans, and the fastest installation slot."
-      />
+      {/* Page header */}
+      <div className="rcn-container pt-16 pb-2 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}>
+          <span className="rcn-badge mb-4 inline-flex">
+            <span
+              className="rcn-pulse-dot h-1.5 w-1.5 rounded-full"
+              style={{ background: "rgb(var(--primary))" }}
+            />
+            Contact
+          </span>
+          <h1
+            className="font-[family-name:var(--font-heading)] text-4xl font-bold leading-tight sm:text-5xl"
+            style={{ color: "rgb(var(--text))" }}>
+            Let's get you{" "}
+            <em style={{ color: "rgb(var(--primary))" }}>connected</em>
+          </h1>
+          <p
+            className="mx-auto mt-4 max-w-xl text-base leading-relaxed"
+            style={{ color: "rgb(var(--text-soft))" }}>
+            Share your location and we'll confirm coverage, recommend a plan,
+            and schedule the fastest installation slot.
+          </p>
+        </motion.div>
+      </div>
 
       <section className="container-section">
         <Container>
-          <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
-            <Reveal>
-              <Card noHover className="p-6 sm:p-8">
-                <h3 className="mb-3 text-lg font-bold text-gray-900 dark:text-white">
-                  Find us on the map
-                </h3>
-                <p className="text-sm leading-6 text-gray-600 dark:text-white/55">
-                  Use the map to confirm your nearest landmark and share your
-                  ward/tole for the fastest coverage check.
-                </p>
-
-                <Card noHover className="mt-6 overflow-hidden p-0">
-                  <iframe
-                    title="Raghunathpur Cable Network on Google Maps"
-                    className="h-105 w-full"
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    src="https://www.google.com/maps?q=Raghunathpur%2C%20Cable%2C%20Network%2C%20Pvt.%2C%20Ltd.&output=embed"
+          {/* Quick action pills */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15, duration: 0.45 }}
+            className="mb-10 flex flex-wrap justify-center gap-3">
+            {QUICK_ACTIONS.map((a) => {
+              const Icon = a.icon;
+              return (
+                <a
+                  key={a.title}
+                  href={a.href}
+                  className="rcn-card rcn-card-sm rcn-card--hoverable inline-flex items-center gap-2.5 no-underline"
+                  style={{ color: "rgb(var(--text-muted))" }}>
+                  <span
+                    className="flex h-7 w-7 items-center justify-center rounded-lg"
+                    style={{ background: `${a.color}18`, color: a.color }}>
+                    <Icon className="h-3.5 w-3.5" />
+                  </span>
+                  <div className="text-left">
+                    <div
+                      className="text-xs font-semibold"
+                      style={{ color: "rgb(var(--text))" }}>
+                      {a.title}
+                    </div>
+                    <div
+                      className="text-xs"
+                      style={{ color: "rgb(var(--text-soft))" }}>
+                      {a.desc}
+                    </div>
+                  </div>
+                  <ArrowRight
+                    className="h-3.5 w-3.5 shrink-0"
+                    style={{ color: a.color }}
                   />
-                </Card>
+                </a>
+              );
+            })}
+          </motion.div>
 
-                <div className="mt-4 flex flex-col gap-2 text-sm sm:flex-row sm:items-center sm:justify-between">
-                  <div className="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400">
-                    <MapPin className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
-                    <span>Raghunathpur Cable Network Pvt. Ltd.</span>
-                  </div>
-                  <a
-                    className="font-medium text-indigo-600 underline-offset-4 hover:underline dark:text-indigo-400"
-                    target="_blank"
-                    rel="noreferrer"
-                    href="https://www.google.com/maps?q=Sabaila-12%2C%20Raghunathpur%2C%20Nepal">
-                    Open in Google Maps
-                  </a>
-                </div>
-              </Card>
-            </Reveal>
-
-            <div className="grid gap-6">
-              <Reveal delay={0.06}>
-                <FeaturedCard
-                  from="rgba(99,102,241,0.08)"
-                  to="rgba(0,229,255,0.05)"
-                  className="p-8">
-                  <h3 className="mb-3 text-xl font-black text-gray-900 dark:text-white">
-                    Request a callback
-                  </h3>
-                  <p className="text-base leading-7 text-gray-700 dark:text-white/65">
-                    Share your details and we’ll confirm coverage, plans, and
-                    the fastest installation slot.
-                  </p>
-                  <div className="mt-6">
-                    <ContactForm />
-                  </div>
-                </FeaturedCard>
-              </Reveal>
-
-              <Reveal delay={0.12}>
-                <Card
-                  accentColor="rgba(0,229,255,0.12)"
-                  className="flex flex-col gap-3 p-5">
-                  <h3 className="mb-3 text-lg font-bold text-gray-900 dark:text-white">
-                    Contact details
-                  </h3>
-                  <div className="space-y-4 text-sm text-gray-700 dark:text-gray-300">
-                    <div className="flex items-start gap-3">
-                      <Phone className="mt-0.5 h-5 w-5 text-indigo-600 dark:text-indigo-400" />
+          <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
+            {/* Left — map + form */}
+            <div className="flex flex-col gap-6">
+              {/* Map */}
+              <Reveal>
+                <div
+                  className="rcn-card rcn-card-md overflow-hidden p-0"
+                  style={{ borderColor: "rgb(var(--primary) / 0.2)" }}>
+                  {/* Map header */}
+                  <div
+                    className="flex items-center justify-between border-b px-5 py-4"
+                    style={{ borderColor: "rgb(var(--primary) / 0.12)" }}>
+                    <div className="flex items-center gap-3">
+                      <span
+                        className="flex h-8 w-8 items-center justify-center rounded-lg"
+                        style={{
+                          background: "rgb(var(--primary) / 0.12)",
+                          color: "rgb(var(--primary))",
+                        }}>
+                        <MapPin className="h-4 w-4" />
+                      </span>
                       <div>
-                        <div className="text-sm font-semibold text-gray-900 dark:text-white">
-                          Phone
+                        <div
+                          className="font-[family-name:var(--font-heading)] text-sm font-semibold"
+                          style={{ color: "rgb(var(--text))" }}>
+                          Raghunathpur Cable Network
                         </div>
-                        <a
-                          className="text-sm leading-6 text-gray-600 hover:text-indigo-600 dark:text-white/55 dark:hover:text-indigo-400"
-                          href="tel:+9779801663644">
-                          +977 9801663644
-                        </a>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-3">
-                      <Mail className="mt-0.5 h-5 w-5 text-indigo-600 dark:text-indigo-400" />
-                      <div>
-                        <div className="text-sm font-semibold text-gray-900 dark:text-white">
-                          Email
-                        </div>
-                        <a
-                          className="text-sm leading-6 text-gray-600 hover:text-indigo-600 dark:text-white/55 dark:hover:text-indigo-400"
-                          href="mailto:raghunathpurcable2010@gmail.com">
-                          raghunathpurcable2010@gmail.com
-                        </a>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-3">
-                      <MapPin className="mt-0.5 h-5 w-5 text-indigo-600 dark:text-indigo-400" />
-                      <div>
-                        <div className="text-sm font-semibold text-gray-900 dark:text-white">
-                          Address
-                        </div>
-                        <div className="text-sm leading-6 text-gray-600 dark:text-white/55">
+                        <div
+                          className="text-xs"
+                          style={{ color: "rgb(var(--text-soft))" }}>
                           Sabaila-12, Raghunathpur, Nepal
                         </div>
                       </div>
                     </div>
+                    <a
+                      href="https://www.google.com/maps?q=Sabaila-12%2C%20Raghunathpur%2C%20Nepal"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="rcn-card rcn-card-sm inline-flex items-center gap-1.5 text-xs font-medium no-underline"
+                      style={{ color: "rgb(var(--primary))" }}>
+                      <Navigation className="h-3 w-3" />
+                      Open Maps
+                    </a>
+                  </div>
 
-                    <div className="flex items-start gap-3">
-                      <Timer className="mt-0.5 h-5 w-5 text-indigo-600 dark:text-indigo-400" />
-                      <div>
-                        <div className="text-sm font-semibold text-gray-900 dark:text-white">
-                          Support
+                  {/* Iframe */}
+                  <div className="relative overflow-hidden">
+                    <iframe
+                      title="Raghunathpur Cable Network on Google Maps"
+                      className="h-72 w-full"
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      src="https://www.google.com/maps?q=Raghunathpur%2C%20Cable%2C%20Network%2C%20Pvt.%2C%20Ltd.&output=embed"
+                      style={{ border: 0, display: "block" }}
+                    />
+                    {/* Overlay tint to match dark theme */}
+                    <div
+                      className="pointer-events-none absolute inset-0"
+                      style={{
+                        background:
+                          "linear-gradient(to bottom, transparent 80%, rgb(var(--surface) / 0.3))",
+                      }}
+                    />
+                  </div>
+
+                  {/* Map footer tip */}
+                  <div
+                    className="flex items-center gap-2 border-t px-5 py-3 text-xs"
+                    style={{
+                      borderColor: "rgb(var(--primary) / 0.12)",
+                      color: "rgb(var(--text-soft))",
+                    }}>
+                    <CheckCircle2
+                      className="h-3.5 w-3.5 shrink-0"
+                      style={{ color: "rgb(var(--primary))" }}
+                    />
+                    Identify your nearest landmark on the map and share it when
+                    you contact us.
+                  </div>
+                </div>
+              </Reveal>
+
+              {/* Contact form */}
+              <Reveal delay={0.08}>
+                <div
+                  className="rcn-card rcn-card-lg"
+                  style={{
+                    borderColor: "rgb(var(--primary) / 0.25)",
+                    background:
+                      "linear-gradient(135deg, rgb(var(--surface) / 0.9), rgb(var(--surface-2) / 0.6))",
+                  }}>
+                  <div className="mb-5 flex items-center gap-3">
+                    <span
+                      className="flex h-10 w-10 items-center justify-center rounded-xl"
+                      style={{
+                        background: "rgb(var(--primary) / 0.12)",
+                        color: "rgb(var(--primary))",
+                      }}>
+                      <Send className="h-5 w-5" />
+                    </span>
+                    <div>
+                      <h3
+                        className="font-[family-name:var(--font-heading)] text-xl font-bold"
+                        style={{ color: "rgb(var(--text))" }}>
+                        Request a callback
+                      </h3>
+                      <p
+                        className="text-sm"
+                        style={{ color: "rgb(var(--text-soft))" }}>
+                        We'll call you back within a few hours
+                      </p>
+                    </div>
+                  </div>
+                  <ContactForm />
+                </div>
+              </Reveal>
+            </div>
+
+            {/* Right — contact details + support */}
+            <div className="flex flex-col gap-5">
+              {/* Contact items */}
+              {CONTACT_ITEMS.map((item, idx) => {
+                const Icon = item.icon;
+                return (
+                  <Reveal key={item.label} delay={0.1 + idx * 0.07}>
+                    <div
+                      className="rcn-card rcn-card-md rcn-card--hoverable flex items-start gap-4"
+                      style={{ borderColor: `${item.color}25` }}>
+                      <span
+                        className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
+                        style={{ background: item.bg, color: item.color }}>
+                        <Icon className="h-5 w-5" />
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <div
+                          className="mb-0.5 text-xs font-semibold uppercase tracking-wider"
+                          style={{ color: item.color }}>
+                          {item.label}
                         </div>
-                        <div className="text-sm leading-6 text-gray-600 dark:text-white/55">
-                          24/7 assistance
+                        {item.href ? (
+                          <a
+                            href={item.href}
+                            target={
+                              item.href.startsWith("http")
+                                ? "_blank"
+                                : undefined
+                            }
+                            rel="noreferrer"
+                            className="block truncate font-[family-name:var(--font-heading)] text-sm font-semibold no-underline transition-colors duration-200"
+                            style={{ color: "rgb(var(--text))" }}
+                            onMouseEnter={(e) =>
+                              (e.currentTarget.style.color = item.color)
+                            }
+                            onMouseLeave={(e) =>
+                              (e.currentTarget.style.color = "rgb(var(--text))")
+                            }>
+                            {item.value}
+                          </a>
+                        ) : (
+                          <div
+                            className="font-[family-name:var(--font-heading)] text-sm font-semibold"
+                            style={{ color: "rgb(var(--text))" }}>
+                            {item.value}
+                          </div>
+                        )}
+                        <div
+                          className="mt-0.5 text-xs"
+                          style={{ color: "rgb(var(--text-soft))" }}>
+                          {item.sublabel}
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </Reveal>
+                );
+              })}
 
-                  <div className="mt-8 rounded-2xl border border-indigo-500/15 bg-indigo-500/10 p-4 text-sm text-indigo-800 dark:text-indigo-200">
-                    Tip: For fastest coverage confirmation, include your nearest
-                    landmark and preferred installation time.
+              {/* Support badge */}
+              <Reveal delay={0.42}>
+                <div
+                  className="rcn-card rcn-card-md"
+                  style={{
+                    borderColor: "rgb(var(--primary) / 0.2)",
+                    background:
+                      "linear-gradient(135deg, rgb(var(--primary) / 0.08), rgb(var(--primary) / 0.03))",
+                  }}>
+                  <div className="mb-3 flex items-center gap-3">
+                    <span
+                      className="flex h-9 w-9 items-center justify-center rounded-xl"
+                      style={{
+                        background: "rgb(var(--primary) / 0.15)",
+                        color: "rgb(var(--primary))",
+                      }}>
+                      <Headphones className="h-4 w-4" />
+                    </span>
+                    <div
+                      className="font-[family-name:var(--font-heading)] font-semibold"
+                      style={{ color: "rgb(var(--text))" }}>
+                      24/7 Support
+                    </div>
+                    <span
+                      className="rcn-card rcn-card-sm ml-auto inline-flex items-center gap-1.5 text-xs"
+                      style={{ color: "rgb(var(--primary))" }}>
+                      <span
+                        className="rcn-pulse-dot h-1.5 w-1.5 rounded-full"
+                        style={{ background: "rgb(var(--primary))" }}
+                      />
+                      Live
+                    </span>
                   </div>
-                </Card>
+                  <p
+                    className="text-sm leading-relaxed"
+                    style={{ color: "rgb(var(--text-soft))" }}>
+                    Our team is available round the clock — including weekends
+                    and public holidays. For urgent issues, call directly for
+                    fastest response.
+                  </p>
+                  <div className="mt-4 flex flex-col gap-2">
+                    <a
+                      href="tel:+9779801663644"
+                      className="rcn-btn-primary w-full justify-center">
+                      <Phone className="h-4 w-4" />
+                      Call Now
+                    </a>
+                    <a
+                      href="mailto:raghunathpurcable2010@gmail.com"
+                      className="rcn-btn-secondary w-full justify-center">
+                      <Mail className="h-4 w-4" />
+                      Send Email
+                    </a>
+                  </div>
+                </div>
+              </Reveal>
+
+              {/* Pro tip */}
+              <Reveal delay={0.5}>
+                <div
+                  className="rcn-card rcn-card-sm flex items-start gap-3"
+                  style={{
+                    borderColor: "rgba(212,168,83,0.25)",
+                    background: "rgba(212,168,83,0.06)",
+                  }}>
+                  <CheckCircle2
+                    className="mt-0.5 h-4 w-4 shrink-0"
+                    style={{ color: "#d4a853" }}
+                  />
+                  <p
+                    className="text-xs leading-relaxed"
+                    style={{ color: "rgb(var(--text-muted))" }}>
+                    <span
+                      className="font-semibold"
+                      style={{ color: "#d4a853" }}>
+                      Pro tip:
+                    </span>{" "}
+                    For fastest coverage confirmation, include your nearest
+                    landmark, ward number, and preferred installation time when
+                    you message us.
+                  </p>
+                </div>
               </Reveal>
             </div>
           </div>
