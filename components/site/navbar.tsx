@@ -82,7 +82,7 @@ export function Navbar() {
               <div className="rcn-mono text-sm font-semibold tracking-wide text-[rgb(var(--text))]">
                 {business.company.shortName}
               </div>
-              <div className="hidden text-xs text-[rgb(var(--text-muted))] sm:block">
+              <div className="hidden text-xs sm:block w-max">
                 {business.company.name}
               </div>
             </div>
@@ -108,14 +108,11 @@ export function Navbar() {
               );
             })}
           </nav>
-
+      
           <div className="flex items-center gap-2">
             <ThemeToggle />
-            <div className="hidden sm:block">
-              <LanguageToggle />
-            </div>
 
-            <div className="hidden flex-nowrap items-center gap-2 md:flex">
+            <div className="hidden flex-nowrap  items-center gap-2 md:flex">
               <Link href="/plans" className="rcn-btn-secondary">
                 {t(lang, "ctaViewPlans")}
               </Link>
