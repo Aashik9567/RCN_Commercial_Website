@@ -1,515 +1,608 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, MapPin, Zap, Shield, Wifi, Activity } from "lucide-react";
+import { ArrowRight, MapPin, Zap, Shield, Wifi } from "lucide-react";
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
-
-import { Container } from "@/components/landing/container";
+import { useRef, useEffect, useCallback, useState } from "react";
 import { Reveal } from "@/components/landing/reveal";
-import { CountUp } from "@/components/ui/CountUp";
-import { business } from "@/data/business";
 import { useLanguage } from "@/components/i18n/LanguageProvider";
 import { t } from "@/lib/i18n";
 
-// ─── Solar System CSS ─────────────────────────────────────────────────────────
+// ─── Types ───────────────────────────────────────────────────────────────────
 
-const SOLAR_CSS = `
-  .ss-root {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  /* Starfield */
-  .ss-star {
-    position: absolute;
-    border-radius: 50%;
-    background: rgb(var(--text));
-    animation: ss-twinkle var(--tw-dur, 3s) ease-in-out infinite;
-    animation-delay: var(--tw-delay, 0s);
-  }
-  @keyframes ss-twinkle {
-    0%, 100% { opacity: 0.15; transform: scale(1); }
-    50%       { opacity: 0.9;  transform: scale(1.4); }
-  }
-
-  /* Sun */
-  .ss-sun-wrap {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 10;
-  }
-  .ss-sun {
-    width: 56px; height: 56px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 38% 35%, #6ee7b7, #10b981 45%, #059669 80%);
-    box-shadow:
-      0 0 0 6px rgba(16,185,129,0.12),
-      0 0 24px 8px rgba(16,185,129,0.35),
-      0 0 56px 16px rgba(16,185,129,0.18);
-    animation: ss-sun-pulse 3s ease-in-out infinite;
-    cursor: pointer;
-    z-index: 10;
-  }
-  @keyframes ss-sun-pulse {
-    0%,100% { box-shadow: 0 0 0 6px rgba(16,185,129,0.12), 0 0 24px 8px rgba(16,185,129,0.35), 0 0 56px 16px rgba(16,185,129,0.18); }
-    50%      { box-shadow: 0 0 0 10px rgba(16,185,129,0.18), 0 0 36px 14px rgba(16,185,129,0.5),  0 0 72px 24px rgba(16,185,129,0.22); }
-  }
-  .ss-corona {
-    position: absolute;
-    top: 50%; left: 50%;
-    border-radius: 50%;
-    border: 1px solid rgba(16,185,129,0.25);
-    transform: translate(-50%,-50%);
-    animation: ss-corona-expand 3s ease-out infinite;
-  }
-  .ss-corona-1 { width: 70px; height: 70px; animation-delay: 0s; }
-  .ss-corona-2 { width: 70px; height: 70px; animation-delay: 1s; }
-  .ss-corona-3 { width: 70px; height: 70px; animation-delay: 2s; }
-  @keyframes ss-corona-expand {
-    0%   { width: 64px; height: 64px; opacity: 0.7; }
-    100% { width: 110px; height: 110px; opacity: 0; }
-  }
-
-  /* Orbits */
-  .ss-orbit-ring {
-    position: absolute;
-    top: 50%; left: 50%;
-    border-radius: 50%;
-    border: 1px solid rgb(var(--text) / 0.1);
-    transform: translate(-50%,-50%);
-    pointer-events: none;
-  }
-
-  /* Orbit tracks that rotate */
-  .ss-orbit-track {
-    position: absolute;
-    top: 50%; left: 50%;
-    border-radius: 50%;
-    transform: translate(-50%,-50%);
-  }
-  .ss-orbit-track-1 { animation: ss-orbit linear infinite 8s; }
-  .ss-orbit-track-2 { animation: ss-orbit linear infinite 15s; }
-  .ss-orbit-track-3 { animation: ss-orbit linear infinite 25s; }
-  @keyframes ss-orbit { from { transform: translate(-50%,-50%) rotate(0deg); } to { transform: translate(-50%,-50%) rotate(360deg); } }
-
-  .ss-root:hover .ss-orbit-track-1,
-  .ss-root:hover .ss-orbit-track-2,
-  .ss-root:hover .ss-orbit-track-3 {
-    animation-play-state: paused;
-  }
-
-  /* Planet wrapper — counter-rotates so label stays upright */
-  .ss-planet-wrap {
-    position: absolute;
-    top: 0; left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    cursor: pointer;
-  }
-  .ss-orbit-track-1 .ss-planet-wrap { animation: ss-counter linear infinite 8s; }
-  .ss-orbit-track-2 .ss-planet-wrap { animation: ss-counter linear infinite 15s; }
-  .ss-orbit-track-3 .ss-planet-wrap { animation: ss-counter linear infinite 25s; }
-  @keyframes ss-counter { from { transform: translateX(-50%) rotate(0deg); } to { transform: translateX(-50%) rotate(-360deg); } }
-
-  /* Planet orb */
-  .ss-planet {
-    border-radius: 50%;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-    position: relative;
-  }
-  .ss-planet-wrap:hover .ss-planet {
-    transform: scale(1.35);
-  }
-
-  /* Tooltip */
-  .ss-tooltip {
-    position: absolute;
-    bottom: calc(100% + 10px);
-    left: 50%;
-    transform: translateX(-50%) translateY(4px);
-    background: rgb(var(--surface) / 0.92);
-    border: 1px solid rgb(var(--text) / 0.12);
-    border-radius: 8px;
-    padding: 6px 10px;
-    white-space: nowrap;
-    font-size: 11px;
-    font-weight: 600;
-    color: rgb(var(--text));
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s ease, transform 0.2s ease;
-    backdrop-filter: blur(8px);
-  }
-  .ss-planet-wrap:hover .ss-tooltip {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
-
-  /* Planet label */
-  .ss-planet-label {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    opacity: 0.8;
-    white-space: nowrap;
-  }
-
-  /* Data packet dots */
-  .ss-packet {
-    position: absolute;
-    width: 5px; height: 5px;
-    border-radius: 50%;
-    top: 0; left: 50%;
-    margin-left: -2.5px;
-  }
-  .ss-orbit-track-1 .ss-packet { animation: ss-counter linear infinite 8s; animation-delay: -4s; }
-  .ss-orbit-track-2 .ss-packet { animation: ss-counter linear infinite 15s; animation-delay: -7s; }
-  .ss-orbit-track-3 .ss-packet { animation: ss-counter linear infinite 25s; animation-delay: -12s; }
-
-  /* RCN label on sun */
-  .ss-sun-label {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 10px;
-    font-weight: 800;
-    color: #fff;
-    letter-spacing: 0.08em;
-    pointer-events: none;
-    z-index: 11;
-    text-shadow: 0 1px 4px rgba(0,0,0,0.5);
-  }
-`;
-
-// ─── Stars ────────────────────────────────────────────────────────────────────
-
-function prng(seed: number) {
-  let t = seed + 0x6d2b79f5;
-  t = Math.imul(t ^ (t >>> 15), t | 1);
-  t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-  return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+interface StatItem {
+  value: number;
+  decimals: number;
+  suffix: string;
+  label: string;
 }
 
-const STARS = Array.from({ length: 52 }, (_, i) => {
-  const base = 0x1f2e3d4c + i * 4;
-  return {
-    id: i,
-    top: `${prng(base) * 100}%`,
-    left: `${prng(base + 1) * 100}%`,
-    size: prng(base + 2) * 2 + 1,
-    dur: `${2 + prng(base + 3) * 3}s`,
-    delay: `${prng(base + 4) * 4}s`,
-  };
-});
+// ─── CountUp (inline, no external dep needed beyond react) ───────────────────
 
-// ─── Solar System ─────────────────────────────────────────────────────────────
+function CountUp({ value, decimals = 0 }: { value: number; decimals?: number }) {
+  const [display, setDisplay] = useState(0);
+  const ref = useRef<ReturnType<typeof setInterval> | null>(null);
 
-function SolarSystem() {
-  const W = 420;
+  useEffect(() => {
+    let start = 0;
+    const steps = 60;
+    const inc = value / steps;
+    ref.current = setInterval(() => {
+      start += inc;
+      if (start >= value) {
+        setDisplay(value);
+        clearInterval(ref.current!);
+      } else {
+        setDisplay(start);
+      }
+    }, 18);
+    return () => clearInterval(ref.current!);
+  }, [value]);
 
-  const ORBITS = [
-    {
-      r: 90,
-      planet: {
-        size: 18,
-        bg: "radial-gradient(circle at 35% 30%, #67e8f9, #06b6d4 60%, #0891b2)",
-        glow: "0 0 12px 4px rgba(6,182,212,0.6), 0 0 24px 8px rgba(6,182,212,0.25)",
-        label: "1 Gbps",
-        color: "#06b6d4",
-        tooltip: "⚡ Fiber Speed — up to 200 Mbps",
-        packet: "rgba(6,182,212,0.9)",
-      },
-      cls: "ss-orbit-track-1",
-    },
-    {
-      r: 148,
-      planet: {
-        size: 22,
-        bg: "radial-gradient(circle at 35% 30%, #86efac, #22c55e 60%, #15803d)",
-        glow: "0 0 14px 5px rgba(34,197,94,0.55), 0 0 28px 10px rgba(34,197,94,0.2)",
-        label: "99.9%",
-        color: "#22c55e",
-        tooltip: "🛡 Uptime SLA — 99.9%",
-        packet: "rgba(34,197,94,0.9)",
-      },
-      cls: "ss-orbit-track-2",
-    },
-    {
-      r: 195,
-      planet: {
-        size: 16,
-        bg: "radial-gradient(circle at 35% 30%, #fde68a, #d4a853 60%, #92400e)",
-        glow: "0 0 12px 4px rgba(212,168,83,0.55), 0 0 24px 8px rgba(212,168,83,0.2)",
-        label: "25+ Areas",
-        color: "#d4a853",
-        tooltip: "📡 Coverage — 25+ areas",
-        packet: "rgba(212,168,83,0.9)",
-      },
-      cls: "ss-orbit-track-3",
-    },
+  return <>{display.toFixed(decimals)}</>;
+}
+
+// ─── Globe ───────────────────────────────────────────────────────────────────
+
+function GlobeCanvas({ isDark }: { isDark: boolean }) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const frameRef  = useRef<number>(0);
+  const angleRef  = useRef(0);
+  const tickRef   = useRef(0);
+
+  const NODES = [
+    { lat: 26.8,  lng: 87.2,  label: "Sabaila HQ",   primary: true  },
+    { lat: 27.7,  lng: 85.3,  label: "Kathmandu",    primary: false },
+    { lat: 26.5,  lng: 86.7,  label: "Gaur",         primary: false },
+    { lat: 27.0,  lng: 88.1,  label: "Dharan",       primary: false },
+    { lat: 26.6,  lng: 87.9,  label: "Chandrapur",   primary: false },
+    { lat: 25.4,  lng: 81.9,  label: "India Node",   primary: false },
+    { lat: 35.7,  lng: 139.7, label: "Tokyo IX",     primary: false },
+    { lat: 37.8,  lng: -122.4,label: "SF POP",       primary: false },
+    { lat: 51.5,  lng: -0.1,  label: "London IX",    primary: false },
+    { lat: 1.3,   lng: 103.8, label: "Singapore IX", primary: false },
+    { lat: 19.1,  lng: 72.9,  label: "Mumbai IX",    primary: false },
+    { lat: 48.9,  lng: 2.3,   label: "Paris IXP",    primary: false },
+    { lat: -33.9, lng: 151.2, label: "Sydney POP",   primary: false },
+    { lat: 55.7,  lng: 37.6,  label: "Moscow IXP",   primary: false },
+    { lat: 23.1,  lng: 113.3, label: "Guangzhou IX", primary: false },
+    { lat: 40.7,  lng: -74.0, label: "NYC POP",      primary: false },
+    { lat: -23.5, lng: -46.6, label: "São Paulo IX", primary: false },
+    { lat: 6.5,   lng: 3.4,   label: "Lagos IXP",    primary: false },
   ];
 
+  const CONNECTIONS = [
+    [0,1],[0,2],[0,3],[0,4],[0,10],[10,9],[9,6],[9,7],
+    [10,11],[11,8],[8,15],[7,15],[9,13],[13,14],[6,14],
+    [11,16],[8,5],[5,0],[14,12],[16,17],
+  ];
+
+  const toXYZ = useCallback((lat: number, lng: number, r: number) => {
+    const phi   = ((90 - lat)  * Math.PI) / 180;
+    const theta = ((lng + 180) * Math.PI) / 180;
+    return {
+      x:  r * Math.sin(phi) * Math.cos(theta),
+      y:  r * Math.cos(phi),
+      z:  r * Math.sin(phi) * Math.sin(theta),
+    };
+  }, []);
+
+  const project = useCallback((x: number, y: number, z: number, W: number, H: number, fov: number) => {
+    const scale = fov / (fov + z);
+    return { sx: W / 2 + x * scale, sy: H / 2 - y * scale, z, scale };
+  }, []);
+
+  const rotateY = useCallback((x: number, y: number, z: number, a: number) => {
+    const cos = Math.cos(a), sin = Math.sin(a);
+    return { x: x * cos + z * sin, y, z: -x * sin + z * cos };
+  }, []);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const SIZE = 460;
+    canvas.width  = SIZE;
+    canvas.height = SIZE;
+    const R   = 168;
+    const FOV = 460;
+
+    // Pre-generate grid
+    const LAT_LINES: number[][] = [];
+    for (let lat = -75; lat <= 75; lat += 15) {
+      const pts: number[] = [];
+      for (let lng = 0; lng <= 360; lng += 2) pts.push(lat, lng);
+      LAT_LINES.push(pts);
+    }
+    const LNG_LINES: number[][] = [];
+    for (let lng = 0; lng < 360; lng += 15) {
+      const pts: number[] = [];
+      for (let lat = -90; lat <= 90; lat += 2) pts.push(lat, lng);
+      LNG_LINES.push(pts);
+    }
+
+    // Continent polygon dots (simplified blob points for atmosphere)
+    const DOTS: Array<[number, number]> = [];
+    // Europe/Africa band
+    for (let lat = -30; lat <= 65; lat += 4) {
+      for (let lng = -20; lng <= 55; lng += 5) {
+        if (Math.random() > 0.45) DOTS.push([lat + (Math.random()-0.5)*3, lng + (Math.random()-0.5)*3]);
+      }
+    }
+    // Asia
+    for (let lat = 10; lat <= 70; lat += 4) {
+      for (let lng = 60; lng <= 150; lng += 5) {
+        if (Math.random() > 0.4) DOTS.push([lat + (Math.random()-0.5)*3, lng + (Math.random()-0.5)*3]);
+      }
+    }
+    // Americas
+    for (let lat = -50; lat <= 70; lat += 4) {
+      for (let lng = -170; lng <= -30; lng += 5) {
+        if (Math.random() > 0.5) DOTS.push([lat + (Math.random()-0.5)*3, lng + (Math.random()-0.5)*3]);
+      }
+    }
+    // Australia
+    for (let lat = -40; lat <= -15; lat += 4) {
+      for (let lng = 112; lng <= 154; lng += 5) {
+        if (Math.random() > 0.4) DOTS.push([lat + (Math.random()-0.5)*3, lng + (Math.random()-0.5)*3]);
+      }
+    }
+
+    const draw = () => {
+      ctx.clearRect(0, 0, SIZE, SIZE);
+      const angle = angleRef.current;
+      const t     = tickRef.current;
+      const W = SIZE, H = SIZE;
+
+      // Theme colors
+      const primary  = isDark ? "16,185,129"  : "16,140,90";
+      const gold     = "212,168,83";
+      const bgCore   = isDark ? "rgba(8,18,11,0.97)"  : "rgba(235,252,242,0.97)";
+      const bgEdge   = isDark ? "rgba(4,10,6,1)"      : "rgba(215,248,228,1)";
+      const gridAlpha = isDark ? 0.14 : 0.12;
+      const dotAlpha  = isDark ? 0.25 : 0.18;
+
+      // Atmosphere halo
+      const atmo = ctx.createRadialGradient(W/2, H/2, R*0.7, W/2, H/2, R*1.28);
+      if (isDark) {
+        atmo.addColorStop(0,   "rgba(16,185,129,0.0)");
+        atmo.addColorStop(0.5, "rgba(16,185,129,0.07)");
+        atmo.addColorStop(0.85,"rgba(6,182,212,0.04)");
+        atmo.addColorStop(1,   "rgba(0,0,0,0)");
+      } else {
+        atmo.addColorStop(0,   "rgba(16,140,90,0.0)");
+        atmo.addColorStop(0.5, "rgba(16,140,90,0.06)");
+        atmo.addColorStop(0.85,"rgba(6,182,212,0.03)");
+        atmo.addColorStop(1,   "rgba(255,255,255,0)");
+      }
+      ctx.fillStyle = atmo;
+      ctx.beginPath();
+      ctx.arc(W/2, H/2, R*1.28, 0, Math.PI*2);
+      ctx.fill();
+
+      // Globe base
+      const grad = ctx.createRadialGradient(W/2-50, H/2-50, 0, W/2, H/2, R);
+      if (isDark) {
+        grad.addColorStop(0,   "rgba(15,32,20,0.97)");
+        grad.addColorStop(0.6, "rgba(8,18,11,0.99)");
+        grad.addColorStop(1,   "rgba(4,10,6,1)");
+      } else {
+        grad.addColorStop(0,   "rgba(240,255,246,0.98)");
+        grad.addColorStop(0.6, "rgba(220,248,234,0.99)");
+        grad.addColorStop(1,   "rgba(195,240,215,1)");
+      }
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(W/2, H/2, R, 0, Math.PI*2);
+      ctx.fill();
+
+      // Clip sphere
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(W/2, H/2, R, 0, Math.PI*2);
+      ctx.clip();
+
+      // Land dots
+      for (const [lat, lng] of DOTS) {
+        const raw = toXYZ(lat, lng, R*0.99);
+        const rot = rotateY(raw.x, raw.y, raw.z, angle);
+        if (rot.z < 0) continue;
+        const p = project(rot.x, rot.y, rot.z, W, H, FOV);
+        const fade = Math.max(0, rot.z / R);
+        ctx.fillStyle = `rgba(${primary},${dotAlpha * fade})`;
+        ctx.beginPath();
+        ctx.arc(p.sx, p.sy, 1.2, 0, Math.PI*2);
+        ctx.fill();
+      }
+
+      // Grid lines
+      const drawGrid = (lines: number[][], alpha: number) => {
+        ctx.lineWidth = 0.35;
+        for (const pts of lines) {
+          ctx.beginPath();
+          let first = true;
+          for (let i = 0; i < pts.length - 1; i += 2) {
+            const raw = toXYZ(pts[i], pts[i+1], R);
+            const rot = rotateY(raw.x, raw.y, raw.z, angle);
+            const p   = project(rot.x, rot.y, rot.z, W, H, FOV);
+            const fade = Math.max(0, rot.z / R) * alpha;
+            ctx.strokeStyle = `rgba(${primary},${fade})`;
+            if (first) { ctx.moveTo(p.sx, p.sy); first = false; }
+            else         ctx.lineTo(p.sx, p.sy);
+          }
+          ctx.stroke();
+        }
+      };
+      drawGrid(LAT_LINES, gridAlpha * 1.4);
+      drawGrid(LNG_LINES, gridAlpha);
+
+      ctx.restore();
+
+      // Sphere border
+      const borderGrad = ctx.createLinearGradient(W/2 - R, H/2, W/2 + R, H/2);
+      if (isDark) {
+        borderGrad.addColorStop(0, "rgba(16,185,129,0.08)");
+        borderGrad.addColorStop(0.5, "rgba(16,185,129,0.4)");
+        borderGrad.addColorStop(1, "rgba(6,182,212,0.1)");
+      } else {
+        borderGrad.addColorStop(0, "rgba(16,140,90,0.08)");
+        borderGrad.addColorStop(0.5, "rgba(16,140,90,0.35)");
+        borderGrad.addColorStop(1, "rgba(6,182,212,0.1)");
+      }
+      ctx.strokeStyle = borderGrad;
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.arc(W/2, H/2, R, 0, Math.PI*2);
+      ctx.stroke();
+
+      // Rotated nodes
+      const rotatedNodes = NODES.map((n) => {
+        const raw = toXYZ(n.lat, n.lng, R);
+        const rot = rotateY(raw.x, raw.y, raw.z, angle);
+        const p   = project(rot.x, rot.y, rot.z, W, H, FOV);
+        return { ...n, ...p, visible: rot.z > -10, depth: rot.z };
+      });
+
+      // Arcs
+      ctx.setLineDash([3, 5]);
+      for (const [ai, bi] of CONNECTIONS) {
+        const a = rotatedNodes[ai];
+        const b = rotatedNodes[bi];
+        if (!a.visible && !b.visible) continue;
+        const fadeA = Math.max(0, a.depth / R);
+        const fadeB = Math.max(0, b.depth / R);
+        const alpha = Math.min(fadeA, fadeB) * 0.4;
+        ctx.strokeStyle = `rgba(${primary},${alpha})`;
+        ctx.lineWidth = 0.7;
+        const mx = (a.sx + b.sx) / 2;
+        const my = (a.sy + b.sy) / 2 - 20;
+        ctx.beginPath();
+        ctx.moveTo(a.sx, a.sy);
+        ctx.quadraticCurveTo(mx, my, b.sx, b.sy);
+        ctx.stroke();
+      }
+      ctx.setLineDash([]);
+
+      // Animated data packet
+      const connIdx  = Math.floor(t / 90) % CONNECTIONS.length;
+      const [ai, bi] = CONNECTIONS[connIdx];
+      const pa = rotatedNodes[ai], pb = rotatedNodes[bi];
+      if (pa.visible || pb.visible) {
+        const frac = (t % 90) / 90;
+        const mx = (pa.sx + pb.sx) / 2;
+        const my = (pa.sy + pb.sy) / 2 - 20;
+        const ix = (1-frac)*(1-frac)*pa.sx + 2*(1-frac)*frac*mx + frac*frac*pb.sx;
+        const iy = (1-frac)*(1-frac)*pa.sy + 2*(1-frac)*frac*my + frac*frac*pb.sy;
+        const packetAlpha = frac < 0.1 ? frac*10 : frac > 0.9 ? (1-frac)*10 : 1;
+        ctx.shadowBlur  = 12;
+        ctx.shadowColor = isDark ? "#86efac" : "#16a35a";
+        ctx.fillStyle   = isDark ? `rgba(134,239,172,${packetAlpha})` : `rgba(22,163,90,${packetAlpha})`;
+        ctx.beginPath();
+        ctx.arc(ix, iy, 3, 0, Math.PI*2);
+        ctx.fill();
+        // Trailing glow
+        for (let trail = 1; trail <= 3; trail++) {
+          const tf = Math.max(0, frac - trail * 0.03);
+          const tx = (1-tf)*(1-tf)*pa.sx + 2*(1-tf)*tf*mx + tf*tf*pb.sx;
+          const ty = (1-tf)*(1-tf)*pa.sy + 2*(1-tf)*tf*my + tf*tf*pb.sy;
+          ctx.fillStyle = isDark
+            ? `rgba(134,239,172,${(packetAlpha * (0.4 - trail*0.12))})`
+            : `rgba(22,163,90,${(packetAlpha * (0.35 - trail*0.1))})`;
+          ctx.beginPath();
+          ctx.arc(tx, ty, 2 - trail*0.4, 0, Math.PI*2);
+          ctx.fill();
+        }
+        ctx.shadowBlur = 0;
+      }
+
+      // Node rendering
+      for (const n of rotatedNodes) {
+        if (!n.visible) continue;
+        const pulse = Math.sin(t * 0.045 + n.lat * 0.3) * 0.5 + 0.5;
+        const fade  = Math.max(0, n.depth / R);
+
+        if (n.primary) {
+          // HQ star node
+          ctx.shadowBlur  = 16 + pulse * 10;
+          ctx.shadowColor = `rgba(${gold},0.9)`;
+          ctx.fillStyle   = `rgba(${gold},${0.85 + pulse * 0.15})`;
+          ctx.beginPath();
+          ctx.arc(n.sx, n.sy, 5.5, 0, Math.PI*2);
+          ctx.fill();
+          // Inner bright spot
+          ctx.shadowBlur = 0;
+          ctx.fillStyle  = `rgba(255,230,140,${0.7 + pulse * 0.3})`;
+          ctx.beginPath();
+          ctx.arc(n.sx, n.sy, 2, 0, Math.PI*2);
+          ctx.fill();
+          // Pulse rings
+          for (let ring = 1; ring <= 2; ring++) {
+            const rAlpha = Math.max(0, 0.55 - pulse * 0.45 - (ring-1)*0.2) * fade;
+            ctx.strokeStyle = `rgba(${gold},${rAlpha})`;
+            ctx.lineWidth   = 1;
+            ctx.beginPath();
+            ctx.arc(n.sx, n.sy, 6 + pulse * 12 * ring, 0, Math.PI*2);
+            ctx.stroke();
+          }
+        } else {
+          const r   = 2.8 + pulse * 0.9;
+          const gA  = (0.75 + pulse * 0.25) * fade;
+          ctx.shadowBlur  = 8 + pulse * 5;
+          ctx.shadowColor = `rgba(${primary},0.8)`;
+          ctx.fillStyle   = `rgba(${primary},${gA})`;
+          ctx.beginPath();
+          ctx.arc(n.sx, n.sy, r, 0, Math.PI*2);
+          ctx.fill();
+          // Inner dot
+          ctx.fillStyle = isDark ? `rgba(200,255,225,${gA * 0.8})` : `rgba(255,255,255,${gA * 0.9})`;
+          ctx.beginPath();
+          ctx.arc(n.sx, n.sy, r * 0.38, 0, Math.PI*2);
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        }
+      }
+
+      // Specular highlight
+      const spec = ctx.createRadialGradient(W/2-55, H/2-55, 0, W/2-55, H/2-55, R*0.7);
+      spec.addColorStop(0, isDark ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.18)");
+      spec.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = spec;
+      ctx.beginPath();
+      ctx.arc(W/2, H/2, R, 0, Math.PI*2);
+      ctx.fill();
+
+      angleRef.current += 0.0025;
+      tickRef.current++;
+      frameRef.current = requestAnimationFrame(draw);
+    };
+
+    draw();
+    return () => cancelAnimationFrame(frameRef.current);
+  }, [isDark, toXYZ, rotateY, project]);
+
   return (
-    <>
-      <style>{SOLAR_CSS}</style>
-      <div
-        className="ss-root select-none"
-        style={{
-          width: "100%",
-          height: "100%",
-          background:
-            "radial-gradient(ellipse 80% 70% at 50% 50%, rgb(var(--primary) / 0.08) 0%, rgb(var(--cyan) / 0.05) 40%, transparent 70%)",
-        }}>
-        {/* Starfield */}
-        {STARS.map((s) => (
-          <div
-            key={s.id}
-            className="ss-star"
-            style={{
-              top: s.top,
-              left: s.left,
-              width: s.size,
-              height: s.size,
-              ["--tw-dur" as string]: s.dur,
-              ["--tw-delay" as string]: s.delay,
-            }}
-          />
-        ))}
-
-        {/* Orbit rings (visual only) */}
-        {ORBITS.map((o) => (
-          <div
-            key={o.r}
-            className="ss-orbit-ring"
-            style={{ width: o.r * 2, height: o.r * 2 }}
-          />
-        ))}
-
-        {/* Rotating tracks + planets */}
-        {ORBITS.map((o) => (
-          <div
-            key={o.cls}
-            className={`ss-orbit-track ${o.cls}`}
-            style={{ width: o.r * 2, height: o.r * 2 }}>
-            {/* Data packet */}
-            <div
-              className="ss-packet"
-              style={{
-                background: o.planet.packet,
-                boxShadow: `0 0 6px 2px ${o.planet.packet}`,
-              }}
-            />
-
-            {/* Planet */}
-            <div
-              className="ss-planet-wrap"
-              style={{ marginTop: `-${o.planet.size / 2}px` }}>
-              <div
-                className="ss-tooltip"
-                style={{ borderColor: `${o.planet.color}40` }}>
-                {o.planet.tooltip}
-              </div>
-              <div
-                className="ss-planet"
-                style={{
-                  width: o.planet.size,
-                  height: o.planet.size,
-                  background: o.planet.bg,
-                  boxShadow: o.planet.glow,
-                }}
-              />
-              <span
-                className="ss-planet-label"
-                style={{ color: o.planet.color }}>
-                {o.planet.label}
-              </span>
-            </div>
-          </div>
-        ))}
-
-        {/* Sun */}
-        <div className="ss-sun-wrap">
-          <div className="ss-corona ss-corona-1" />
-          <div className="ss-corona ss-corona-2" />
-          <div className="ss-corona ss-corona-3" />
-          <div className="ss-sun" />
-          <span className="ss-sun-label">RCN</span>
-        </div>
-      </div>
-    </>
+    <canvas
+      ref={canvasRef}
+      style={{ width: "100%", height: "100%", display: "block", borderRadius: "50%" }}
+    />
   );
 }
 
-// ─── Hero Stats ───────────────────────────────────────────────────────────────
+// ─── Stat Card ───────────────────────────────────────────────────────────────
 
-const STAT_ICONS = [Zap, Shield, Wifi];
-const STAT_COLORS = ["rgb(var(--primary))", "#06b6d4", "#d4a853"];
+const STAT_META = [
+  { icon: Zap,    colorDark: "#10b981", colorLight: "#059669", accent: "10,185,129" },
+  { icon: Shield, colorDark: "#06b6d4", colorLight: "#0891b2", accent: "6,182,212"  },
+  { icon: Wifi,   colorDark: "#d4a853", colorLight: "#b7811a", accent: "212,168,83" },
+];
 
-function HeroStats({
-  stats,
-  lang,
-}: {
-  stats: Array<{
-    value: number;
-    decimals: number;
-    suffix: string;
-    label: string;
-  }>;
-  lang: string;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
+function StatPill({ stat, i, inView, isDark }: { stat: StatItem; i: number; inView: boolean; isDark: boolean }) {
+  const m     = STAT_META[i];
+  const Icon  = m.icon;
+  const color = isDark ? m.colorDark : m.colorLight;
 
   return (
-    <div ref={ref} className="mt-7 flex flex-wrap gap-3">
-      {stats.map((s, i) => {
-        const Icon = STAT_ICONS[i];
-        const color = STAT_COLORS[i];
-        return (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 14 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.1 * i, duration: 0.45 }}
-            style={{
-              background: "rgba(255,255,255,0.04)",
-              border: `1px solid ${color}30`,
-              borderRadius: 12,
-              padding: "10px 16px",
-              backdropFilter: "blur(12px)",
-              WebkitBackdropFilter: "blur(12px)",
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-              boxShadow: `0 0 16px ${color}14`,
-            }}>
-            <span
-              style={{
-                width: 30,
-                height: 30,
-                borderRadius: 8,
-                background: `${color}18`,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexShrink: 0,
-              }}>
-              <Icon style={{ width: 15, height: 15, color }} />
-            </span>
-            <div>
-              <div
-                style={{
-                  fontFamily: "var(--font-mono), monospace",
-                  fontSize: "1.15rem",
-                  fontWeight: 600,
-                  color,
-                  lineHeight: 1.1,
-                }}>
-                {inView ? (
-                  <CountUp value={s.value} decimals={s.decimals} />
-                ) : (
-                  "0"
-                )}
-                <span style={{ fontSize: "0.8rem", marginLeft: 2 }}>
-                  {s.suffix}
-                </span>
-              </div>
-              <div
-                style={{
-                  fontSize: "0.7rem",
-                  color: "rgb(var(--text-soft))",
-                  marginTop: 1,
-                }}>
-                {s.label}
-              </div>
-            </div>
-          </motion.div>
-        );
-      })}
-    </div>
+    <motion.div
+      initial={{ opacity: 0, y: 18, scale: 0.95 }}
+      animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
+      transition={{ delay: 0.08 * i, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      style={{
+        background: isDark
+          ? `rgba(${m.accent},0.08)`
+          : `rgba(${m.accent},0.06)`,
+        border: `1px solid rgba(${m.accent},${isDark ? 0.28 : 0.22})`,
+        borderRadius: 14,
+        padding: "12px 18px",
+        backdropFilter: "blur(16px)",
+        WebkitBackdropFilter: "blur(16px)",
+        display: "flex",
+        alignItems: "center",
+        gap: 12,
+        boxShadow: `0 4px 20px rgba(${m.accent},${isDark ? 0.12 : 0.08}), inset 0 1px 0 rgba(255,255,255,${isDark ? 0.05 : 0.6})`,
+        transition: "transform 0.2s ease, box-shadow 0.2s ease",
+        cursor: "default",
+      }}
+      whileHover={{
+        y: -3,
+        boxShadow: `0 8px 28px rgba(${m.accent},${isDark ? 0.22 : 0.16}), inset 0 1px 0 rgba(255,255,255,${isDark ? 0.08 : 0.7})`,
+      }}
+    >
+      <span style={{
+        width: 34, height: 34, borderRadius: 9,
+        background: `rgba(${m.accent},${isDark ? 0.15 : 0.12})`,
+        border: `1px solid rgba(${m.accent},${isDark ? 0.25 : 0.2})`,
+        display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+      }}>
+        <Icon style={{ width: 16, height: 16, color }} />
+      </span>
+      <div>
+        <div style={{
+          fontFamily: "'DM Mono', 'Fira Code', ui-monospace, monospace",
+          fontSize: "1.2rem", fontWeight: 700,
+          color, lineHeight: 1.1, letterSpacing: "-0.02em",
+        }}>
+          {inView ? <CountUp value={stat.value} decimals={stat.decimals} /> : "0"}
+          <span style={{ fontSize: "0.78rem", marginLeft: 2, fontWeight: 600 }}>{stat.suffix}</span>
+        </div>
+        <div style={{
+          fontSize: "0.68rem", letterSpacing: "0.08em", textTransform: "uppercase",
+          color: isDark ? "rgba(160,200,175,0.6)" : "rgba(60,100,75,0.55)",
+          marginTop: 2, fontWeight: 600,
+        }}>
+          {stat.label}
+        </div>
+      </div>
+    </motion.div>
   );
 }
 
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 
+
 export function Hero() {
-  const { lang } = useLanguage();
+    const { lang } = useLanguage();
 
-  const speed = business.stats.find((s) => s.id === "speed");
-  const uptime = business.stats.find((s) => s.id === "uptime");
-  const areas = business.stats.find((s) => s.id === "areas");
+    const statsRef = useRef<HTMLDivElement>(null);
+    const inView   = useInView(statsRef, { once: true, margin: "-60px" });
+    const [isDark, setIsDark] = useState(true);
 
-  const statsData = [
-    speed && {
-      value: speed.value,
-      decimals: 0,
-      suffix: speed.suffix,
-      label: speed.label[lang],
-    },
-    uptime && {
-      value: uptime.value,
-      decimals: 1,
-      suffix: uptime.suffix,
-      label: uptime.label[lang],
-    },
-    areas && {
-      value: areas.value,
-      decimals: 0,
-      suffix: areas.suffix,
-      label: areas.label[lang],
-    },
-  ].filter(Boolean) as Array<{
-    value: number;
-    decimals: number;
-    suffix: string;
-    label: string;
-  }>;
+  // Detect system / class theme
+  useEffect(() => {
+    const check = () => setIsDark(!document.documentElement.classList.contains("light"));
+    check();
+    const obs = new MutationObserver(check);
+    obs.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    return () => obs.disconnect();
+  }, []);
+
+  // ── Data ─────────────────────────────────────────────────────
+  const statsData: StatItem[] = [
+    { value: 500, decimals: 0, suffix: " Mbps", label: "Peak Speed"    },
+    { value: 99.7,decimals: 1, suffix: "%",     label: "Network Uptime" },
+    { value: 28,  decimals: 0, suffix: "+",     label: "Service Areas"  },
+  ];
+
+  // ── Theme ─────────────────────────────────────────────────────
+  const T = {
+    bg:        isDark ? "rgb(8,15,10)"       : "rgb(242,252,246)",
+    surface:   isDark ? "rgba(13,26,16,0.8)" : "rgba(255,255,255,0.8)",
+    badge_bg:  isDark ? "rgba(16,185,129,0.1)": "rgba(16,140,90,0.08)",
+    badge_bd:  isDark ? "rgba(16,185,129,0.3)": "rgba(16,140,90,0.25)",
+    badge_txt: isDark ? "rgb(52,211,153)"    : "rgb(5,120,65)",
+    h1:        isDark ? "rgb(240,253,244)"   : "rgb(10,40,22)",
+    sub:       isDark ? "rgba(187,247,208,0.75)": "rgba(30,80,50,0.65)",
+    loc:       isDark ? "rgba(255,255,255,0.035)": "rgba(0,0,0,0.04)",
+    loc_bd:    isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.1)",
+    loc_txt:   isDark ? "rgba(160,200,175,0.6)"  : "rgba(40,90,60,0.55)",
+    live_bg:   isDark ? "rgba(8,18,11,0.8)"  : "rgba(245,255,250,0.9)",
+    live_bd:   isDark ? "rgba(16,185,129,0.28)": "rgba(16,140,90,0.28)",
+    live_txt:  isDark ? "rgb(220,252,231)"   : "rgb(10,60,30)",
+    glow:      isDark ? "rgba(16,185,129,0.14)": "rgba(16,140,90,0.1)",
+    primary:   isDark ? "rgb(16,185,129)"    : "rgb(5,120,65)",
+    cta_bg:    isDark ? "rgba(16,185,129,0.14)": "rgba(5,120,65,0.1)",
+    cta_bd:    isDark ? "rgba(16,185,129,0.45)": "rgba(5,120,65,0.4)",
+    cta2_bg:   isDark ? "rgba(255,255,255,0.05)": "rgba(0,0,0,0.04)",
+    cta2_bd:   isDark ? "rgba(255,255,255,0.12)": "rgba(0,0,0,0.12)",
+    cta2_txt:  isDark ? "rgba(200,240,215,0.65)": "rgba(30,70,45,0.6)",
+    ghost_txt: isDark ? "rgba(160,200,175,0.5)" : "rgba(30,90,55,0.45)",
+    legend_txt:isDark ? "rgba(150,185,165,0.55)": "rgba(30,80,50,0.45)",
+    node_hq:   "#d4a853",
+    node_net:  isDark ? "#10b981" : "#059669",
+    node_pkt:  isDark ? "#86efac" : "#16a35a",
+  };
 
   return (
-    <section className="relative min-h-[calc(100vh-68px)] overflow-hidden">
-      {/* Deep space background overlay */}
+    <section
+      style={{
+        position: "relative",
+        minHeight: "calc(100vh - 68px)",
+        overflow: "hidden",
+        background: T.bg,
+      }}
+    >
+      {/* ── Ambient background ── */}
       <div
-        className="pointer-events-none absolute inset-0 z-0"
+        aria-hidden
         style={{
-          background: `
-            radial-gradient(ellipse 60% 50% at 75% 50%, rgba(16,185,129,0.09) 0%, transparent 65%),
-            radial-gradient(ellipse 40% 40% at 20% 80%, rgba(6,182,212,0.05) 0%, transparent 60%)
-          `,
+          position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none",
+          background: isDark
+            ? `radial-gradient(ellipse 60% 55% at 70% 45%, rgba(16,185,129,0.09) 0%, transparent 65%),
+               radial-gradient(ellipse 40% 45% at 15% 75%, rgba(6,182,212,0.05) 0%, transparent 60%),
+               radial-gradient(ellipse 50% 40% at 50% 0%, rgba(16,185,129,0.04) 0%, transparent 55%)`
+            : `radial-gradient(ellipse 60% 55% at 70% 45%, rgba(16,140,90,0.08) 0%, transparent 65%),
+               radial-gradient(ellipse 40% 45% at 15% 75%, rgba(6,182,212,0.04) 0%, transparent 60%),
+               radial-gradient(ellipse 80% 50% at 50% -10%, rgba(16,140,90,0.06) 0%, transparent 55%)`,
         }}
       />
 
-      <Container className="relative z-10 flex min-h-[calc(100vh-68px)] items-center py-16 lg:py-20">
-        <div className="grid w-full items-center gap-10 lg:grid-cols-[55%_45%]">
-          {/* ── Left ── */}
-          <div>
-            {/* Badge */}
-            <Reveal>
-              <div
-                className="rcn-badge inline-flex"
-                style={{
-                  background: "rgba(16,185,129,0.1)",
-                  border: "1px solid rgba(16,185,129,0.3)",
-                  backdropFilter: "blur(8px)",
-                }}>
-                <span
-                  className="rcn-pulse-dot h-1.5 w-1.5 rounded-full"
-                  style={{ background: "rgb(var(--primary))" }}
-                />
-                <span style={{ color: "rgb(var(--primary))" }}>
-                  {t(lang, "heroEyebrow")}
-                </span>
-              </div>
-            </Reveal>
+      {/* Subtle dot grid */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute", inset: 0, zIndex: 0, pointerEvents: "none",
+          backgroundImage: isDark
+            ? "radial-gradient(circle, rgba(16,185,129,0.08) 1px, transparent 1px)"
+            : "radial-gradient(circle, rgba(16,140,90,0.06) 1px, transparent 1px)",
+          backgroundSize: "32px 32px",
+          maskImage: "radial-gradient(ellipse 90% 90% at 50% 50%, black 40%, transparent 100%)",
+          WebkitMaskImage: "radial-gradient(ellipse 90% 90% at 50% 50%, black 40%, transparent 100%)",
+        }}
+      />
 
+      {/* ── Main content ── */}
+      <div
+        style={{
+          position: "relative", zIndex: 10,
+          maxWidth: 1200, margin: "0 auto",
+          padding: "0 32px",
+          display: "flex",
+          alignItems: "center",
+          minHeight: "calc(100vh - 68px)",
+        }}
+      >
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: 48,
+          alignItems: "center",
+          width: "100%",
+          padding: "80px 0",
+        }}>
+
+           {/* ── Left ── */}
+            <div style={{ display: "flex", flexDirection: "column" }}>
+ 
+            {/* Eyebrow badge */}
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              style={{
+                display: "inline-flex", alignItems: "center", gap: 8,
+                alignSelf: "flex-start",
+                background: T.badge_bg,
+                border: `1px solid ${T.badge_bd}`,
+                borderRadius: 9999, padding: "5px 16px",
+                backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)",
+              }}
+            >
+              <span style={{
+                width: 6, height: 6, borderRadius: "50%",
+                background: T.primary,
+                boxShadow: `0 0 8px ${T.primary}`,
+                animation: "rcn-pulse 2s ease-in-out infinite",
+              }} />
+              <span style={{
+                color: T.badge_txt, fontWeight: 700,
+                fontSize: "0.7rem", letterSpacing: "0.14em", textTransform: "uppercase",
+                fontFamily: "'DM Mono', ui-monospace, monospace",
+              }}>
+                Reliable Cable Network — Est. 2008
+              </span>
+            </motion.div>
+ 
             {/* H1 */}
             <Reveal delay={0.08}>
               <h1
@@ -518,249 +611,368 @@ export function Hero() {
                   fontFamily: "var(--font-heading), ui-serif, Georgia, serif",
                   fontSize: "clamp(2.6rem, 6vw, 4.8rem)",
                   color: "rgb(var(--text))",
-                }}>
+                }}
+              >
                 {t(lang, "heroHeadlineA")}{" "}
                 <em
                   style={{
                     fontStyle: "italic",
                     fontFamily: "var(--font-heading), ui-serif, Georgia, serif",
-                    background:
-                      "linear-gradient(120deg, #00d4ff 0%, #4f8bff 50%, #39d98a 100%)",
+                    background: "linear-gradient(120deg, #00d4ff 0%, #4f8bff 50%, #39d98a 100%)",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
                     backgroundClip: "text",
-                  }}>
+                  }}
+                >
                   {t(lang, "heroHeadlineB")}
                 </em>
               </h1>
             </Reveal>
 
-            {/* Subhead */}
-            <Reveal delay={0.16}>
-              <p
-                className="mt-5 max-w-lg text-lg leading-8"
-                style={{ color: "rgb(var(--text-muted))" }}>
-                {t(lang, "heroSubhead")}
-              </p>
-            </Reveal>
-
-            {/* CTA buttons */}
-            <Reveal delay={0.24}>
-              <div className="mt-8 flex flex-wrap items-center gap-3">
-                {/* Primary — glassmorphism green */}
-                <Link
-                  href="/contact"
-                  className="group relative inline-flex items-center gap-2 overflow-hidden rounded-xl px-6 py-3 text-sm font-bold transition-all duration-300"
-                  style={{
-                    background: "rgba(16,185,129,0.15)",
-                    border: "1px solid rgba(16,185,129,0.45)",
-                    backdropFilter: "blur(12px)",
-                    WebkitBackdropFilter: "blur(12px)",
-                    color: "rgb(var(--primary))",
-                    boxShadow: "0 0 20px rgba(16,185,129,0.2)",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = "rgba(16,185,129,0.28)";
-                    e.currentTarget.style.boxShadow =
-                      "0 0 32px rgba(16,185,129,0.4)";
-                    e.currentTarget.style.transform =
-                      "translateY(-2px) scale(1.02)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = "rgba(16,185,129,0.15)";
-                    e.currentTarget.style.boxShadow =
-                      "0 0 20px rgba(16,185,129,0.2)";
-                    e.currentTarget.style.transform = "translateY(0) scale(1)";
-                  }}>
-                  {/* Shimmer */}
-                  <span className="pointer-events-none absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/10 to-transparent transition-transform duration-500 group-hover:translate-x-full" />
-                  {t(lang, "ctaGetConnected")}
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-
-                {/* Secondary — frosted */}
-                <Link
-                  href="/plans"
-                  className="inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold transition-all duration-300"
-                  style={{
-                    background: "rgba(255,255,255,0.05)",
-                    border: "1px solid rgba(255,255,255,0.14)",
-                    backdropFilter: "blur(12px)",
-                    WebkitBackdropFilter: "blur(12px)",
-                    color: "rgb(var(--text-muted))",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = "rgba(255,255,255,0.1)";
-                    e.currentTarget.style.borderColor =
-                      "rgba(255,255,255,0.25)";
-                    e.currentTarget.style.color = "rgb(var(--text))";
-                    e.currentTarget.style.transform = "translateY(-2px)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = "rgba(255,255,255,0.05)";
-                    e.currentTarget.style.borderColor =
-                      "rgba(255,255,255,0.14)";
-                    e.currentTarget.style.color = "rgb(var(--text-muted))";
-                    e.currentTarget.style.transform = "translateY(0)";
-                  }}>
-                  {t(lang, "ctaViewPlans")}
-                </Link>
-
-                {/* Ghost */}
-                <Link
-                  href="/coverage"
-                  className="inline-flex items-center gap-1.5 text-sm font-medium transition-colors duration-200"
-                  style={{ color: "rgb(var(--text-soft))" }}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.color = "rgb(var(--primary))")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.color = "rgb(var(--text-soft))")
-                  }>
-                  {t(lang, "ctaCheckAvailability")}
-                  <ArrowRight className="h-3.5 w-3.5" />
-                </Link>
-              </div>
-            </Reveal>
-
-            {/* Location chip */}
-            <Reveal delay={0.32}>
-              <div
-                className="mt-5 inline-flex items-center gap-2 rounded-full px-3 py-1.5"
+ 
+            {/* Divider line */}
+            <motion.div
+              initial={{ scaleX: 0, opacity: 0 }}
+              animate={{ scaleX: 1, opacity: 1 }}
+              transition={{ delay: 0.18, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              style={{
+                height: 2, width: 80, marginTop: 24,
+                background: `linear-gradient(90deg, ${T.primary}, transparent)`,
+                borderRadius: 2, transformOrigin: "left",
+              }}
+            />
+ 
+            {/* Sub */}
+            <motion.p
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.55 }}
+              style={{
+                marginTop: 20, maxWidth: 460,
+                fontSize: "1.06rem", lineHeight: 1.75,
+                color: T.sub,
+                fontFamily: "'DM Sans', 'Segoe UI', ui-sans-serif, system-ui",
+              }}
+            >
+              High-speed broadband across the Madhesh Province. Blazing
+              speeds, rock-solid reliability, and local 24/7 support —
+              from Sabaila to the world.
+            </motion.p>
+ 
+            {/* CTAs */}
+            <motion.div
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.28, duration: 0.5 }}
+              style={{ marginTop: 32, display: "flex", flexWrap: "wrap", alignItems: "center", gap: 12 }}
+            >
+              {/* Primary */}
+              <Link
+                href="/contact"
                 style={{
-                  background: "rgba(255,255,255,0.04)",
-                  border: "1px solid rgba(255,255,255,0.08)",
-                  fontSize: "0.8rem",
-                  color: "rgb(var(--text-soft))",
-                }}>
-                <MapPin
-                  className="h-3.5 w-3.5"
-                  style={{ color: "rgb(var(--primary))" }}
-                />
-                <span>{business.company.primaryServiceArea}</span>
-              </div>
-            </Reveal>
-
+                  display: "inline-flex", alignItems: "center", gap: 8,
+                  padding: "13px 26px", borderRadius: 12,
+                  background: T.cta_bg,
+                  border: `1px solid ${T.cta_bd}`,
+                  backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)",
+                  color: T.primary,
+                  fontWeight: 700, fontSize: "0.9rem",
+                  fontFamily: "'DM Sans', ui-sans-serif, system-ui",
+                  boxShadow: `0 0 24px rgba(16,185,129,0.18), inset 0 1px 0 rgba(255,255,255,${isDark ? 0.06 : 0.5})`,
+                  textDecoration: "none",
+                  transition: "all 0.25s ease",
+                  position: "relative", overflow: "hidden",
+                }}
+                onMouseEnter={e => {
+                  const el = e.currentTarget as HTMLAnchorElement;
+                  el.style.transform = "translateY(-2px) scale(1.02)";
+                  el.style.boxShadow = `0 0 40px rgba(16,185,129,0.35), inset 0 1px 0 rgba(255,255,255,${isDark ? 0.1 : 0.6})`;
+                }}
+                onMouseLeave={e => {
+                  const el = e.currentTarget as HTMLAnchorElement;
+                  el.style.transform = "translateY(0) scale(1)";
+                  el.style.boxShadow = `0 0 24px rgba(16,185,129,0.18), inset 0 1px 0 rgba(255,255,255,${isDark ? 0.06 : 0.5})`;
+                }}
+              >
+                Get Connected
+                <ArrowRight style={{ width: 16, height: 16 }} />
+              </Link>
+ 
+              {/* Secondary */}
+              <Link
+                href="/plans"
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: 8,
+                  padding: "13px 26px", borderRadius: 12,
+                  background: T.cta2_bg,
+                  border: `1px solid ${T.cta2_bd}`,
+                  backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)",
+                  color: T.cta2_txt,
+                  fontWeight: 600, fontSize: "0.9rem",
+                  fontFamily: "'DM Sans', ui-sans-serif, system-ui",
+                  boxShadow: `inset 0 1px 0 rgba(255,255,255,${isDark ? 0.04 : 0.5})`,
+                  textDecoration: "none",
+                  transition: "all 0.22s ease",
+                }}
+                onMouseEnter={e => {
+                  const el = e.currentTarget as HTMLAnchorElement;
+                  el.style.transform = "translateY(-2px)";
+                  el.style.color = T.h1;
+                  el.style.borderColor = isDark ? "rgba(255,255,255,0.22)" : "rgba(0,0,0,0.2)";
+                  el.style.background = isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)";
+                }}
+                onMouseLeave={e => {
+                  const el = e.currentTarget as HTMLAnchorElement;
+                  el.style.transform = "translateY(0)";
+                  el.style.color = T.cta2_txt;
+                  el.style.borderColor = T.cta2_bd;
+                  el.style.background = T.cta2_bg;
+                }}
+              >
+                View Plans
+              </Link>
+ 
+              {/* Ghost */}
+              <Link
+                href="/coverage"
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: 5,
+                  fontSize: "0.85rem", fontWeight: 600,
+                  color: T.ghost_txt,
+                  fontFamily: "'DM Sans', ui-sans-serif, system-ui",
+                  textDecoration: "none",
+                  transition: "color 0.2s ease",
+                }}
+                onMouseEnter={e => (e.currentTarget as HTMLAnchorElement).style.color = T.primary}
+                onMouseLeave={e => (e.currentTarget as HTMLAnchorElement).style.color = T.ghost_txt}
+              >
+                Check availability
+                <ArrowRight style={{ width: 13, height: 13 }} />
+              </Link>
+            </motion.div>
+ 
+            {/* Location chip */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.36 }}
+              style={{
+                marginTop: 20, display: "inline-flex", alignItems: "center",
+                gap: 7, alignSelf: "flex-start",
+                background: T.loc, border: `1px solid ${T.loc_bd}`,
+                borderRadius: 9999, padding: "6px 14px",
+                backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)",
+              }}
+            >
+              <MapPin style={{ width: 13, height: 13, color: T.primary }} />
+              <span style={{ fontSize: "0.75rem", color: T.loc_txt, fontFamily: "'DM Mono', ui-monospace, monospace" }}>
+                Sabaila, Madhesh Province, Nepal
+              </span>
+            </motion.div>
+ 
             {/* Stats */}
-            <Reveal delay={0.4}>
-              <HeroStats stats={statsData} lang={lang} />
-            </Reveal>
+            <div ref={statsRef} style={{ marginTop: 28, display: "flex", flexWrap: "wrap", gap: 10 }}>
+              {statsData.map((s, i) => (
+                <StatPill key={i} stat={s} i={i} inView={inView} isDark={isDark} />
+              ))}
+            </div>
           </div>
 
-          {/* ── Right: Solar System ── */}
-          <Reveal delay={0.15}>
-            <div className="relative hidden lg:block" style={{ height: 460 }}>
-              {/* Outer card frame */}
-              <div className="rcn-card h-full w-full overflow-hidden">
-                <SolarSystem />
-              </div>
+          {/* ══════ RIGHT: GLOBE ══════ */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.92 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.15, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+          >
+            {/* Live badge */}
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.9 }}
+              style={{
+                alignSelf: "flex-start", marginBottom: 16,
+                display: "inline-flex", alignItems: "center", gap: 8,
+                background: T.live_bg,
+                border: `1px solid ${T.live_bd}`,
+                borderRadius: 10, padding: "8px 14px",
+                backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)",
+                boxShadow: isDark
+                  ? "0 4px 16px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.04)"
+                  : "0 4px 16px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.8)",
+              }}
+            >
+              <span style={{
+                width: 8, height: 8, borderRadius: "50%",
+                background: "#10b981", boxShadow: "0 0 8px #10b981",
+                animation: "rcn-pulse 1.8s ease-in-out infinite",
+                flexShrink: 0,
+              }} />
+              <span style={{
+                fontSize: "0.73rem", fontWeight: 700,
+                color: T.live_txt,
+                fontFamily: "'DM Mono', ui-monospace, monospace",
+                letterSpacing: "0.04em",
+              }}>
+                NETWORK LIVE — ALL OPERATIONAL
+              </span>
+              <span style={{
+                marginLeft: 2, fontSize: "0.68rem", fontWeight: 700,
+                color: T.primary,
+                background: isDark ? "rgba(16,185,129,0.12)" : "rgba(5,120,65,0.1)",
+                border: `1px solid rgba(16,185,129,0.2)`,
+                borderRadius: 6, padding: "1px 7px",
+              }}>
+                25+ nodes
+              </span>
+            </motion.div>
 
+            {/* Globe wrapper */}
+            <div
+              style={{
+                position: "relative", width: 460, height: 460,
+                animation: "heroFloat 5s ease-in-out infinite",
+              }}
+            >
+              {/* Multi-layer glow rings */}
+              <div style={{
+                position: "absolute", inset: -16, borderRadius: "50%",
+                background: isDark
+                  ? "radial-gradient(circle, rgba(16,185,129,0.07) 50%, transparent 75%)"
+                  : "radial-gradient(circle, rgba(16,140,90,0.06) 50%, transparent 75%)",
+                pointerEvents: "none",
+              }} />
+              <div style={{
+                position: "absolute", inset: -2, borderRadius: "50%",
+                boxShadow: isDark
+                  ? "0 0 0 1px rgba(16,185,129,0.18), 0 0 60px 8px rgba(16,185,129,0.1), 0 0 120px 24px rgba(16,185,129,0.05)"
+                  : "0 0 0 1px rgba(16,140,90,0.15), 0 0 60px 8px rgba(16,140,90,0.08), 0 0 120px 24px rgba(16,140,90,0.04)",
+                 pointerEvents: "none",
+              }} />
+
+              {/* Glass frame ring */}
+              <div style={{
+                position: "absolute", inset: 0, borderRadius: "50%",
+                border: isDark
+                  ? "1px solid rgba(16,185,129,0.18)"
+                  : "1px solid rgba(16,140,90,0.15)",
+                background: "transparent",
+                pointerEvents: "none", zIndex: 2,
+              }} />
+
+              {/* Canvas */}
+              <GlobeCanvas isDark={isDark} />
+
+              {/* HQ label */}
               <motion.div
+                initial={{ opacity: 0, scale: 0.85 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 1.3, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                 style={{
-                  position: "absolute",
-                  top: 14,
-                  left: 14,
-                  background: "rgb(var(--primary))",
-                  border: "1px solid rgba(16,185,129,0.3)",
-                  borderRadius: 10,
-                  padding: "5px 12px",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 7,
-                  backdropFilter: "blur(12px)",
-                  WebkitBackdropFilter: "blur(12px)",
-                  zIndex: 20,
+                  position: "absolute", top: "35%", left: "60%",
+                  background: isDark ? "rgba(8,16,10,0.9)" : "rgba(240,255,246,0.92)",
+                  border: "1px solid rgba(212,168,83,0.5)",
+                  borderRadius: 10, padding: "7px 12px",
+                  backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)",
+                  display: "flex", alignItems: "center", gap: 7,
+                  whiteSpace: "nowrap", zIndex: 10,
+                  boxShadow: "0 4px 20px rgba(212,168,83,0.15), inset 0 1px 0 rgba(255,255,255,0.05)",
+                }}
+              >
+                <span style={{
+                  width: 8, height: 8, borderRadius: "50%",
+                  background: "#d4a853", boxShadow: "0 0 8px rgba(212,168,83,0.8)",
+                  flexShrink: 0,
+                }} />
+                <span style={{
+                  fontSize: "0.72rem", fontWeight: 700, color: "#d4a853",
+                  fontFamily: "'DM Mono', ui-monospace, monospace", letterSpacing: "0.04em",
                 }}>
-                <span className="text-xs font-semibold text-[rgb(var(--text-muted))]">
-                  Network: All Systems Operational
+                  Sabaila HQ
                 </span>
               </motion.div>
-              {/* Legend */}
+
+              {/* Latency badge */}
               <motion.div
-                initial={{ opacity: 0, x: 10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 1.2, duration: 0.4 }}
+                initial={{ opacity: 0, scale: 0.85 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 1.5, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                 style={{
-                  position: "absolute",
-                  bottom: 14,
-                  right: 14,
-                  background: "rgb(var(--surface) / 0.82)",
-                  border: "1px solid rgb(var(--text) / 0.1)",
-                  borderRadius: 10,
-                  padding: "8px 12px",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 5,
-                  backdropFilter: "blur(12px)",
-                  WebkitBackdropFilter: "blur(12px)",
-                  zIndex: 20,
+                  position: "absolute", bottom: "22%", left: "4%",
+                  background: isDark ? "rgba(6,18,22,0.9)" : "rgba(235,252,255,0.92)",
+                  border: "1px solid rgba(6,182,212,0.35)",
+                  borderRadius: 10, padding: "7px 12px",
+                  backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)",
+                  display: "flex", alignItems: "center", gap: 7,
+                  whiteSpace: "nowrap", zIndex: 10,
+                  boxShadow: "0 4px 20px rgba(6,182,212,0.12)",
+                }}
+              >
+                <span style={{
+                  width: 8, height: 8, borderRadius: "50%",
+                  background: "#06b6d4", boxShadow: "0 0 8px rgba(6,182,212,0.8)",
+                  flexShrink: 0,
+                }} />
+                <span style={{
+                  fontSize: "0.7rem", fontWeight: 700,
+                  color: "#06b6d4",
+                  fontFamily: "'DM Mono', ui-monospace, monospace",
                 }}>
-                {[
-                  { color: "#06b6d4", label: "Fiber Speed" },
-                  { color: "#22c55e", label: "Reliability" },
-                  { color: "#d4a853", label: "Coverage" },
-                ].map((l) => (
-                  <div
-                    key={l.label}
-                    style={{ display: "flex", alignItems: "center", gap: 7 }}>
-                    <span
-                      style={{
-                        width: 7,
-                        height: 7,
-                        borderRadius: "50%",
-                        background: l.color,
-                        flexShrink: 0,
-                        boxShadow: `0 0 5px ${l.color}`,
-                      }}
-                    />
-                    <span
-                      style={{
-                        fontSize: "0.68rem",
-                        color: "rgb(var(--text-muted))",
-                      }}>
-                      {l.label}
-                    </span>
-                  </div>
-                ))}
+                  &lt; 8ms latency
+                </span>
               </motion.div>
             </div>
-          </Reveal>
 
-          {/* Mobile stats row */}
-          <Reveal delay={0.5}>
-            <div
-              className="rcn-card rcn-card-md grid grid-cols-3 gap-4 lg:hidden"
-              style={{ borderColor: "rgba(16,185,129,0.2)" }}>
-              {statsData.map((s, i) => {
-                const color = STAT_COLORS[i];
-                return (
-                  <div
-                    key={i}
-                    className="flex flex-col items-center gap-0.5 text-center">
-                    <span
-                      style={{
-                        fontFamily: "var(--font-mono), monospace",
-                        fontSize: "1.2rem",
-                        fontWeight: 600,
-                        color,
-                      }}>
-                      <CountUp value={s.value} decimals={s.decimals} />
-                      <span style={{ fontSize: "0.75rem" }}>{s.suffix}</span>
-                    </span>
-                    <span
-                      style={{
-                        fontSize: "0.7rem",
-                        color: "rgb(var(--text-soft))",
-                      }}>
-                      {s.label}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-          </Reveal>
+            {/* Legend */}
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.6, duration: 0.4 }}
+              style={{ marginTop: 18, display: "flex", alignItems: "center", gap: 20 }}
+            >
+              {[
+                { color: "#d4a853", label: "RCN HQ"          },
+                { color: isDark ? "#10b981" : "#059669", label: "Network nodes" },
+                { color: isDark ? "#86efac" : "#16a35a", label: "Live packets"  },
+              ].map((l) => (
+                <div key={l.label} style={{ display: "flex", alignItems: "center", gap: 7 }}>
+                  <span style={{
+                    width: 7, height: 7, borderRadius: "50%",
+                    background: l.color, boxShadow: `0 0 6px ${l.color}`,
+                    flexShrink: 0,
+                  }} />
+                  <span style={{
+                    fontSize: "0.68rem",
+                    color: T.legend_txt,
+                    fontFamily: "'DM Mono', ui-monospace, monospace",
+                    letterSpacing: "0.04em",
+                  }}>
+                    {l.label}
+                  </span>
+                </div>
+              ))}
+            </motion.div>
+          </motion.div>
         </div>
-      </Container>
+      </div>
+
+      {/* Float animation */}
+      <style>{`
+        @keyframes heroFloat {
+          0%, 100% { transform: translateY(0px); }
+          50%       { transform: translateY(-10px); }
+        }
+        @keyframes rcn-pulse {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50%       { opacity: 0.4; transform: scale(0.75); }
+        }
+        @media (max-width: 900px) {
+          .hero-grid { grid-template-columns: 1fr !important; }
+          .hero-globe-col { display: none !important; }
+        }
+      `}</style>
     </section>
   );
 }
+
+export default Hero;

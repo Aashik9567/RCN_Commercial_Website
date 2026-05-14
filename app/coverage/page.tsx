@@ -99,7 +99,9 @@ const HOW_IT_WORKS = [
 export default function CoveragePage() {
   return (
     <SiteShell>
+    
       <div className="rcn-container container-section">
+
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
