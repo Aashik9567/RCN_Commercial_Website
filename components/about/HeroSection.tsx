@@ -69,7 +69,7 @@ export function HeroSection() {
               noHover>
               <span className="h-2 w-2 rounded-full bg-[rgb(var(--primary))]" />
               <span className="text-xs font-semibold text-[rgb(var(--text-muted))]">
-                Serving West Bengal Since 2010
+                Serving Sabaila Muncipality Since 2010
               </span>
             </GhostCard>
           </div>
