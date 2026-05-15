@@ -79,10 +79,10 @@ export function Footer() {
                   {business.contact.phone}
                 </a>
               </div>
+            
               <div className="flex items-start gap-2 text-[rgb(var(--text-muted))]">
                 <Mail className="mt-0.5 h-4 w-4 text-[rgb(var(--primary))]" />
                 <a
-                  className="hover:text-[rgb(var(--text))]"
                   href={`mailto:${business.contact.email}`}>
                   {business.contact.email}
                 </a>
